@@ -31,11 +31,11 @@ Everything else in the system derives from this rule.
 | Document | Description |
 |----------|-------------|
 | [ARCHITECTURE.md](./ARCHITECTURE/ARCHITECTURE.md) | Main architecture overview |
-| [CONCEPTUAL-MODEL.md](./ARCHITECTURE/CONCEPTUAL-MODEL.md) | Entity and revision concepts |
+| [CONCEPTUAL-MODEL.md](./ARCHITECTURE/CONCEPTUAL-MODEL.md) | Conceptual model |
+| [ENTITY-MODEL.md](./ARCHITECTURE/ENTITY-MODEL.md) | Hybrid ID strategy (ulid-flake + Q123) |
 | [STORAGE-ARCHITECTURE.md](./ARCHITECTURE/STORAGE-ARCHITECTURE.md) | S3 and Vitess storage design |
 | [CONSISTENCY-MODEL.md](./ARCHITECTURE/CONSISTENCY-MODEL.md) | Write atomicity and failure recovery |
 | [CONCURRENCY-CONTROL.md](./ARCHITECTURE/CONCURRENCY-CONTROL.md) | Optimistic concurrency with CAS |
-| [REVISION-ID-STRATEGY.md](./ARCHITECTURE/REVISION-ID-STRATEGY.md) | Monotonic per-entity revision IDs |
 | [CACHING-STRATEGY.md](./ARCHITECTURE/CACHING-STRATEGY.md) | CDN and object cache design |
 | [CHANGE-NOTIFICATION.md](./ARCHITECTURE/CHANGE-NOTIFICATION.md) | Event streaming and consumers |
 | [SCHEMA-EVOLUTION.md](./ARCHITECTURE/SCHEMA-EVOLUTION.md) | Schema versioning and migration |

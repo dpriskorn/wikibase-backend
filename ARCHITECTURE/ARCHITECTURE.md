@@ -23,14 +23,14 @@ Everything else in the system derives from this rule.
 
 - [BULK-OPERATIONS.md](./BULK-OPERATIONS.md) - bulk operations
 - [CACHING-STRATEGY.md](./CACHING-STRATEGY.md) - caching strategy and cost control
+- [ENTITY-MODEL.md](./ENTITY-MODEL.md) - Hybrid ID strategy (ulid-flake + Q123) |
 - [CHANGE-NOTIFICATION.md](./CHANGE-NOTIFICATION.md) - change notification and event streaming
 - [CONCEPTUAL-MODEL.md](./CONCEPTUAL-MODEL.md) - conceptual model
 - [CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) - concurrency control details
 - [CONSISTENCY-MODEL.md](./CONSISTENCY-MODEL.md) - consistency model and failure recovery
 - [ENTITY-DELETION.md](./ENTITY-DELETION.md) - entity deletion
-- [JSON-VALIDATION-STRATEGY.md](./JSON-VALIDATION-STRATEGY.md) - JSON validation strategy comparison
-- [POST-PROCESSING-VALIDATION.md](./POST-PROCESSING-VALIDATION.md) - background validation service implementation
+
 - [REVISION-ID-STRATEGY.md](./REVISION-ID-STRATEGY.md) - revision ID strategy
 - [SCHEMA-CHANGES.md](./SCHEMA-CHANGES.md) - schema change history and migration guides
-- [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) - schema evolution strategy
+- [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) - schema evolution and migration
 - [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - storage architecture
