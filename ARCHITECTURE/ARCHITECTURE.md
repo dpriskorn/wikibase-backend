@@ -36,6 +36,8 @@ Everything else in the system derives from this rule.
 
 **See [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) for schema evolution strategy.**
 
+**See [SCHEMA-CHANGES.md](./SCHEMA-CHANGES.md) for schema change history and migration guides.**
+
 **See [ENTITY-DELETION.md](./ENTITY-DELETION.md) for entity deletion.**
 
 **See [BULK-OPERATIONS.md](./BULK-OPERATIONS.md) for bulk operations.**
