@@ -48,7 +48,7 @@ Everything else in the system derives from this rule.
 |----------|-------------|
 | [JSON-VALIDATION-STRATEGY.md](./ARCHITECTURE/JSON-VALIDATION-STRATEGY.md) | API vs background validation trade-offs |
 | [POST-PROCESSING-VALIDATION.md](./ARCHITECTURE/POST-PROCESSING-VALIDATION.md) | Background validation service implementation |
-| [SCHEMA-CHANGELOG.md](./ARCHITECTURE/SCHEMA-CHANGELOG.md) | Schema version history |
+| [S3-REVISION-SCHEMA-CHANGELOG.md](./ARCHITECTURE/S3-REVISION-SCHEMA-CHANGELOG.md) | S3 JSONSchema version history |
 
 ## RDF & Change Detection
 
