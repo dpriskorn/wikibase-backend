@@ -29,9 +29,9 @@ Everything else in the system derives from this rule.
 - [CONCEPTUAL-MODEL.md](./CONCEPTUAL-MODEL.md) - conceptual model
 - [CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) - concurrency control details
 - [CONSISTENCY-MODEL.md](./CONSISTENCY-MODEL.md) - consistency model and failure recovery
-- [ENTITY-DELETION.md](./ENTITY-DELETION.md) - entity deletion
-- [REVISION-ID-STRATEGY.md](./REVISION-ID-STRATEGY.md) - revision ID strategy
-- [SCHEMA-CHANGES.md](./SCHEMA-CHANGES.md) - schema change history and migration guides
-- [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) - schema evolution and migration
+- [S3-ENTITY-DELETION.md](./S3-ENTITY-DELETION.md) - entity deletion
+- [S3-REVISION-ID-STRATEGY.md](./S3-REVISION-ID-STRATEGY.md) - revision ID strategy
+- [S3-REVISION-SCHEMA-CHANGELOG.md](./S3-REVISION-SCHEMA-CHANGELOG.md) - schema change history and migration guides
+- [S3-REVISION-SCHEMA-EVOLUTION.md](./S3-REVISION-SCHEMA-EVOLUTION.md) - schema evolution and migration
 - [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - storage architecture
 

@@ -38,8 +38,8 @@ Everything else in the system derives from this rule.
 | [CONCURRENCY-CONTROL.md](./ARCHITECTURE/CONCURRENCY-CONTROL.md) | Optimistic concurrency with CAS |
 | [CACHING-STRATEGY.md](./ARCHITECTURE/CACHING-STRATEGY.md) | CDN and object cache design |
 | [CHANGE-NOTIFICATION.md](./ARCHITECTURE/CHANGE-NOTIFICATION.md) | Event streaming and consumers |
-| [SCHEMA-EVOLUTION.md](./ARCHITECTURE/SCHEMA-EVOLUTION.md) | Schema versioning and migration |
-| [ENTITY-DELETION.md](./ARCHITECTURE/ENTITY-DELETION.md) | Soft and hard delete semantics |
+| [S3-REVISION-SCHEMA-EVOLUTION.md](./ARCHITECTURE/S3-REVISION-SCHEMA-EVOLUTION.md) | Schema versioning and migration |
+| [S3-ENTITY-DELETION.md](./ARCHITECTURE/S3-ENTITY-DELETION.md) | Soft and hard delete semantics |
 | [BULK-OPERATIONS.md](./ARCHITECTURE/BULK-OPERATIONS.md) | Import and export operations |
 
 ## Validation & Data Quality
