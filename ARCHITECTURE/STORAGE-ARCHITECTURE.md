@@ -73,6 +73,10 @@ entity_revision_meta
 - entity_id
 - revision_id
 - size_bytes
+- validation_status ENUM('pending', 'valid', 'invalid') DEFAULT 'pending'
+- validation_error TEXT DEFAULT NULL
+- validated_at TIMESTAMP DEFAULT NULL
+- schema_version VARCHAR(20) DEFAULT NULL
 
 entity_delete_audit
 - entity_id
@@ -82,27 +86,6 @@ entity_delete_audit
 - reason
 - timestamp
 - retention_expiry
-```
-
-```text
-entity_head
-- entity_id (shard key)
-- head_revision_id
-- updated_at
-
-entity_revisions
-- entity_id (shard key)
-- revision_id
-- created_at
-- author_id
-- comment
-- snapshot_uri
-
-entity_revision_meta
-- entity_id
-- revision_id
-- size_bytes
-- content_hash
 ```
 
 ## Read/Write flow
