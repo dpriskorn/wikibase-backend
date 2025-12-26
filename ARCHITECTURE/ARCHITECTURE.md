@@ -20,24 +20,15 @@ There are:
 Everything else in the system derives from this rule.
 
 ## Details
-**See [CONCEPTUAL-MODEL.md](./CONCEPTUAL-MODEL.md) for the conceptual model.**
 
-**See [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) for the storage architecture.**
-
-**See [CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) for concurrency control details.**
-
-**See [CONSISTENCY-MODEL.md](./CONSISTENCY-MODEL.md) for consistency model and failure recovery.**
-
-**See [REVISION-ID-STRATEGY.md](./REVISION-ID-STRATEGY.md) for the revision ID strategy.**
-
-**See [CACHING-STRATEGY.md](./CACHING-STRATEGY.md) for caching strategy and cost control.**
-
-**See [CHANGE-NOTIFICATION.md](./CHANGE-NOTIFICATION.md) for change notification and event streaming.**
-
-**See [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) for schema evolution strategy.**
-
-**See [SCHEMA-CHANGES.md](./SCHEMA-CHANGES.md) for schema change history and migration guides.**
-
-**See [ENTITY-DELETION.md](./ENTITY-DELETION.md) for entity deletion.**
-
-**See [BULK-OPERATIONS.md](./BULK-OPERATIONS.md) for bulk operations.**
+- [BULK-OPERATIONS.md](./BULK-OPERATIONS.md) - bulk operations
+- [CACHING-STRATEGY.md](./CACHING-STRATEGY.md) - caching strategy and cost control
+- [CHANGE-NOTIFICATION.md](./CHANGE-NOTIFICATION.md) - change notification and event streaming
+- [CONCEPTUAL-MODEL.md](./CONCEPTUAL-MODEL.md) - conceptual model
+- [CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) - concurrency control details
+- [CONSISTENCY-MODEL.md](./CONSISTENCY-MODEL.md) - consistency model and failure recovery
+- [ENTITY-DELETION.md](./ENTITY-DELETION.md) - entity deletion
+- [REVISION-ID-STRATEGY.md](./REVISION-ID-STRATEGY.md) - revision ID strategy
+- [SCHEMA-CHANGES.md](./SCHEMA-CHANGES.md) - schema change history and migration guides
+- [SCHEMA-EVOLUTION.md](./SCHEMA-EVOLUTION.md) - schema evolution strategy
+- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - storage architecture
