@@ -26,7 +26,7 @@ Client Request
     ↓ (CDN miss)
 ┌───────────────────────────────────────┐
 │ 3. Application Object Cache          │
-│    - Redis / Memcached           │
+│    - Valkey / Memcached           │
 │    - entity_id_mapping lookups     │ ← NEW: Hybrid ID translation
 │    - entity_head lookups         │
 │    - entity metadata              │
@@ -99,7 +99,7 @@ S3 Object Metadata:
 
 **Purpose:** Cache database queries and identifier mappings
 
-**Technologies:** Redis (recommended) or Memcached
+**Technologies:** Valkey (recommended) or Memcached
 
 #### 3.1 Entity ID Mapping Cache (NEW for Hybrid ID Strategy)
 
@@ -131,19 +131,19 @@ Examples:
 **Implementation:**
 
 ```python
-import redis
+from redis import redis
 import json
 
 class EntityIdCache:
-    def __init__(self, redis_client: redis.Redis):
-        self.redis = redis_client
+    def __init__(self, valkey_client: redis.Redis):
+        self.valkey = valkey_client  # Valkey uses redis-py client (Redis-compatible)
         self.ttl = 3600  # 1 hour
         self.key_prefix = "entity_id:"
     
     def get_internal_id(self, external_id: str) -> int:
         """Lookup internal_id by external_id (Q123, P42, L999)"""
         cache_key = f"{self.key_prefix}{external_id}"
-        cached = self.redis.get(cache_key)
+        cached = self.valkey.get(cache_key)
         
         if cached:
             # Cache hit
@@ -164,18 +164,18 @@ class EntityIdCache:
             "entity_type": result['entity_type'],
             "created_at": str(result['created_at'])
         })
-        self.redis.setex(cache_key, self.ttl, cache_value)
+        self.valkey.setex(cache_key, self.ttl, cache_value)
         
         return result['internal_id']
     
     def invalidate(self, external_id: str):
         """Invalidate cache entry on entity update/delete"""
         cache_key = f"{self.key_prefix}{external_id}"
-        self.redis.delete(cache_key)
+        self.valkey.delete(cache_key)
     
     def warm_up(self, external_ids: list[str]):
         """Warm up cache for frequently accessed entities"""
-        with self.redis.pipeline() as pipe:
+        with self.valkey.pipeline() as pipe:
             for external_id in external_ids:
                 cache_key = f"{self.key_prefix}{external_id}"
                 # Query database (batch)
@@ -308,11 +308,11 @@ class CacheInvalidator:
         
         # 2. Invalidate entity_head cache
         entity_head_cache_key = f"entity_head:{internal_id}"
-        redis_client.delete(entity_head_cache_key)
+        valkey_client.delete(entity_head_cache_key)
         
         # 3. Invalidate entity metadata cache
         entity_meta_cache_key = f"entity_meta:{internal_id}"
-        redis_client.delete(entity_meta_cache_key)
+        valkey_client.delete(entity_meta_cache_key)
         
         # 4. Clear CDN cache (if needed)
         # Note: S3 snapshots are immutable, no CDN invalidation needed
@@ -373,7 +373,7 @@ GET /entity/Q123 (cold entity)
 **Rule:** Check all cache layers before querying database
 
 **Cost impact:**
-- Redis: $0.01/10,000 operations
+- Valkey: $0.01/10,000 operations
 - Vitess: $0.10/10,000 operations
 - **10x cheaper** to cache
 
@@ -422,10 +422,10 @@ def decompress_cache_value(compressed: bytes) -> dict:
 # Usage in cache
 cache_value = {"internal_id": 1424675744195114, ...}
 compressed = compress_cache_value(cache_value)
-redis_client.set("entity_id:Q123", compressed)
+valkey_client.set("entity_id:Q123", compressed)
 
 # Decompress on read
-compressed = redis_client.get("entity_id:Q123")
+compressed = valkey_client.get("entity_id:Q123")
 cache_value = decompress_cache_value(compressed)
 ```
 
@@ -439,12 +439,12 @@ cache_value = decompress_cache_value(compressed)
 
 ```
 entity_id_mapping_cache_hit_rate
-  - labels: {cache: redis}
+  - labels: {cache: valkey}
   - gauge: 0.95-0.99 (target >95%)
   - alert: <90% for >5 minutes
 
 entity_head_cache_hit_rate
-  - labels: {cache: redis}
+  - labels: {cache: valkey}
   - gauge: 0.80-0.90
   - alert: <70% for >5 minutes
 
@@ -463,16 +463,16 @@ client_cache_hit_rate
 
 ```
 cache_lookup_latency_p50
-  - labels: {cache: redis, operation: entity_id_mapping}
+  - labels: {cache: valkey, operation: entity_id_mapping}
   - gauge: <1ms
   - alert: >2ms for >5 minutes
 
 cache_lookup_latency_p99
-  - labels: {cache: redis, operation: entity_id_mapping}
+  - labels: {cache: valkey, operation: entity_id_mapping}
   - gauge: <5ms
   - alert: >10ms for >5 minutes
 
-redis_memory_usage_bytes
+valkey_memory_usage_bytes
   - gauge: <50GB (for 10M entities, 100 bytes each)
   - alert: >40GB (90% capacity)
   - alert: >45GB (90% capacity)
@@ -538,10 +538,10 @@ warm_up_entity_id_cache()
 
 ## Configuration
 
-### Redis Configuration
+### Valkey Configuration
 
 ```yaml
-# redis.conf
+# valkey.conf
 maxmemory 64gb
 maxmemory-policy allkeys-lru  # Evict least recently used keys
 save 900 1                 # Save to disk every 15 minutes if 1+ changes
@@ -555,11 +555,11 @@ timeout 300                 # Close idle connections after 5 minutes
 ### Cache Client Configuration
 
 ```python
-# Python redis client configuration
-import redis
+# Python redis-py client (Valkey-compatible)
+from redis import redis
 
-redis_client = redis.Redis(
-    host='redis.internal',
+valkey_client = redis.Redis(
+    host='valkey.internal',
     port=6379,
     db=0,
     socket_timeout=5,
@@ -579,26 +579,26 @@ redis_client = redis.Redis(
 **Full cache clear (emergency):**
 
 ```bash
-# Flush all Redis keys (use with caution)
-redis-cli FLUSHDB
+# Flush all Valkey keys (use with caution)
+valkey-cli FLUSHDB
 
 # Verify cache is empty
-redis-cli DBSIZE
+valkey-cli DBSIZE
 ```
 
 **Selective cache clear:**
 
 ```bash
 # Clear only entity_id_mapping cache
-redis-cli --scan --pattern 'entity_id:*' | xargs redis-cli DEL
+valkey-cli --scan --pattern 'entity_id:*' | xargs valkey-cli DEL
 
 # Clear only entity_head cache
-redis-cli --scan --pattern 'entity_head:*' | xargs redis-cli DEL
+valkey-cli --scan --pattern 'entity_head:*' | xargs valkey-cli DEL
 ```
 
 ### Cache Backfill
 
-**Scenario:** Cache cleared or Redis replaced
+**Scenario:** Cache cleared or Valkey replaced
 
 **Procedure:**
 
@@ -617,7 +617,7 @@ def backfill_entity_id_cache():
         batch = all_mappings[i:i+batch_size]
         cache.warm_up([m['external_id'] for m in batch])
         logging.info(f"Backfilled {i+batch_size}/{len(all_mappings)} mappings")
-        time.sleep(0.1)  # Prevent overwhelming Redis
+        time.sleep(0.1)  # Prevent overwhelming Valkey
 ```
 
 ---
