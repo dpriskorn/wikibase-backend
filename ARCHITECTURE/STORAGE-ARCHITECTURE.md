@@ -16,11 +16,6 @@ S3 stores **all entity content**.
 - CDN-backed
 - Lifecycle rules for retention
 
-S3 never stores:
-- Diffs
-- Mutable state
-- Indexes
-
 > **A revision is an immutable snapshot stored in S3.**  
 > It is written once and never changes.
 
