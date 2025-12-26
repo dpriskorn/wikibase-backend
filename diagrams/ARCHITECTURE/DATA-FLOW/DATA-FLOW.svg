@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="1507px" preserveAspectRatio="none" style="width:716px;height:1507px;background:#FFFFFF;" version="1.1" viewBox="0 0 716 1507" width="716px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="29.0679" id="_title" style="stroke:none;stroke-width:1.0;" width="171" x="265.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="161" x="270.5" y="24.9659">Full Data Flow Diagram</text><!--MD5=[6f1c4a61674e2ad3a42ed812e042a330]
+cluster Client Write Path--><g id="cluster_Client Write Path"><rect fill="none" height="607.48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="252" x="297" y="47.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118" x="364" y="64.0339">Client Write Path</text></g><!--MD5=[7c47f1eb2219907f41d28987274934ac]
+cluster RDF Generation Services--><g id="cluster_RDF Generation Services"><rect fill="none" height="399.27" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="703" x="7" y="772.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="168" x="274.5" y="789.6439">RDF Generation Services</text></g><!--MD5=[9cd428ba6e2caff309d3d367f006cf92]
+cluster Continuous RDF Change Stream\n(Real-time)--><g id="cluster_Continuous RDF Change Stream\n(Real-time)"><rect fill="none" height="329.27" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="237" x="31" y="818.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="221" x="39" y="835.6439">Continuous RDF Change Stream</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="75" x="112" y="854.7118">(Real-time)</text></g><!--MD5=[2aa93413bd2c3722bb22bf6709f3fb66]
+cluster Weekly RDF Dump Service\n(Scheduled)--><g id="cluster_Weekly RDF Dump Service\n(Scheduled)"><rect fill="none" height="329.27" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="262" x="292" y="818.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="181" x="332.5" y="835.6439">Weekly RDF Dump Service</text><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="81" x="382.5" y="854.7118">(Scheduled)</text></g><!--MD5=[caf7b33d2456239656b9b59659f5698e]
+cluster Kafka--><g id="cluster_Kafka"><rect fill="none" height="112.14" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="234" x="46" y="1195.9479"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="39" x="143.5" y="1212.9139">Kafka</text></g><!--MD5=[0205f24b917acac8409b632ecefcf556]
+cluster Consumers--><g id="cluster_Consumers"><rect fill="none" height="169.34" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="350" x="17" y="1332.0879"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="78" x="153" y="1349.0539">Consumers</text></g><!--MD5=[4a65e84059005d12693a083370a06717]
+entity client--><g id="elem_client"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="85" x="380.5" y="85.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="65" x="390.5" y="110.0339">Client API</text></g><!--MD5=[136d01a28cf56b86decf41e29156d7e8]
+entity validate--><g id="elem_validate"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="116" x="365" y="184.1379"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="375" y="209.1039">Validate Entity</text></g><!--MD5=[d6c902d163bed2fd2af159dea11caf17]
+entity revision--><g id="elem_revision"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="144" x="351" y="283.2079"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124" x="361" y="308.1739">Assign Revision ID</text></g><!--MD5=[eb2cb2af23d4d7eac318e4862e6f3e31]
+entity s3snapshot--><g id="elem_s3snapshot"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="143" x="351.5" y="382.2779"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="123" x="361.5" y="407.2439">Write S3 Snapshot</text></g><!--MD5=[95ef20b9736154e026c28fe1b9111ebc]
+entity vitess--><g id="elem_vitess"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="171" x="337.5" y="481.3379"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="151" x="347.5" y="506.3039">Insert Vitess Metadata</text></g><!--MD5=[d6fcf974e613c9a30af7f230af33acde]
+entity mw_event--><g id="elem_mw_event"><rect fill="#F1F1F1" height="58.1358" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="221" x="312.5" y="580.4079"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="201" x="322.5" y="605.3739">Emit MediaWiki Change Event</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="322.5" y="624.4418">(existing)</text></g><!--MD5=[1b22b79248ccb6293af42a8a913dbfdf]
+entity changes--><g id="elem_changes"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="121" x="572.5" y="875.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101" x="582.5" y="900.6439">Entity Changes</text></g><!--MD5=[0bdfedc76cec7d3fe5bf66f1aaaea533]
+entity json2rdf--><g id="elem_json2rdf"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="170" x="80" y="875.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="150" x="90" y="900.6439">JSON → RDF Converter</text></g><!--MD5=[6e7eb61f44ad54875e65be1760fb578e]
+entity rdfdiff--><g id="elem_rdfdiff"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="139" x="94.5" y="974.7479"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="119" x="104.5" y="999.7139">Compute RDF Diff</text></g><!--MD5=[5c6de846606c58e72b0ec39ddc31bb03]
+entity emit_kafka--><g id="elem_emit_kafka"><rect fill="#F1F1F1" height="58.1358" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="178" x="74" y="1073.8179"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="84" y="1098.7839">Emit rdf_change events</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="45" x="84" y="1117.8518">(Kafka)</text></g><!--MD5=[ada2c7c85b9323dfc44281ca41bfaca6]
+entity json2ttl--><g id="elem_json2ttl"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="229" x="308.5" y="875.6779"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="209" x="318.5" y="900.6439">JSON → Turtle Dump Converter</text></g><!--MD5=[88dce0c5cfc59fcd681b5bd14abd496b]
+entity batchrdf--><g id="elem_batchrdf"><rect fill="#F1F1F1" height="39.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="167" x="339.5" y="974.7479"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="147" x="349.5" y="999.7139">Batch RDF Generation</text></g><!--MD5=[188849a164f70624d31de5463e230321]
+entity s3ttl--><g id="elem_s3ttl"><rect fill="#F1F1F1" height="58.1358" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="125" x="360.5" y="1073.8179"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="370.5" y="1098.7839">Write S3: full.ttl</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="370.5" y="1117.8518">(with metadata)</text></g><!--MD5=[9942b4c84ca79f6e9dbda1c1f35bbbe5]
+entity kafka_topic--><g id="elem_kafka_topic"><rect fill="#F1F1F1" height="58.1358" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="202" x="62" y="1233.9479"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="182" x="72" y="1258.9139">Topic: wikibase.rdf_change</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="72" y="1277.9818">(reuse or new)</text></g><!--MD5=[fbfbc6c06cc076f2277feb45d8516dbc]
+entity wdqs--><g id="elem_wdqs"><rect fill="#F1F1F1" height="115.3396" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="135" x="33.5" y="1370.0879"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="43.5" y="1395.0539">WDQS Consumer</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="103" x="43.5" y="1414.1218">(reuse existing)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="43.5" y="1433.1897"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104" x="43.5" y="1452.2576">- Apply patches</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="94" x="51.5" y="1471.3255">to Blazegraph</text></g><!--MD5=[311a50329dcd61d963fd5493378cd659]
+entity search--><g id="elem_search"><rect fill="#F1F1F1" height="115.3396" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="147" x="203.5" y="1370.0879"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="213.5" y="1395.0539">Search Indexer</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="213.5" y="1414.1218">(optional)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="213.5" y="1433.1897"> </text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127" x="213.5" y="1452.2576">- Index from dump</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116" x="213.5" y="1471.3255">- Stream updates</text></g><!--MD5=[576130ceef651c0ae053e4132e7469d3]
+entity cds--><g id="elem_cds"><rect fill="#F1F1F1" height="58.1358" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="192" x="327" y="698.5479"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="172" x="337" y="723.5139">Change Detection Service</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="170" x="337" y="742.5818">(MediaWiki-independent)</text></g><!--MD5=[dcd9fd1fdc6bfc992dacbcca53dbf3b8]
+link client to validate--><g id="link_client_validate"><path d="M423,124.3179 C423,139.3979 423,160.7379 423,177.3479 " fill="none" id="client-to-validate" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,182.1679,427,173.1679,423,177.1679,419,173.1679,423,182.1679" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8c1bd92103b70cd6e025d4627d28a10f]
+link validate to revision--><g id="link_validate_revision"><path d="M423,223.3879 C423,238.4679 423,259.8079 423,276.4179 " fill="none" id="validate-to-revision" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,281.2379,427,272.2379,423,276.2379,419,272.2379,423,281.2379" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[73fc06c16bc00c46f33259ddbf5f01ec]
+link revision to s3snapshot--><g id="link_revision_s3snapshot"><path d="M423,322.4579 C423,337.5279 423,358.8779 423,375.4779 " fill="none" id="revision-to-s3snapshot" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,380.3079,427,371.3079,423,375.3079,419,371.3079,423,380.3079" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[bf9eba4998d2f2117bfa9e7a9125bb4b]
+link s3snapshot to vitess--><g id="link_s3snapshot_vitess"><path d="M423,421.5279 C423,436.5979 423,457.9479 423,474.5479 " fill="none" id="s3snapshot-to-vitess" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,479.3679,427,470.3679,423,474.3679,419,470.3679,423,479.3679" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[2b2950d57bc80bc6221ea36a367bbb90]
+link vitess to mw_event--><g id="link_vitess_mw_event"><path d="M423,520.4479 C423,535.1079 423,555.9779 423,573.7279 " fill="none" id="vitess-to-mw_event" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,578.5879,427,569.5879,423,573.5879,419,569.5879,423,578.5879" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[cc6f81a63101b22614ae954cfcc19a15]
+link mw_event to cds--><g id="link_mw_event_cds"><path d="M423,638.8879 C423,654.9179 423,675.0679 423,692.0079 " fill="none" id="mw_event-to-cds" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,696.5779,427,687.5779,423,691.5779,419,687.5779,423,696.5779" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[ac18b99c8c24eaea2bead2bc822d3e8d]
+link changes to cds--><g id="link_changes_cds"><path d="M626.61,875.2379 C616.06,846.8379 592.28,793.5379 554,764.6779 C545.26,758.0879 535.38,752.7079 525.07,748.3079 " fill="none" id="changes-to-cds" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="520.7,746.5279,527.5256,753.628,525.3305,748.4144,530.544,746.2192,520.7,746.5279" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[459c9d8283b5878de220316d4f1618b2]
+link json2rdf to rdfdiff--><g id="link_json2rdf_rdfdiff"><path d="M164.81,914.9279 C164.65,930.0079 164.43,951.3479 164.26,967.9579 " fill="none" id="json2rdf-to-rdfdiff" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="164.21,972.7779,168.3126,963.8242,164.2671,967.7782,160.3131,963.7328,164.21,972.7779" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e9e42bd1af07d7d597d32e7785f79a28]
+link rdfdiff to emit_kafka--><g id="link_rdfdiff_emit_kafka"><path d="M163.83,1013.8479 C163.69,1028.5179 163.49,1049.3879 163.33,1067.1279 " fill="none" id="rdfdiff-to-emit_kafka" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="163.28,1071.9979,167.357,1063.0325,163.3229,1066.9981,159.3573,1062.964,163.28,1071.9979" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[bf99521004c0467a19814754c8c061a5]
+link json2ttl to batchrdf--><g id="link_json2ttl_batchrdf"><path d="M423,914.9279 C423,930.0079 423,951.3479 423,967.9579 " fill="none" id="json2ttl-to-batchrdf" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,972.7779,427,963.7779,423,967.7779,419,963.7779,423,972.7779" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[11b782df82eddca46e571756c46405c1]
+link batchrdf to s3ttl--><g id="link_batchrdf_s3ttl"><path d="M423,1013.8479 C423,1028.5179 423,1049.3879 423,1067.1279 " fill="none" id="batchrdf-to-s3ttl" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,1071.9979,427,1062.9979,423,1066.9979,419,1062.9979,423,1071.9979" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e304f53b41353b1ac765a0748bbbeab5]
+link cds to json2rdf--><g id="link_cds_json2rdf"><path d="M326.5,748.8479 C314.48,753.1779 302.67,758.3979 292,764.6779 C245.3,792.1679 204.01,841.2079 181.95,870.4279 " fill="none" id="cds-to-json2rdf" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="179.22,874.0779,187.8007,869.2436,182.204,870.066,181.3816,864.4692,179.22,874.0779" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[478be005553b1caf26248f93cc903f20]
+link cds to json2ttl--><g id="link_cds_json2ttl"><path d="M423,757.0779 C423,788.5479 423,838.7579 423,868.8979 " fill="none" id="cds-to-json2ttl" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="423,873.8679,427,864.8679,423,868.8679,419,864.8679,423,873.8679" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f50dd0b2726338327aa941b44f4fdc86]
+link emit_kafka to kafka_topic--><g id="link_emit_kafka_kafka_topic"><path d="M163,1132.1579 C163,1158.7479 163,1198.6379 163,1227.1879 " fill="none" id="emit_kafka-to-kafka_topic" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="163,1231.9479,167,1222.9479,163,1226.9479,159,1222.9479,163,1231.9479" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[ec3c0d96f312dc152c451e6852c74f13]
+link kafka_topic to wdqs--><g id="link_kafka_topic_wdqs"><path d="M152.2,1292.3679 C144.68,1312.0979 134.36,1339.1879 124.95,1363.8779 " fill="none" id="kafka_topic-to-wdqs" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="123.25,1368.3579,130.1999,1361.3795,125.0353,1363.6875,122.7273,1358.5229,123.25,1368.3579" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[671f75924a974e5abf7a9a5ce908be86]
+link kafka_topic to search--><g id="link_kafka_topic_search"><path d="M182.86,1292.3679 C196.79,1312.2579 215.98,1339.6479 233.39,1364.5079 " fill="none" id="kafka_topic-to-search" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="236.21,1368.5279,234.3076,1358.8645,233.335,1364.4371,227.7624,1363.4645,236.21,1368.5279" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[66b5abfa62bbf8a11d78a425f9458948]
+@startuml
+title Full Data Flow Diagram
+
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+package "Client Write Path" {
+  component "Client API" as client
+  component "Validate Entity" as validate
+  component "Assign Revision ID" as revision
+  component "Write S3 Snapshot" as s3snapshot
+  component "Insert Vitess Metadata" as vitess
+  component "Emit MediaWiki Change Event\n(existing)" as mw_event
+
+  client - -> validate
+  validate - -> revision
+  revision - -> s3snapshot
+  s3snapshot - -> vitess
+  vitess - -> mw_event
+}
+
+component "Change Detection Service\n(MediaWiki-independent)" as cds
+
+mw_event - -> cds
+
+package "RDF Generation Services" {
+
+  component "Entity Changes" as changes
+
+  changes - -> cds
+
+  package "Continuous RDF Change Stream\n(Real-time)" {
+    component "JSON → RDF Converter" as json2rdf
+    component "Compute RDF Diff" as rdfdiff
+    component "Emit rdf_change events\n(Kafka)" as emit_kafka
+
+    json2rdf - -> rdfdiff
+    rdfdiff - -> emit_kafka
+  }
+
+  package "Weekly RDF Dump Service\n(Scheduled)" {
+    component "JSON → Turtle Dump Converter" as json2ttl
+    component "Batch RDF Generation" as batchrdf
+    component "Write S3: full.ttl\n(with metadata)" as s3ttl
+
+    json2ttl - -> batchrdf
+    batchrdf - -> s3ttl
+  }
+
+  cds - -> json2rdf
+  cds - -> json2ttl
+}
+
+package "Kafka" {
+  component "Topic: wikibase.rdf_change\n(reuse or new)" as kafka_topic
+}
+
+emit_kafka - -> kafka_topic
+
+package "Consumers" {
+
+  component "WDQS Consumer\n(reuse existing)\n\n- Apply patches\n  to Blazegraph" as wdqs
+
+  component "Search Indexer\n(optional)\n\n- Index from dump\n- Stream updates" as search
+
+  kafka_topic - -> wdqs
+  kafka_topic - -> search
+}
+
+@enduml
+
+PlantUML version 1.2022.7(Mon Aug 22 19:01:30 CEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

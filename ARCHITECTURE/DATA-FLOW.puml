@@ -1,0 +1,70 @@
+@startuml
+title Full Data Flow Diagram
+
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+
+package "Client Write Path" {
+  component "Client API" as client
+  component "Validate Entity" as validate
+  component "Assign Revision ID" as revision
+  component "Write S3 Snapshot" as s3snapshot
+  component "Insert Vitess Metadata" as vitess
+  component "Emit MediaWiki Change Event\n(existing)" as mw_event
+
+  client --> validate
+  validate --> revision
+  revision --> s3snapshot
+  s3snapshot --> vitess
+  vitess --> mw_event
+}
+
+component "Change Detection Service\n(MediaWiki-independent)" as cds
+
+mw_event --> cds
+
+package "RDF Generation Services" {
+
+  component "Entity Changes" as changes
+
+  changes --> cds
+
+  package "Continuous RDF Change Stream\n(Real-time)" {
+    component "JSON → RDF Converter" as json2rdf
+    component "Compute RDF Diff" as rdfdiff
+    component "Emit rdf_change events\n(Kafka)" as emit_kafka
+
+    json2rdf --> rdfdiff
+    rdfdiff --> emit_kafka
+  }
+
+  package "Weekly RDF Dump Service\n(Scheduled)" {
+    component "JSON → Turtle Dump Converter" as json2ttl
+    component "Batch RDF Generation" as batchrdf
+    component "Write S3: full.ttl\n(with metadata)" as s3ttl
+
+    json2ttl --> batchrdf
+    batchrdf --> s3ttl
+  }
+
+  cds --> json2rdf
+  cds --> json2ttl
+}
+
+package "Kafka" {
+  component "Topic: wikibase.rdf_change\n(reuse or new)" as kafka_topic
+}
+
+emit_kafka --> kafka_topic
+
+package "Consumers" {
+
+  component "WDQS Consumer\n(reuse existing)\n\n- Apply patches\n  to Blazegraph" as wdqs
+
+  component "Search Indexer\n(optional)\n\n- Index from dump\n- Stream updates" as search
+
+  kafka_topic --> wdqs
+  kafka_topic --> search
+}
+
+@enduml

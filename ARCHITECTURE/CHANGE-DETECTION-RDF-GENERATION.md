@@ -75,65 +75,7 @@ Write to S3:                     Write to S3:
 
 ### Full Data Flow Diagram
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       Client API                                   │
-│                           ↓                                       │
-│                      Validate Entity                                 │
-│                           ↓                                       │
-│                   Assign Revision ID                                  │
-│                           ↓                                       │
-│                    Write S3 Snapshot                                │
-│                           ↓                                       │
-│                    Insert Vitess Metadata                             │
-│                           ↓                                       │
-│                  Emit MediaWiki Change Event (existing)              │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                     │
-                                     │ Change Detection Service
-                                     │ (see MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md)
-                                     ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│  RDF Generation Services                                         │
-│                                                                  │
-│                    Entity Changes (from Change Detection)               │
-│                            ↓                                     │
-│              ┌──────────────┴─────────────────────────┐                 │
-│              ↓                                      │                  │
-│    Continuous RDF Change Stream          Weekly RDF Dump Service    │
-│         (Real-time)                        (Scheduled)                │
-│              ↓                                      ↓                  │
-│    JSON→RDF Converter              JSON→Turtle Dump Converter       │
-│              ↓                                      ↓                  │
-│    Compute RDF Diff                      Batch RDF Generation          │
-│              ↓                                      ↓                  │
-│    Emit rdf_change events              Write S3: full.ttl           │
-│    (Kafka)                              (with metadata)               │
-└─────────────────────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                       Kafka Topic                                │
-│                                                                  │
-│  Topic: wikibase.rdf_change (reuse or new)                         │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    Consumers                                      │
-│                                                                  │
-│  ┌──────────────────────┐  ┌──────────────────────┐                │
-│  │   WDQS Consumer   │  │  Search Indexer    │                │
-│  │ (reuse existing)  │  │   (optional)        │                │
-│  │                   │  │                    │                │
-│  │ - Apply patches    │  │ - Index from dump   │                │
-│  │   to Blazegraph   │  │ - Stream updates    │                │
-│  │                   │  │                    │                │
-│  └──────────────────────┘  └──────────────────────┘                │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+![Full Data Flow Diagram](../../diagrams/ARCHITECTURE/DATA-FLOW.svg)
 
 ---
 
@@ -194,12 +136,61 @@ Write to S3:                     Write to S3:
 
 ---
 
+## Performance Targets
+
+### Latency Targets (Single Entity Conversion)
+
+| Use Case | Target | Rationale |
+|----------|--------|-----------|
+| **Small entity** (<50 claims, <200 triples) | **< 10ms** | Fast response for hot entities |
+| **Medium entity** (50-500 claims, 200-2000 triples) | **< 50ms** (P50), **< 100ms** (P99) | Majority of entities fall here |
+| **Large entity** (>500 claims, >2000 triples) | **< 500ms** (P50), **< 1s** (P99) | Rare but acceptable for complex entities |
+| **RDF diff computation** (two revisions) | **< 200ms** (P50), **< 500ms** (P99) | For continuous streaming use case |
+
+### Throughput Requirements
+
+#### Weekly Dump Scenario (Batch Processing)
+
+| Metric | Target | Calculation |
+|--------|--------|-------------|
+| **Weekly entity volume** | 1,000,000 entities | Documented scale |
+| **Processing window** | 6 hours | Typical maintenance window |
+| **Required throughput** | **~46 entities/sec** | 1M ÷ 6h ÷ 3600s |
+| **Peak capacity** | **100 entities/sec** | 2x buffer for headroom |
+| **Parallel workers** | 10-20 workers | Meets target comfortably |
+
+**Recommended**: Deploy 10-20 worker instances for weekly dumps to complete within 6-8 hours.
+
+#### Continuous Streaming Scenario (Real-time)
+
+| Metric | Target | Rationale |
+|--------|--------|-----------|
+| **End-to-end latency** (change detected → RDF event emitted) | **< 30 seconds** | Real-time updates for consumers |
+| **Processing capacity** | **500-1000 entities/sec** | Handle bursts, stay ahead of change rate |
+| **Parallel workers** | 50 workers | Scales to Wikidata-like loads |
+
+**Recommended**: Deploy 50 workers for continuous streaming to maintain low latency.
+
+### Summary
+
+| Entity Type | P50 | P99 |
+|-------------|-----|-----|
+| Small (<50 claims) | < 5ms | < 10ms |
+| Medium (50-500 claims) | < 30ms | < 100ms |
+| Large (>500 claims) | < 250ms | < 1000ms |
+
+| Scenario | Required | Recommended Capacity |
+|----------|-----------|---------------------|
+| Weekly dumps (1M entities in 6h) | 46 entities/sec | 100 entities/sec (10-20 workers) |
+| Continuous streaming (real-time) | Variable | 500-1000 entities/sec (50 workers) |
+
+---
+
 ## Open Questions
 
 1. **Change Granularity**: Entity-level diffs or claim-level diffs for RDF stream? entity-level diffs
 2. **Snapshot Retention**: How long to keep weekly dumps in S3? Lifecycle rules? 1y rolling
-3. **Performance Targets**: Latency targets for RDF conversion? Throughput requirements?
-4. **Weekly Dump Partitioning**: Single file vs. multiple partitions at 1M entities/week scale? Multiple
+3. **Weekly Dump Partitioning**: Single file vs. multiple partitions at 1M entities/week scale? Multiple
 
 ---
 
