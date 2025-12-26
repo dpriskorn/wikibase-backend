@@ -7,44 +7,12 @@ This document tracks all schema version changes for Wikibase immutable revision 
 | Version | Date | Type | Status |
 |---------|------|------|--------|
 | 1.0 | TBD | Major | Draft |
-| 1.1 | TBD | Major | Draft |
 
 ---
 
 ## 1.0 - Major
 
 **Status:** Draft
-
-### Changes
-- Initial schema definition
-- Core entity model with required fields
-- Optional `metadata.tags` array for classification and batch tracking
-
-### Impact
-- Readers: Initial implementation
-- Writers: Initial implementation
-- Migration: N/A (baseline schema)
-
-### Tags Field Use Cases
-- Track import batches: `["import-2025", "batch-42"]`
-- Classify entities: `["verified", "quality-check-passed"]`
-- Audit trails: `["data-migration", "phase-2"]`
-
-### Notes
-- Establishes canonical JSON format for immutable snapshots
-- All fields required unless documented as optional
-- Deterministic ordering enforced for hash stability
-- `metadata.tags` is optional - tags are opaque strings with no enforced schema
-
----
-
-## 1.1 - Major
-
-**Status:** Draft
-
-**Date:** 2025-01-26
-
-**Description:** Add hybrid identifier strategy with internal ulid-flake and external Q123 IDs
 
 ### Changes
 
