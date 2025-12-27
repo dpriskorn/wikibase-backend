@@ -38,6 +38,7 @@ src/
 - **Purpose:** Generate 64-bit ulid-flake IDs for internal entity IDs
 - **Spec:** 1 bit sign + 42 bits timestamp + 21 bits randomness
 - **Output:** Python `int` (fits in Vitess BIGINT)
+- **Decision:** Python module (not microservice) - simpler, faster, no coordination needed
 
 ### 2.3 S3 Client
 - **File:** `src/infrastructure/s3_client.py`
@@ -201,15 +202,3 @@ pymysql>=1.1.0
 4. Implement RDF generation
 5. Add bulk operations
 6. Implement entity deletion
-
----
-
-**Questions for you:**
-
-1. Should I start with just the read endpoints first (GET /entity/{id}), or implement full CRUD from the start?
-
-2. For ID generation, should I create a separate microservice, or keep it as a Python module within entity-api?
-
-3. Should I implement entity_id_mapping table now, or just use external_ids directly in Vitess for simplicity?
-
-4. Any preference for testing framework (pytest vs unittest vs integration-only with curl)?
