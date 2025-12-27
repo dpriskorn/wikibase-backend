@@ -10,3 +10,4 @@ schemas-event-primary
 .idea
 .env
 config.py
+/seaweedfs_data/

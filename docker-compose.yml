@@ -128,3 +128,16 @@ services:
       timeout: 3s
       retries: 10
       start_period: 10s
+
+  integration-tests:
+    build:
+      context: .
+      dockerfile: tests/Dockerfile
+    container_name: integration-tests
+    depends_on:
+      entity-api:
+        condition: service_healthy
+    environment:
+      ENTITY_API_URL: http://entity-api:8000
+    networks:
+      - default
