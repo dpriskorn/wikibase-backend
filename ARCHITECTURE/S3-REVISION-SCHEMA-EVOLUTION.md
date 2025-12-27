@@ -2,24 +2,30 @@
 
 ## Semantic versioning
 
-Schema versions follow **semantic versioning**: `MAJOR.MINOR`
+Schema versions follow **semantic versioning**: `MAJOR.MINOR.PATCH`
 
-- **MAJOR** (e.g., 1.0, 2.0): Incompatible, breaking changes
+- **MAJOR** (e.g., 1.0.0, 2.0.0): Incompatible, breaking changes
   - Removing fields
   - Changing field types
   - Renaming fields
   - Changing field semantics
   
-- **MINOR** (e.g., 1.1, 1.2): Backward-compatible additions
+- **MINOR** (e.g., 1.1.0, 1.2.0): Backward-compatible additions
   - Adding new optional fields
   - Adding new enum values
   - Adding new nested objects
 
+- **PATCH** (e.g., 1.0.1, 1.0.2): Backward-compatible bug fixes
+  - Clarifying descriptions
+  - Fixing constraint bugs
+  - Non-breaking documentation updates
+
 ### Examples
 
 ```
-"schema_version": "1.0"  → "schema_version": "1.1"  (add optional metadata)
-"schema_version": "1.1"  → "schema_version": "2.0"  (remove deprecated field)
+"schema_version": "1.0.0"  → "schema_version": "1.0.1"  (fix constraint bug)
+"schema_version": "1.0.1"  → "schema_version": "1.1.0"  (add optional metadata)
+"schema_version": "1.1.0"  → "schema_version": "2.0.0"  (remove deprecated field)
 ```
 
 ---
@@ -30,7 +36,7 @@ Each snapshot contains:
 
 ```json
 {
-  "schema_version": "2.1",
+  "schema_version": "2.1.0",
   "entity": { ... }
 }
 ```
