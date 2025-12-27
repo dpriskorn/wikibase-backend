@@ -8,6 +8,21 @@
 
 ## Phase 1: Project Structure & Configuration
 
+### Implementation Order
+**Decision:** Implement all infrastructure first, then API endpoints.
+**Rationale:** Get dependencies (S3, Vitess, ID gen, config, models) working before business logic.
+
+**Sequence:**
+1. `settings.py` - Configuration
+2. `ulid_flake.py` - ID generation
+3. `s3_client.py` - S3 client
+4. `vitess_client.py` - Vitess client
+5. `models/entity.py` - Pydantic models
+6. `main.py` - FastAPI app (skeleton)
+7. Implement write endpoint (POST /entity)
+8. Implement read endpoints (GET /entity, GET /entity/{id}/history, GET /entity/{id}/revision/{rev_id})
+9. Testing (unit + integration together)
+
 ```
 src/
 ├── services/
@@ -57,6 +72,7 @@ src/
   - `entity_revisions` → `insert_revision`, `get_history`
   - `entity_id_mapping` → `register_entity`, `resolve_id`
 - **Connection:** MySQL protocol to port 15309
+- **Decision:** Auto-create tables on connection with `IF NOT EXISTS` - no separate migration scripts needed
 
 ### 2.5 Pydantic Models
 - **File:** `src/services/shared/models/entity.py`
@@ -134,6 +150,10 @@ entity-api:
 
 ## Phase 5: Testing
 
+### Testing Strategy
+**Decision:** Implement unit and integration tests together as we build each component.
+**Rationale:** Test as we build - faster feedback loop, ensures code is testable from the start.
+
 ### 5.1 Unit Tests
 - ID generation (ulid-flake uniqueness)
 - JSON parsing validation
@@ -183,6 +203,9 @@ pymysql>=1.1.0
 5. **Single service** - Entity API handles all entity operations
 6. **Schema validation deferred** - Background service will validate later (post-MVP)
 7. **No threat model** - Per OPENCODE-INSTRUCTIONS.md: "everybody is playing nice"
+8. **Infrastructure-first implementation** - Build all dependencies before business logic
+9. **Auto-create Vitess tables** - No separate migration scripts, tables created on connection
+10. **Test as you build** - Unit + integration tests together, not separate phases
 
 ## Success Criteria
 
