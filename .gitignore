@@ -11,3 +11,6 @@ schemas-event-primary
 .env
 config.py
 /seaweedfs_data/
+seaweedfs
+alarik_data
+deprecated
