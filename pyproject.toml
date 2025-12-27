@@ -28,3 +28,10 @@ dev = [
     "requests (>=2.32.0,<3.0.0)",
     "httpie (>=3.2.4,<4.0.0)"
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

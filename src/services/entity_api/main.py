@@ -5,16 +5,14 @@ from typing import TYPE_CHECKING, Any, Dict
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from services.shared.config.settings import settings
-from infrastructure.ulid_flake import generate_ulid_flake
 from infrastructure.s3_client import S3Client
+from infrastructure.ulid_flake import generate_ulid_flake
 from infrastructure.vitess_client import VitessClient
+from services.shared.config.settings import settings
 from services.shared.models.entity import (
     EntityCreateRequest,
     EntityResponse,
-    RevisionMetadata,
-    RawRevisionErrorResponse,
-    RawRevisionErrorType
+    RevisionMetadata
 )
 
 if TYPE_CHECKING:
@@ -154,6 +152,7 @@ def get_entity_revision(entity_id: str, revision_id: int):
     return json.loads(snapshot.data)
 
 
+# noinspection PyUnresolvedReferences
 @app.get("/raw/{entity_id}/{revision_id}")
 def get_raw_revision(entity_id: str, revision_id: int):
     """
@@ -202,4 +201,4 @@ def get_raw_revision(entity_id: str, revision_id: int):
     snapshot = clients.s3.read_snapshot(entity_id, revision_id)
     
     # Return pure raw data - no wrapper, no transformation
-    return snapshot.data
+    return json.loads(snapshot.data)

@@ -75,9 +75,13 @@ services:
       dockerfile: tests/Dockerfile
     container_name: integration-tests
     depends_on:
-      - entity-api
+      entity-api:
+        condition: service_healthy
     environment:
       ENTITY_API_URL: http://entity-api:8000
+      TEST_LOG_LEVEL: "DEBUG"
+      TEST_LOG_HTTP_REQUESTS: "true"
+      TEST_SHOW_PROGRESS: "true"
     networks:
       - default
 
