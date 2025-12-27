@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     vitess_database: str = "wikibase"
     vitess_user: str = "root"
     vitess_password: str = ""
+    test_log_level: str = "INFO"
+    test_log_http_requests: bool = False
+    test_show_progress: bool = True
 
     class Config:
         env_file = ".env"
@@ -52,4 +55,10 @@ logger.debug(f"S3 Bucket: {settings.s3_bucket}")
 logger.debug(f"Vitess Host: {settings.vitess_host}")
 logger.debug(f"Vitess Port: {settings.vitess_port}")
 logger.debug(f"Vitess Database: {settings.vitess_database}")
+logger.debug(f"Test Log Level: {settings.test_log_level}")
+logger.debug(f"Test Log HTTP Requests: {settings.test_log_http_requests}")
+logger.debug(f"Test Show Progress: {settings.test_show_progress}")
 logger.debug("=== End Settings Debug ===")
+logger.debug(f"Test Log Level: {settings.test_log_level}")
+logger.debug(f"Test Log HTTP Requests: {settings.test_log_http_requests}")
+logger.debug(f"Test Show Progress: {settings.test_show_progress}")

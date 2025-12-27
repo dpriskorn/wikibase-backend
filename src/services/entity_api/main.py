@@ -9,7 +9,13 @@ from services.shared.config.settings import settings
 from infrastructure.ulid_flake import generate_ulid_flake
 from infrastructure.s3_client import S3Client
 from infrastructure.vitess_client import VitessClient
-from services.shared.models.entity import EntityCreateRequest, EntityResponse, RevisionMetadata
+from services.shared.models.entity import (
+    EntityCreateRequest,
+    EntityResponse,
+    RevisionMetadata,
+    RawRevisionErrorResponse,
+    RawRevisionErrorType
+)
 
 if TYPE_CHECKING:
     from infrastructure.s3_client import S3Config
@@ -146,3 +152,54 @@ def get_entity_revision(entity_id: str, revision_id: int):
     snapshot = clients.s3.read_snapshot(entity_id, revision_id)
     
     return json.loads(snapshot.data)
+
+
+@app.get("/raw/{entity_id}/{revision_id}")
+def get_raw_revision(entity_id: str, revision_id: int):
+    """
+    Returns raw S3 entity data for specific revision.
+
+    Pure S3 data - no wrapper, no transformation.
+
+    Returns 404 with typed error_type if:
+    - Entity doesn't exist in ID mapping (ENTITY_NOT_FOUND)
+    - Entity has no revisions (NO_REVISIONS)
+    - Requested revision doesn't exist (REVISION_NOT_FOUND)
+    """
+    clients = app.state.clients
+    
+    if clients.vitess is None:
+        raise HTTPException(status_code=503, detail="Vitess not initialized")
+    
+    # Check if entity exists
+    internal_id = clients.vitess.resolve_id(entity_id)
+    if internal_id is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Entity {entity_id} not found in ID mapping"
+        )
+    
+    # Check if revisions exist for entity
+    history = clients.vitess.get_history(internal_id)
+    if not history:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Entity {entity_id} has no revisions"
+        )
+    
+    # Check if requested revision exists
+    revision_ids = [r.revision_id for r in history]
+    if revision_id not in revision_ids:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Revision {revision_id} not found for entity {entity_id}. Available revisions: {revision_ids}"
+        )
+    
+    # Read raw S3 data
+    if clients.s3 is None:
+        raise HTTPException(status_code=503, detail="S3 not initialized")
+    
+    snapshot = clients.s3.read_snapshot(entity_id, revision_id)
+    
+    # Return pure raw data - no wrapper, no transformation
+    return snapshot.data
