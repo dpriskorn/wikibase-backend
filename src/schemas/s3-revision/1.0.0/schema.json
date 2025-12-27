@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wikibase.org/schemas/s3-revision/1.0.0.json",
+  "title": "S3 Revision Snapshot",
+  "description": "Immutable entity revision snapshot stored in S3",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity_id",
+    "revision_id",
+    "created_at",
+    "created_by",
+    "entity_type",
+    "entity"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Schema version (MAJOR.MINOR.PATCH)"
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^[A-Z]\\d+$",
+      "description": "External entity identifier (e.g., Q42, P123, L999)"
+    },
+    "revision_id": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonically increasing revision number"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when revision was created"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "User or system that created this revision"
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": ["item", "property", "lexeme"],
+      "description": "Type of entity"
+    },
+    "entity": {
+      "type": "object",
+      "description": "Complete entity content snapshot",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]\\d+$",
+          "description": "External entity identifier"
+        },
+        "type": {
+          "type": "string",
+          "description": "Entity type"
+        },
+        "labels": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z-]+$": {
+              "type": "object",
+              "required": ["language", "value"],
+              "properties": {
+                "language": { "type": "string" },
+                "value": { "type": "string" }
+              }
+            }
+          }
+        },
+        "descriptions": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z-]+$": {
+              "type": "object",
+              "required": ["language", "value"],
+              "properties": {
+                "language": { "type": "string" },
+                "value": { "type": "string" }
+              }
+            }
+          }
+        },
+        "aliases": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z-]+$": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["language", "value"],
+                "properties": {
+                  "language": { "type": "string" },
+                  "value": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "claims": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Z]\\d+$": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["mainsnak", "type", "id", "rank"],
+                "properties": {
+                  "mainsnak": { "type": "object" },
+                  "type": { "type": "string" },
+                  "id": { "type": "string" },
+                  "rank": { "type": "string", "enum": ["preferred", "normal", "deprecated"] },
+                  "qualifiers": { "type": "object" },
+                  "qualifiers-order": { "type": "array", "items": { "type": "string" } },
+                  "references": { "type": "array", "items": { "type": "object" } }
+                }
+              }
+            }
+          }
+        },
+        "sitelinks": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z-]+$": {
+              "type": "object",
+              "required": ["site", "title"],
+              "properties": {
+                "site": { "type": "string" },
+                "title": { "type": "string" },
+                "badges": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
