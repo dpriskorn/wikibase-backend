@@ -11,3 +11,4 @@
 - No threat model, everybody is playing nice
 - Start with 1 shard until we get MVP working
 - Ask the user before editing
+- Don't run docker commands
