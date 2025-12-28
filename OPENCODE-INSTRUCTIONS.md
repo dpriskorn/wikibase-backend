@@ -16,3 +16,4 @@
 - All api endpoints return JSON
 - Store full S3 revision schema with metadata, entity data nested under "entity" field
 - /raw/ endpoint returns full revision schema, /entity/ endpoint extracts nested entity
+- after each edit lets use vulture to check for dead code and fix it

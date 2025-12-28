@@ -27,7 +27,8 @@ dev = [
     "pytest (>=9.0.2,<10.0.0)",
     "black (>=25.12.0,<26.0.0)",
     "requests (>=2.32.0,<3.0.0)",
-    "httpie (>=3.2.4,<4.0.0)"
+    "httpie (>=3.2.4,<4.0.0)",
+    "vulture (>=2.14,<3.0)"
 ]
 
 [tool.pytest.ini_options]
@@ -36,3 +37,6 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"
+
+[tool.vulture]
+ignore_names = ["arbitrary_types_allowed"]
