@@ -26,7 +26,12 @@ Everything else in the system derives from this rule.
 - **Revision**: Complete, immutable snapshot of an entity
 - **Head Pointer**: Current revision pointer managed via compare-and-swap
 
-## Core Documentation
+## Getting Started
+
+Start with [ARCHITECTURE.md](./ARCHITECTURE/ARCHITECTURE.md) for the complete architecture overview.
+
+## Details
+### Core
 
 | Document                                                                          | Description                            |
 |-----------------------------------------------------------------------------------|----------------------------------------|
@@ -42,7 +47,7 @@ Everything else in the system derives from this rule.
 | [S3-ENTITY-DELETION.md](./ARCHITECTURE/S3-ENTITY-DELETION.md)                     | Soft and hard delete semantics         |
 | [BULK-OPERATIONS.md](./ARCHITECTURE/BULK-OPERATIONS.md)                           | Import and export operations           |
 
-## Validation & Data Quality
+### Validation & Data Quality
 
 | Document                                                                          | Description                                  |
 |-----------------------------------------------------------------------------------|----------------------------------------------|
@@ -50,7 +55,7 @@ Everything else in the system derives from this rule.
 | [POST-PROCESSING-VALIDATION.md](./ARCHITECTURE/POST-PROCESSING-VALIDATION.md)     | Background validation service implementation |
 | [S3-REVISION-SCHEMA-CHANGELOG.md](./ARCHITECTURE/S3-REVISION-SCHEMA-CHANGELOG.md) | S3 JSONSchema version history                |
 
-## RDF & Change Detection
+### RDF & Change Detection
 
 | Document                                                                                              | Description                          |
 |-------------------------------------------------------------------------------------------------------|--------------------------------------|
@@ -61,13 +66,13 @@ Everything else in the system derives from this rule.
 | [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./ARCHITECTURE/MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) | Change detection service             |
 | [RDF-DIFF-STRATEGY.md](./ARCHITECTURE/RDF-DIFF-STRATEGY.md)                                           | RDF diff computation strategy        |
 
-## Additional Resources
+### Additional Resources
 
 - [WIKIDATA-MIGRATION-STRATEGY.md](./WIKIDATA-MIGRATION-STRATEGY.md) - Migration from Wikidata
 - [SCALING-PROPERTIES.md](./ARCHITECTURE/SCALING-PROPERTIES.md) - System scaling characteristics and bottlenecks
 - [EXISTING-COMPONENTS/](./EXISTING-COMPONENTS/) - Documentation of existing MediaWiki/Wikidata components
 
-## Design Philosophy
+### Design Philosophy
 
 - **Immutability**: All content is stored as immutable snapshots
 - **Eventual consistency**: With reconciliation guarantees and no data loss
@@ -75,6 +80,5 @@ Everything else in the system derives from this rule.
 - **Auditability**: Perfect revision history by design
 - **Decoupling**: MediaWiki + Wikibase becomes a stateless API client
 
-## Getting Started
-
-Start with [ARCHITECTURE.md](./ARCHITECTURE/ARCHITECTURE.md) for the complete architecture overview.
+## External links
+* https://www.mediawiki.org/wiki/User:So9q/Scaling_issues Implemenatation history and on-wiki details
