@@ -14,3 +14,5 @@ config.py
 seaweedfs
 alarik_data
 deprecated
+wikidata-query-rdf
+mediawiki-extensions-Wikibase

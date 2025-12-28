@@ -5,8 +5,9 @@ from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from rapidhash import rapidhash
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
+from services.entity_api.rdf.serializer import serialize_entity_to_turtle
 
 from infrastructure.s3_client import S3Client
 from infrastructure.ulid_flake import generate_ulid_flake
@@ -259,6 +260,29 @@ def get_entity_history(entity_id: str):
     history = clients.vitess.get_history(internal_id)
     
     return [RevisionMetadata(revision_id=record.revision_id, created_at=record.created_at) for record in history]
+
+
+# noinspection PyUnresolvedReferences
+@app.get("/wiki/Special:EntityData/{entity_id}.ttl")
+async def get_entity_data_turtle(entity_id: str):
+    clients = app.state.clients
+
+    if clients.vitess is None:
+        raise HTTPException(status_code=503, detail="Vitess not initialized")
+
+    internal_id = clients.vitess.resolve_id(entity_id)
+    if internal_id is None:
+        raise HTTPException(status_code=404, detail=f"Entity {entity_id} not found")
+
+    head_revision_id = clients.vitess.get_head(internal_id)
+    if head_revision_id is None:
+        raise HTTPException(status_code=404, detail="Entity has no revisions")
+
+    revision = clients.s3.read_revision(entity_id, head_revision_id)
+    entity_data = revision.data["entity"]
+
+    turtle = serialize_entity_to_turtle(entity_data, entity_id)
+    return Response(content=turtle, media_type="text/turtle")
 
 
 # noinspection PyUnresolvedReferences

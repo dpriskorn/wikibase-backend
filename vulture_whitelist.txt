@@ -31,6 +31,7 @@ create_entity
 get_entity
 get_entity_history
 get_entity_revision
+get_entity_data_turtle
 get_raw_revision
 list_entities
 delete_entity
