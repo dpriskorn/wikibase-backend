@@ -34,14 +34,3 @@ class RevisionUpdateRequest(BaseModel):
     entity_id: str
     revision_id: int
     publication_state: str
-
-
-class FullRevisionResponse(BaseModel):
-    """Full S3 revision schema with metadata"""
-    schema_version: str = "1.0.0"
-    entity_id: str
-    revision_id: int
-    created_at: str
-    created_by: str = "entity-api"
-    entity_type: str
-    entity: Dict[str, Any]

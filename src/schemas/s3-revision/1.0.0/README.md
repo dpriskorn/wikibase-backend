@@ -1,6 +1,6 @@
 # S3 Revision Schema v1.0.0
 
-Initial schema definition for immutable entity revision snapshots.
+Initial schema definition for immutable entity revision snapshots with rapidhash deduplication.
 
 ## Changes from previous version
 
@@ -15,7 +15,6 @@ See `schema.json` for complete definition.
 ```json
 {
   "schema_version": "1.0.0",
-  "entity_id": "Q42",
   "revision_id": 1,
   "created_at": "2025-01-15T10:30:00Z",
   "created_by": "user:ExampleUser",

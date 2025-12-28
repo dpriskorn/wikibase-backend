@@ -6,7 +6,6 @@
   "type": "object",
   "required": [
     "schema_version",
-    "entity_id",
     "revision_id",
     "created_at",
     "created_by",
@@ -18,11 +17,6 @@
       "type": "string",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
       "description": "Schema version (MAJOR.MINOR.PATCH)"
-    },
-    "entity_id": {
-      "type": "string",
-      "pattern": "^[A-Z]\\d+$",
-      "description": "External entity identifier (e.g., Q42, P123, L999)"
     },
     "revision_id": {
       "type": "integer",

@@ -30,7 +30,6 @@ def test_raw_endpoint_returns_existing_revision(api_client: requests.Session, ba
     # Verify full revision schema
     result = response.json()
     assert result["schema_version"] == "1.0.0"
-    assert result["entity_id"] == "Q55555"
     assert result["revision_id"] == 1
     assert "created_at" in result
     assert result["created_by"] == "entity-api"

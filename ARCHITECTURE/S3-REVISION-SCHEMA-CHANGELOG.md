@@ -6,41 +6,55 @@ This document tracks all S3 entity JSON schema version changes for Wikibase immu
 
 | Version | Date | Type | Status |
 |---------|------|------|--------|
-| 1.0 | TBD | Major | Draft |
+| 1.0 | 2025-12-28 | Major | Current |
 
 ---
 
 ## 1.0 - Major
 
-**Status:** Draft
+**Status:** Current
 
 ### Changes
 
 - Initial schema definition for entity JSON snapshots stored in S3
+- Rapidhash integer for deduplication and integrity verification
 
 ### Schema
 
 ```json
 {
-  "schema_version": "1.0",
+  "schema_version": "1.0.0",
+  "revision_id": 1,
+  "created_at": "2025-01-15T10:30:00Z",
+  "created_by": "entity-api",
+  "entity_type": "item",
+  "content_hash": 1234567890123456789,
   "entity": {
-    "id": "string",
-    "type": "item|property|lexeme",
+    "id": "Q42",
+    "type": "item",
     "labels": {},
     "descriptions": {},
     "aliases": {},
     "claims": {},
     "sitelinks": {}
-  },
-  "metadata": {
-    "revision_id": "integer",
-    "created_at": "ISO8601",
-    "author_id": "string",
-    "comment": "string",
-    "content_hash": "string"
   }
 }
 ```
+
+### Metadata Fields
+
+- `schema_version`: Schema version identifier (MAJOR.MINOR.PATCH)
+- `revision_id`: Monotonic integer per entity
+- `created_at`: ISO-8601 timestamp
+- `created_by`: User or system identifier
+- `entity_type`: Entity type (item/property/lexeme)
+- `content_hash`: Rapidhash integer for deduplication
+
+### Data Integrity
+
+- Entity ID validated from S3 path and entity.id field
+- Content hash detects duplicate submissions (idempotency)
+- Snapshots are immutable - no modifications allowed
 
 ### Impact
 
@@ -51,8 +65,6 @@ This document tracks all S3 entity JSON schema version changes for Wikibase immu
 ### Notes
 
 - Establishes canonical JSON format for immutable S3 snapshots
-- All entity fields required unless documented as optional
-- Deterministic ordering enforced for hash stability
+- Entity ID stored in S3 path and entity.id, not metadata
 - `revision_id` must be monotonic per entity
-- `content_hash` provides integrity verification
-- Snapshots are immutable - no modifications allowed
+- `content_hash` provides integrity verification and idempotency

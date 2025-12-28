@@ -23,18 +23,17 @@ The `POST /entity` endpoint previously accepted identical POST requests without 
 
 **File: `src/schemas/s3-revision/1.0.0/schema.json`** (implicit update)
 
-Added optional `content_hash` field to revision schema:
+Added `content_hash` field to revision schema (integer for deduplication):
 
 ```json
 {
   "schema_version": "1.0.0",
-  "entity_id": "Q42",
   "revision_id": 1,
   "created_at": "2025-12-28T00:00:00Z",
   "created_by": "entity-api",
   "entity_type": "item",
   "entity": {...},
-  "content_hash": "abc123def456..."  // New field
+  "content_hash": 1234567890123456789
 }
 ```
 
@@ -51,7 +50,7 @@ Added optional `content_hash` field to revision schema:
 Modified `POST /entity` endpoint to implement content hash deduplication:
 
 **Behavior:**
-- Calculates SHA-256 hash of entity data (sorted keys for consistent hashes)
+- Calculates rapidhash of entity data (sorted keys for consistent hashes)
 - Compares with head revision's content_hash (if exists)
 - If hashes match: Returns head revision idempotently (no new revision)
 - If hashes differ: Creates new revision with hash stored
@@ -99,13 +98,12 @@ def create_entity(request: EntityCreateRequest):
     # Content changed, create new revision
     revision_data = {
         "schema_version": settings.s3_revision_schema_version,
-        "entity_id": external_id,
         "revision_id": new_revision_id,
         "created_at": datetime.utcnow().isoformat() + "Z",
         "created_by": "entity-api",
         "entity_type": request.data.get("type", "item"),
         "entity": request.data,
-        "content_hash": content_hash  // Add hash to schema
+        "content_hash": content_hash
     }
     
     write_revision(external_id, new_revision_id, revision_data)
@@ -115,10 +113,10 @@ def create_entity(request: EntityCreateRequest):
 ### Algorithm Details
 
 **Hash Calculation:**
-- Algorithm: SHA-256
+- Algorithm: rapidhash
 - Input: JSON string of entity data with sorted keys
 - Encoding: UTF-8
-- Output: 64-character hexadecimal string
+- Output: Integer
 
 **Example:**
 ```python
@@ -131,9 +129,9 @@ entity_data = {
 # JSON with sorted keys
 entity_json = '{"id":"Q42","labels":{"en":{"language":"en","value":"Douglas Adams"}},"type":"item"}'
 
-# SHA-256 hash
-content_hash = hashlib.sha256(entity_json.encode()).hexdigest()
-# Returns: "a5b4c... (64 chars)"
+# rapidhash integer
+content_hash = rapidhash(entity_json.encode())
+# Returns: 1234567890123456789
 ```
 
 ### Benefits
@@ -238,7 +236,7 @@ POST entity with id="Q42", label="B"
 **Con:**
 - ❌ Requires additional S3 GET to compare hashes
 - ❌ Doesn't prevent concurrent modifications of different content (still race condition)
-- ❌ Hash collision theoretically possible (extremely unlikely with SHA-256)
+- ❌ Hash collision theoretically possible (extremely unlikely with rapidhash)
 
 ### Future Enhancements
 
@@ -246,7 +244,7 @@ Potential improvements not included in this implementation:
 
 1. **Database Content Hash Index** - Store hash in DB for faster lookup (no S3 GET)
 2. **Client-Side Idempotency Keys** - Support `Idempotency-Key` header for explicit idempotency
-3. **Hash Collision Detection** - Alert if different content produces same hash (SHA-256 collision)
+3. **Hash Collision Detection** - Alert if different content produces same hash (rapidhash collision)
 4. **Deduplication Reports** - Endpoint to show how many duplicates prevented
 5. **Background Cleanup** - Job to identify and optionally delete duplicate revisions (if any slipped through)
 

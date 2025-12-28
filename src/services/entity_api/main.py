@@ -99,7 +99,6 @@ def create_entity(request: EntityCreateRequest):
     # Construct full revision schema with content hash
     revision_data = {
         "schema_version": settings.s3_revision_schema_version,
-        "entity_id": external_id,
         "revision_id": new_revision_id,
         "created_at": datetime.utcnow().isoformat() + "Z",
         "created_by": "entity-api",

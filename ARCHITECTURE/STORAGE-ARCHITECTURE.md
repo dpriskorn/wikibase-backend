@@ -28,11 +28,9 @@ Consequences:
 Everything else derives from this rule.
 
 
-Snapshots include S3 tags:
+Snapshots include S3 metadata:
 - `publication_state = pending | published`
-- `entity_id`
 - `revision_id`
-- `import_session_id` (optional)
 
 S3 never stores:
 - Diffs
