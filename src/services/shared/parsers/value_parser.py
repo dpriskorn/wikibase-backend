@@ -42,9 +42,9 @@ def parse_value(snak_json: dict[str, Any]):
 
     datavalue = snak_json.get(JsonField.DATAVALUE.value, {})
     datatype = snak_json.get(JsonField.DATATYPE.value)
-    value_type = datavalue.get(JsonField.VALUE.value, datatype)
+    datavalue_type = datavalue.get("type", datatype)
 
-    parser = PARSERS.get(str(datatype)) or PARSERS.get(str(value_type))
+    parser = PARSERS.get(str(datatype)) or PARSERS.get(str(datavalue_type))
     if not parser:
-        raise ValueError(f"Unsupported value type: {value_type}, datatype: {datatype}")
+        raise ValueError(f"Unsupported value type: {datavalue_type}, datatype: {datatype}")
     return parser(datavalue)
