@@ -18,7 +18,9 @@ class Value(BaseModel):
         "musical_notation",
         "url",
         "math",
-        "entity_schema"
+        "entity_schema",
+        "novalue",
+        "somevalue"
     ]
     value: Any
     datatype_uri: str

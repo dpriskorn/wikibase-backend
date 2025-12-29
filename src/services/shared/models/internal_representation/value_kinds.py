@@ -16,3 +16,5 @@ class ValueKind(str, Enum):
     URL = "url"
     MATH = "math"
     ENTITY_SCHEMA = "entity_schema"
+    NOVALUE = "novalue"
+    SOMEVALUE = "somevalue"

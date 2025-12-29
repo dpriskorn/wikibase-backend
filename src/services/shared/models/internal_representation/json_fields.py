@@ -13,7 +13,7 @@ class JsonField(str, Enum):
     QUALIFIERS = "qualifiers"
     REFERENCES = "references"
     RANK = "rank"
-    STATEMENT_ID = "statement_id"
+    STATEMENT_ID = "id"
     SNAKTYPE = "snaktype"
     PROPERTY = "property"
     DATAVALUE = "datavalue"
@@ -39,3 +39,4 @@ class JsonField(str, Enum):
     SNAKS = "snaks"
     ENTITY_TYPE = "entity-type"
     NUMERIC_ID = "numeric-id"
+    ENTITIES = "entities"

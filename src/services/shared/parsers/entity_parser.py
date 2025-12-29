@@ -1,9 +1,14 @@
+import logging
+
 from typing import Any
 
 from services.shared.parsers.statement_parser import parse_statement
 from services.shared.models.internal_representation.entity import Entity
 from services.shared.models.internal_representation.entity_types import EntityKind
 from services.shared.models.internal_representation.json_fields import JsonField
+
+
+logger = logging.getLogger(__name__)
 
 
 def parse_entity(entity_json: dict[str, Any]) -> Entity:
@@ -51,6 +56,8 @@ def _parse_statements(claims_json: dict[str, list[dict[str, Any]]]) -> list:
             try:
                 statement = parse_statement(claim_json)
                 statements.append(statement)
-            except ValueError:
+            except ValueError as e:
+                logger.warning(f"Failed to parse statement for property {property_id}: {e}")
                 continue
+
     return statements

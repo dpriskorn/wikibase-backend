@@ -14,6 +14,8 @@ from .values.musical_notation_value_parser import parse_musical_notation_value
 from .values.url_value_parser import parse_url_value
 from .values.math_value_parser import parse_math_value
 from .values.entity_schema_value_parser import parse_entity_schema_value
+from .values.novalue_value_parser import parse_novalue_value
+from .values.somevalue_value_parser import parse_somevalue_value
 from services.shared.models.internal_representation.datatypes import Datatype
 from services.shared.models.internal_representation.json_fields import JsonField
 
@@ -37,8 +39,16 @@ PARSERS = {
 
 
 def parse_value(snak_json: dict[str, Any]):
-    if snak_json.get(JsonField.SNAKTYPE.value) != JsonField.VALUE.value:
-        raise ValueError(f"Only value snaks are supported, got snaktype: {snak_json.get(JsonField.SNAKTYPE.value)}")
+    snaktype = snak_json.get(JsonField.SNAKTYPE.value)
+    
+    if snaktype == "novalue":
+        return parse_novalue_value()
+    
+    if snaktype == "somevalue":
+        return parse_somevalue_value()
+    
+    if snaktype != JsonField.VALUE.value:
+        raise ValueError(f"Only value snaks are supported, got snaktype: {snaktype}")
 
     datavalue = snak_json.get(JsonField.DATAVALUE.value, {})
     datatype = snak_json.get(JsonField.DATATYPE.value)

@@ -1,10 +1,10 @@
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict
 from typing_extensions import Literal
 from .base import Value
 
 
 class EntityValue(Value):
-    kind: Literal["entity"] = Field(default="entity", frozen=True)
+    kind: Literal["entity"] = "entity"
     value: str
     datatype_uri: str = "http://wikiba.se/ontology#WikibaseItem"
 
