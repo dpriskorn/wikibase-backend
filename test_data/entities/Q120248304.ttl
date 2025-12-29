@@ -1,0 +1,702 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ontolex: <http://www.w3.org/ns/lemon/ontolex#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix wikibase: <http://wikiba.se/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix data: <https://www.wikidata.org/wiki/Special:EntityData/> .
+@prefix wds: <http://www.wikidata.org/entity/statement/> .
+@prefix wdref: <http://www.wikidata.org/reference/> .
+@prefix wdv: <http://www.wikidata.org/value/> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix wdtn: <http://www.wikidata.org/prop/direct-normalized/> .
+@prefix p: <http://www.wikidata.org/prop/> .
+@prefix ps: <http://www.wikidata.org/prop/statement/> .
+@prefix psv: <http://www.wikidata.org/prop/statement/value/> .
+@prefix psn: <http://www.wikidata.org/prop/statement/value-normalized/> .
+@prefix pq: <http://www.wikidata.org/prop/qualifier/> .
+@prefix pqv: <http://www.wikidata.org/prop/qualifier/value/> .
+@prefix pqn: <http://www.wikidata.org/prop/qualifier/value-normalized/> .
+@prefix pr: <http://www.wikidata.org/prop/reference/> .
+@prefix prv: <http://www.wikidata.org/prop/reference/value/> .
+@prefix prn: <http://www.wikidata.org/prop/reference/value-normalized/> .
+@prefix wdno: <http://www.wikidata.org/prop/novalue/> .
+
+data:Q120248304 a schema:Dataset ;
+	schema:about wd:Q120248304 ;
+	cc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+	schema:softwareVersion "1.0.0" ;
+	schema:version "1954232723"^^xsd:integer ;
+	schema:dateModified "2023-08-15T09:34:22Z"^^xsd:dateTime ;
+	wikibase:statements "9"^^xsd:integer ;
+	wikibase:sitelinks "0"^^xsd:integer ;
+	wikibase:identifiers "1"^^xsd:integer .
+
+wd:Q120248304 a wikibase:Item ;
+	wdt:P17 wd:Q142 ;
+	wdt:P11840 "I621930023" ;
+	wdt:P131 wd:Q6454 ;
+	wdt:P6375 "21 av antoine de saint-exupery 62100 Calais"@fr ;
+	wdt:P625 "Point(1.88108 50.94636)"^^geo:wktLiteral ;
+	wdt:P31 wd:Q1076486 ;
+	wdt:P127 wd:Q115918159 ;
+	wdt:P137 wd:Q115918159 ;
+	wdt:P912 wd:Q14092 ;
+	p:P17 wds:Q120248304-4DFA2BE2-34CB-442E-B364-D01FE69A2FB5 .
+
+wds:Q120248304-4DFA2BE2-34CB-442E-B364-D01FE69A2FB5 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P17 wd:Q142 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P11840 wds:Q120248304-B5A2AC10-7CCC-4445-9828-B55C29701164 .
+
+wds:Q120248304-B5A2AC10-7CCC-4445-9828-B55C29701164 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P11840 "I621930023" ;
+	pq:P1810 "Salle Cosec Saint Exupery" ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P131 wds:Q120248304-084F8F1C-059E-4497-A20F-E252BE643A3E .
+
+wds:Q120248304-084F8F1C-059E-4497-A20F-E252BE643A3E a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P131 wd:Q6454 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P6375 wds:Q120248304-6A92C8D4-07A9-4753-A0CF-74406BB8F0AB .
+
+wds:Q120248304-6A92C8D4-07A9-4753-A0CF-74406BB8F0AB a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P6375 "21 av antoine de saint-exupery 62100 Calais"@fr ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P625 wds:Q120248304-AAD044A2-1D4C-4EF6-91E1-B23E5E373233 .
+
+wds:Q120248304-AAD044A2-1D4C-4EF6-91E1-B23E5E373233 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P625 "Point(1.88108 50.94636)"^^geo:wktLiteral ;
+	psv:P625 wdv:9f0355cb43b5be5caf0570c31d4fb707 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P31 wds:Q120248304-85713A16-90E7-46C3-9592-3680A8E3A818 .
+
+wds:Q120248304-85713A16-90E7-46C3-9592-3680A8E3A818 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P31 wd:Q1076486 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P127 wds:Q120248304-C15D6364-903E-45C7-B6A3-642C693CF80D .
+
+wds:Q120248304-C15D6364-903E-45C7-B6A3-642C693CF80D a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P127 wd:Q115918159 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P137 wds:Q120248304-3E325A79-C1A8-455D-8A85-FF80C875952B .
+
+wds:Q120248304-3E325A79-C1A8-455D-8A85-FF80C875952B a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P137 wd:Q115918159 ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 p:P912 wds:Q120248304-5116F999-FD55-4A96-AA4F-D6B41D7A12D2 .
+
+wds:Q120248304-5116F999-FD55-4A96-AA4F-D6B41D7A12D2 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P912 wd:Q14092 ;
+	pq:P11840 "E001I621930023" ;
+	pq:P2561 "salle multisports"@fr ;
+	prov:wasDerivedFrom wdref:ba8e2620a184969d3dfc41448810665dc67de68e .
+
+wd:Q120248304 rdfs:label "salle COSEC Saint-Exupéry"@fr ;
+	skos:prefLabel "salle COSEC Saint-Exupéry"@fr ;
+	schema:name "salle COSEC Saint-Exupéry"@fr .
+
+wd:Q142 a wikibase:Item ;
+	rdfs:label "France"@en ;
+	skos:prefLabel "France"@en ;
+	schema:name "France"@en ;
+	schema:description "country in Western Europe and other continents (through its overseas territories in America, Africa and Oceania)"@en .
+
+wd:P17 a wikibase:Property ;
+	rdfs:label "country"@en ;
+	skos:prefLabel "country"@en ;
+	schema:name "country"@en ;
+	schema:description "sovereign state that this item is in (not to be used for human beings)"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P17 ;
+	wikibase:claim p:P17 ;
+	wikibase:statementProperty ps:P17 ;
+	wikibase:statementValue psv:P17 ;
+	wikibase:qualifier pq:P17 ;
+	wikibase:qualifierValue pqv:P17 ;
+	wikibase:reference pr:P17 ;
+	wikibase:referenceValue prv:P17 ;
+	wikibase:novalue wdno:P17 .
+
+p:P17 a owl:ObjectProperty .
+
+psv:P17 a owl:ObjectProperty .
+
+pqv:P17 a owl:ObjectProperty .
+
+prv:P17 a owl:ObjectProperty .
+
+wdt:P17 a owl:ObjectProperty .
+
+ps:P17 a owl:ObjectProperty .
+
+pq:P17 a owl:ObjectProperty .
+
+pr:P17 a owl:ObjectProperty .
+
+wdno:P17 a owl:Class ;
+	owl:complementOf _:67baa1dbbc8d4f6b0b3d4a74a3ee0290 .
+
+_:67baa1dbbc8d4f6b0b3d4a74a3ee0290 a owl:Restriction ;
+	owl:onProperty wdt:P17 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P11840 a wikibase:Property ;
+	rdfs:label "French sports venue number"@en ;
+	skos:prefLabel "French sports venue number"@en ;
+	schema:name "French sports venue number"@en ;
+	schema:description "identifier for a sports venue assigned by the French ministry of sports"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#ExternalId> ;
+	wikibase:directClaim wdt:P11840 ;
+	wikibase:claim p:P11840 ;
+	wikibase:statementProperty ps:P11840 ;
+	wikibase:statementValue psv:P11840 ;
+	wikibase:qualifier pq:P11840 ;
+	wikibase:qualifierValue pqv:P11840 ;
+	wikibase:reference pr:P11840 ;
+	wikibase:referenceValue prv:P11840 ;
+	wikibase:novalue wdno:P11840 ;
+	wikibase:directClaimNormalized wdtn:P11840 ;
+	wikibase:statementValueNormalized psn:P11840 ;
+	wikibase:qualifierValueNormalized pqn:P11840 ;
+	wikibase:referenceValueNormalized prn:P11840 .
+
+p:P11840 a owl:ObjectProperty .
+
+psv:P11840 a owl:ObjectProperty .
+
+pqv:P11840 a owl:ObjectProperty .
+
+prv:P11840 a owl:ObjectProperty .
+
+wdt:P11840 a owl:DatatypeProperty .
+
+ps:P11840 a owl:DatatypeProperty .
+
+pq:P11840 a owl:DatatypeProperty .
+
+pr:P11840 a owl:DatatypeProperty .
+
+psn:P11840 a owl:ObjectProperty .
+
+pqn:P11840 a owl:ObjectProperty .
+
+prn:P11840 a owl:ObjectProperty .
+
+wdtn:P11840 a owl:ObjectProperty .
+
+wdno:P11840 a owl:Class ;
+	owl:complementOf _:32685aefc18fea363b8d28b5214a9311 .
+
+_:32685aefc18fea363b8d28b5214a9311 a owl:Restriction ;
+	owl:onProperty wdt:P11840 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q6454 a wikibase:Item ;
+	rdfs:label "Calais"@en ;
+	skos:prefLabel "Calais"@en ;
+	schema:name "Calais"@en ;
+	schema:description "commune in Pas-de-Calais, France"@en .
+
+wd:P131 a wikibase:Property ;
+	rdfs:label "located in the administrative territorial entity"@en ;
+	skos:prefLabel "located in the administrative territorial entity"@en ;
+	schema:name "located in the administrative territorial entity"@en ;
+	schema:description "the item is located on the territory of the following administrative entity. Use P276 for specifying locations that are non-administrative places and for items about events. Use P1382 if the item falls only partially into the administrative entity"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P131 ;
+	wikibase:claim p:P131 ;
+	wikibase:statementProperty ps:P131 ;
+	wikibase:statementValue psv:P131 ;
+	wikibase:qualifier pq:P131 ;
+	wikibase:qualifierValue pqv:P131 ;
+	wikibase:reference pr:P131 ;
+	wikibase:referenceValue prv:P131 ;
+	wikibase:novalue wdno:P131 .
+
+p:P131 a owl:ObjectProperty .
+
+psv:P131 a owl:ObjectProperty .
+
+pqv:P131 a owl:ObjectProperty .
+
+prv:P131 a owl:ObjectProperty .
+
+wdt:P131 a owl:ObjectProperty .
+
+ps:P131 a owl:ObjectProperty .
+
+pq:P131 a owl:ObjectProperty .
+
+pr:P131 a owl:ObjectProperty .
+
+wdno:P131 a owl:Class ;
+	owl:complementOf _:1d2a8f0c3b3451be4d4228f97153e08d .
+
+_:1d2a8f0c3b3451be4d4228f97153e08d a owl:Restriction ;
+	owl:onProperty wdt:P131 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P6375 a wikibase:Property ;
+	rdfs:label "street address"@en ;
+	skos:prefLabel "street address"@en ;
+	schema:name "street address"@en ;
+	schema:description "full street address where subject is located. Include building number, city/locality, post code, but not country; use also P669 if the street has its own separate item"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#Monolingualtext> ;
+	wikibase:directClaim wdt:P6375 ;
+	wikibase:claim p:P6375 ;
+	wikibase:statementProperty ps:P6375 ;
+	wikibase:statementValue psv:P6375 ;
+	wikibase:qualifier pq:P6375 ;
+	wikibase:qualifierValue pqv:P6375 ;
+	wikibase:reference pr:P6375 ;
+	wikibase:referenceValue prv:P6375 ;
+	wikibase:novalue wdno:P6375 .
+
+p:P6375 a owl:ObjectProperty .
+
+psv:P6375 a owl:ObjectProperty .
+
+pqv:P6375 a owl:ObjectProperty .
+
+prv:P6375 a owl:ObjectProperty .
+
+wdt:P6375 a owl:DatatypeProperty .
+
+ps:P6375 a owl:DatatypeProperty .
+
+pq:P6375 a owl:DatatypeProperty .
+
+pr:P6375 a owl:DatatypeProperty .
+
+wdno:P6375 a owl:Class ;
+	owl:complementOf _:a98ab2116a68ecee7ed756ce61125936 .
+
+_:a98ab2116a68ecee7ed756ce61125936 a owl:Restriction ;
+	owl:onProperty wdt:P6375 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P625 a wikibase:Property ;
+	rdfs:label "coordinate location"@en ;
+	skos:prefLabel "coordinate location"@en ;
+	schema:name "coordinate location"@en ;
+	schema:description "geocoordinates of the subject. For Earth, please note that only the WGS84 geodetic datum is currently supported"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#GlobeCoordinate> ;
+	wikibase:directClaim wdt:P625 ;
+	wikibase:claim p:P625 ;
+	wikibase:statementProperty ps:P625 ;
+	wikibase:statementValue psv:P625 ;
+	wikibase:qualifier pq:P625 ;
+	wikibase:qualifierValue pqv:P625 ;
+	wikibase:reference pr:P625 ;
+	wikibase:referenceValue prv:P625 ;
+	wikibase:novalue wdno:P625 .
+
+p:P625 a owl:ObjectProperty .
+
+psv:P625 a owl:ObjectProperty .
+
+pqv:P625 a owl:ObjectProperty .
+
+prv:P625 a owl:ObjectProperty .
+
+wdt:P625 a owl:DatatypeProperty .
+
+ps:P625 a owl:DatatypeProperty .
+
+pq:P625 a owl:DatatypeProperty .
+
+pr:P625 a owl:DatatypeProperty .
+
+wdno:P625 a owl:Class ;
+	owl:complementOf _:098a7705e988116e3a454eda03aef6ad .
+
+_:098a7705e988116e3a454eda03aef6ad a owl:Restriction ;
+	owl:onProperty wdt:P625 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q1076486 a wikibase:Item ;
+	rdfs:label "sports venue"@en ;
+	skos:prefLabel "sports venue"@en ;
+	schema:name "sports venue"@en ;
+	schema:description "facility (building, structure, or place) dedicated to sports"@en .
+
+wd:P31 a wikibase:Property ;
+	rdfs:label "instance of"@en ;
+	skos:prefLabel "instance of"@en ;
+	schema:name "instance of"@en ;
+	schema:description "type to which this subject corresponds/belongs. Different from P279 (subclass of); for example: K2 is an instance of mountain; volcano is a subclass of mountain"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P31 ;
+	wikibase:claim p:P31 ;
+	wikibase:statementProperty ps:P31 ;
+	wikibase:statementValue psv:P31 ;
+	wikibase:qualifier pq:P31 ;
+	wikibase:qualifierValue pqv:P31 ;
+	wikibase:reference pr:P31 ;
+	wikibase:referenceValue prv:P31 ;
+	wikibase:novalue wdno:P31 .
+
+p:P31 a owl:ObjectProperty .
+
+psv:P31 a owl:ObjectProperty .
+
+pqv:P31 a owl:ObjectProperty .
+
+prv:P31 a owl:ObjectProperty .
+
+wdt:P31 a owl:ObjectProperty .
+
+ps:P31 a owl:ObjectProperty .
+
+pq:P31 a owl:ObjectProperty .
+
+pr:P31 a owl:ObjectProperty .
+
+wdno:P31 a owl:Class ;
+	owl:complementOf _:0b8bd71b926a65ca3fa72e5d9103e4d6 .
+
+_:0b8bd71b926a65ca3fa72e5d9103e4d6 a owl:Restriction ;
+	owl:onProperty wdt:P31 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q115918159 a wikibase:Item ;
+	rdfs:label "municipality of Calais"@en ;
+	skos:prefLabel "municipality of Calais"@en ;
+	schema:name "municipality of Calais"@en ;
+	schema:description "municipal government of Calais, France"@en .
+
+wd:P127 a wikibase:Property ;
+	rdfs:label "owned by"@en ;
+	skos:prefLabel "owned by"@en ;
+	schema:name "owned by"@en ;
+	schema:description "owner of the subject"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P127 ;
+	wikibase:claim p:P127 ;
+	wikibase:statementProperty ps:P127 ;
+	wikibase:statementValue psv:P127 ;
+	wikibase:qualifier pq:P127 ;
+	wikibase:qualifierValue pqv:P127 ;
+	wikibase:reference pr:P127 ;
+	wikibase:referenceValue prv:P127 ;
+	wikibase:novalue wdno:P127 .
+
+p:P127 a owl:ObjectProperty .
+
+psv:P127 a owl:ObjectProperty .
+
+pqv:P127 a owl:ObjectProperty .
+
+prv:P127 a owl:ObjectProperty .
+
+wdt:P127 a owl:ObjectProperty .
+
+ps:P127 a owl:ObjectProperty .
+
+pq:P127 a owl:ObjectProperty .
+
+pr:P127 a owl:ObjectProperty .
+
+wdno:P127 a owl:Class ;
+	owl:complementOf _:167a39b2e7d9c6f90bbbb63f738d18e5 .
+
+_:167a39b2e7d9c6f90bbbb63f738d18e5 a owl:Restriction ;
+	owl:onProperty wdt:P127 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P137 a wikibase:Property ;
+	rdfs:label "operator"@en ;
+	skos:prefLabel "operator"@en ;
+	schema:name "operator"@en ;
+	schema:description "person, profession, organization or entity that operates the equipment, facility, or service"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P137 ;
+	wikibase:claim p:P137 ;
+	wikibase:statementProperty ps:P137 ;
+	wikibase:statementValue psv:P137 ;
+	wikibase:qualifier pq:P137 ;
+	wikibase:qualifierValue pqv:P137 ;
+	wikibase:reference pr:P137 ;
+	wikibase:referenceValue prv:P137 ;
+	wikibase:novalue wdno:P137 .
+
+p:P137 a owl:ObjectProperty .
+
+psv:P137 a owl:ObjectProperty .
+
+pqv:P137 a owl:ObjectProperty .
+
+prv:P137 a owl:ObjectProperty .
+
+wdt:P137 a owl:ObjectProperty .
+
+ps:P137 a owl:ObjectProperty .
+
+pq:P137 a owl:ObjectProperty .
+
+pr:P137 a owl:ObjectProperty .
+
+wdno:P137 a owl:Class ;
+	owl:complementOf _:5177167f9b26c87c913ccc0af1a96988 .
+
+_:5177167f9b26c87c913ccc0af1a96988 a owl:Restriction ;
+	owl:onProperty wdt:P137 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q14092 a wikibase:Item ;
+	rdfs:label "gym"@en ;
+	skos:prefLabel "gym"@en ;
+	schema:name "gym"@en ;
+	schema:description "building designed and equipped for athletics and fitness"@en .
+
+wd:P912 a wikibase:Property ;
+	rdfs:label "has facility"@en ;
+	skos:prefLabel "has facility"@en ;
+	schema:name "has facility"@en ;
+	schema:description "the subject item has this type of facility, e.g. toilet, car park"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P912 ;
+	wikibase:claim p:P912 ;
+	wikibase:statementProperty ps:P912 ;
+	wikibase:statementValue psv:P912 ;
+	wikibase:qualifier pq:P912 ;
+	wikibase:qualifierValue pqv:P912 ;
+	wikibase:reference pr:P912 ;
+	wikibase:referenceValue prv:P912 ;
+	wikibase:novalue wdno:P912 .
+
+p:P912 a owl:ObjectProperty .
+
+psv:P912 a owl:ObjectProperty .
+
+pqv:P912 a owl:ObjectProperty .
+
+prv:P912 a owl:ObjectProperty .
+
+wdt:P912 a owl:ObjectProperty .
+
+ps:P912 a owl:ObjectProperty .
+
+pq:P912 a owl:ObjectProperty .
+
+pr:P912 a owl:ObjectProperty .
+
+wdno:P912 a owl:Class ;
+	owl:complementOf _:4e2925d0234baea9166f4813c7b50f78 .
+
+_:4e2925d0234baea9166f4813c7b50f78 a owl:Restriction ;
+	owl:onProperty wdt:P912 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q115755558 a wikibase:Item ;
+	rdfs:label "recensement des équipements sportifs, espaces et sites de pratiques en France"@en ;
+	skos:prefLabel "recensement des équipements sportifs, espaces et sites de pratiques en France"@en ;
+	schema:name "recensement des équipements sportifs, espaces et sites de pratiques en France"@en ;
+	schema:description "French database based on sport"@en .
+
+wd:P248 a wikibase:Property ;
+	rdfs:label "stated in"@en ;
+	skos:prefLabel "stated in"@en ;
+	schema:name "stated in"@en ;
+	schema:description "to be used in the references field to refer to the information document or database in which a claim is made; for qualifiers use P805; for the type of document in which a claim is made use P3865"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P248 ;
+	wikibase:claim p:P248 ;
+	wikibase:statementProperty ps:P248 ;
+	wikibase:statementValue psv:P248 ;
+	wikibase:qualifier pq:P248 ;
+	wikibase:qualifierValue pqv:P248 ;
+	wikibase:reference pr:P248 ;
+	wikibase:referenceValue prv:P248 ;
+	wikibase:novalue wdno:P248 .
+
+p:P248 a owl:ObjectProperty .
+
+psv:P248 a owl:ObjectProperty .
+
+pqv:P248 a owl:ObjectProperty .
+
+prv:P248 a owl:ObjectProperty .
+
+wdt:P248 a owl:ObjectProperty .
+
+ps:P248 a owl:ObjectProperty .
+
+pq:P248 a owl:ObjectProperty .
+
+pr:P248 a owl:ObjectProperty .
+
+wdno:P248 a owl:Class ;
+	owl:complementOf _:a2b31078afaf5caae811f4ac846f5f35 .
+
+_:a2b31078afaf5caae811f4ac846f5f35 a owl:Restriction ;
+	owl:onProperty wdt:P248 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P5017 a wikibase:Property ;
+	rdfs:label "last update"@en ;
+	skos:prefLabel "last update"@en ;
+	schema:name "last update"@en ;
+	schema:description "date a reference was modified, revised, or updated"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#Time> ;
+	wikibase:directClaim wdt:P5017 ;
+	wikibase:claim p:P5017 ;
+	wikibase:statementProperty ps:P5017 ;
+	wikibase:statementValue psv:P5017 ;
+	wikibase:qualifier pq:P5017 ;
+	wikibase:qualifierValue pqv:P5017 ;
+	wikibase:reference pr:P5017 ;
+	wikibase:referenceValue prv:P5017 ;
+	wikibase:novalue wdno:P5017 .
+
+p:P5017 a owl:ObjectProperty .
+
+psv:P5017 a owl:ObjectProperty .
+
+pqv:P5017 a owl:ObjectProperty .
+
+prv:P5017 a owl:ObjectProperty .
+
+wdt:P5017 a owl:DatatypeProperty .
+
+ps:P5017 a owl:DatatypeProperty .
+
+pq:P5017 a owl:DatatypeProperty .
+
+pr:P5017 a owl:DatatypeProperty .
+
+wdno:P5017 a owl:Class ;
+	owl:complementOf _:225a2fccc4a1bac78e81c42656cca6a7 .
+
+_:225a2fccc4a1bac78e81c42656cca6a7 a owl:Restriction ;
+	owl:onProperty wdt:P5017 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P1810 a wikibase:Property ;
+	rdfs:label "subject named as"@en ;
+	skos:prefLabel "subject named as"@en ;
+	schema:name "subject named as"@en ;
+	schema:description "name by which a subject is recorded in a database, mentioned as a contributor of a work, or is referred to in a particular context"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#String> ;
+	wikibase:directClaim wdt:P1810 ;
+	wikibase:claim p:P1810 ;
+	wikibase:statementProperty ps:P1810 ;
+	wikibase:statementValue psv:P1810 ;
+	wikibase:qualifier pq:P1810 ;
+	wikibase:qualifierValue pqv:P1810 ;
+	wikibase:reference pr:P1810 ;
+	wikibase:referenceValue prv:P1810 ;
+	wikibase:novalue wdno:P1810 .
+
+p:P1810 a owl:ObjectProperty .
+
+psv:P1810 a owl:ObjectProperty .
+
+pqv:P1810 a owl:ObjectProperty .
+
+prv:P1810 a owl:ObjectProperty .
+
+wdt:P1810 a owl:DatatypeProperty .
+
+ps:P1810 a owl:DatatypeProperty .
+
+pq:P1810 a owl:DatatypeProperty .
+
+pr:P1810 a owl:DatatypeProperty .
+
+wdno:P1810 a owl:Class ;
+	owl:complementOf _:1d6e1ecf4f0164f6a3471dd66d38c9d8 .
+
+_:1d6e1ecf4f0164f6a3471dd66d38c9d8 a owl:Restriction ;
+	owl:onProperty wdt:P1810 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P2561 a wikibase:Property ;
+	rdfs:label "name"@en ;
+	skos:prefLabel "name"@en ;
+	schema:name "name"@en ;
+	schema:description "name the subject is known by; preferably use a more specific subproperty if available"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#Monolingualtext> ;
+	wikibase:directClaim wdt:P2561 ;
+	wikibase:claim p:P2561 ;
+	wikibase:statementProperty ps:P2561 ;
+	wikibase:statementValue psv:P2561 ;
+	wikibase:qualifier pq:P2561 ;
+	wikibase:qualifierValue pqv:P2561 ;
+	wikibase:reference pr:P2561 ;
+	wikibase:referenceValue prv:P2561 ;
+	wikibase:novalue wdno:P2561 .
+
+p:P2561 a owl:ObjectProperty .
+
+psv:P2561 a owl:ObjectProperty .
+
+pqv:P2561 a owl:ObjectProperty .
+
+prv:P2561 a owl:ObjectProperty .
+
+wdt:P2561 a owl:DatatypeProperty .
+
+ps:P2561 a owl:DatatypeProperty .
+
+pq:P2561 a owl:DatatypeProperty .
+
+pr:P2561 a owl:DatatypeProperty .
+
+wdno:P2561 a owl:Class ;
+	owl:complementOf _:545c62c663b648fd08becb3c08d133fb .
+
+_:545c62c663b648fd08becb3c08d133fb a owl:Restriction ;
+	owl:onProperty wdt:P2561 ;
+	owl:someValuesFrom owl:Thing .
+
+wdv:9f0355cb43b5be5caf0570c31d4fb707 a wikibase:GlobecoordinateValue ;
+	wikibase:geoLatitude "50.94636"^^xsd:double ;
+	wikibase:geoLongitude "1.88108"^^xsd:double ;
+	wikibase:geoPrecision "1.0E-5"^^xsd:double ;
+	wikibase:geoGlobe <http://www.wikidata.org/entity/Q2> .
+
+wdv:c972163adcfbcee7eecdc4633d8ba455 a wikibase:TimeValue ;
+	wikibase:timeValue "2018-09-05T00:00:00Z"^^xsd:dateTime ;
+	wikibase:timePrecision "11"^^xsd:integer ;
+	wikibase:timeTimezone "0"^^xsd:integer ;
+	wikibase:timeCalendarModel <http://www.wikidata.org/entity/Q1985727> .
+
+wdref:ba8e2620a184969d3dfc41448810665dc67de68e a wikibase:Reference ;
+	pr:P248 wd:Q115755558 ;
+	pr:P5017 "2018-09-05T00:00:00Z"^^xsd:dateTime ;
+	prv:P5017 wdv:c972163adcfbcee7eecdc4633d8ba455 .
