@@ -4,7 +4,6 @@ from services.shared.parsers.value_parser import parse_value
 from services.shared.parsers.qualifier_parser import parse_qualifiers
 from services.shared.parsers.reference_parser import parse_references
 from services.shared.models.internal_representation.statements import Statement
-from services.shared.models.internal_representation.ranks import Rank
 
 
 def parse_statement(statement_json: dict[str, Any]) -> Statement:
@@ -17,7 +16,7 @@ def parse_statement(statement_json: dict[str, Any]) -> Statement:
     return Statement(
         property=mainsnak.get("property", ""),
         value=parse_value(mainsnak),
-        rank=Rank(rank),
+        rank=rank,
         qualifiers=parse_qualifiers(qualifiers_json),
         references=parse_references(references_json),
         statement_id=statement_id

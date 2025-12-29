@@ -2,12 +2,11 @@ from typing import Any
 
 from services.shared.parsers.statement_parser import parse_statement
 from services.shared.models.internal_representation.entity import Entity
-from services.shared.models.internal_representation.entity_types import EntityKind
 
 
 def parse_entity(entity_json: dict[str, Any]) -> Entity:
     entity_id = entity_json.get("id", "")
-    entity_type = EntityKind(entity_json.get("type", "item"))
+    entity_type = entity_json.get("type", "item")
 
     labels_json = entity_json.get("labels", {})
     descriptions_json = entity_json.get("descriptions", {})
@@ -44,8 +43,6 @@ def _parse_aliases(aliases_json: dict[str, list[dict[str, str]]]) -> dict[str, l
 
 
 def _parse_statements(claims_json: dict[str, list[dict[str, Any]]]) -> list:
-    from services.shared.parsers.statement_parser import parse_statement
-
     statements = []
     for property_id, claim_list in claims_json.items():
         for claim_json in claim_list:
