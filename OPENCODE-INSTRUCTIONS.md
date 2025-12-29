@@ -17,5 +17,7 @@
 - Store full S3 revision schema with metadata, entity data nested under "entity" field
 - /raw/ endpoint returns full revision schema, /entity/ endpoint extracts nested entity
 - after each edit lets use vulture using ./run-vulture.sh to check for dead code
+- generally one class per file for all classes with at least 1 method
 
 # Current task
+create interal representation based on wikibase json that we can build rdf from later

@@ -53,9 +53,10 @@ class Statement:
     rank: Literal["preferred", "normal", "deprecated"]
     qualifiers: list[Qualifier]
     references: list[Reference]
+    statement_id: str     # e.g., "Q42-F078E5B3-F9A8-480E-B7AC-D97778CBBEF9"
 ```
 
-➡️ No statement IDs, no hashes, no snaks.
+➡️ Statement IDs are required for RDF generation to construct wds: URIs matching Wikidata pattern.
 
 ---
 
@@ -90,10 +91,10 @@ Examples:
 
 | JSON concept | Reason                        |
 | ------------ | ----------------------------- |
-| snak hash    | implementation detail         |
-| statement id | RDF node identity replaces it |
 | map ordering | RDF is unordered              |
 | empty maps   | meaningless                   |
+
+Note: Statement IDs and reference hashes are retained for RDF generation to construct wds: and wdref: URIs matching Wikidata pattern.
 
 ### Parsing example (P31)
 
@@ -163,24 +164,23 @@ This gives:
 
 ### Statement node strategy (important)
 
-Do **not** reuse Wikibase hashes.
-
-Instead:
-
-* deterministic blank nodes **or**
-* content-addressed IR hash
+Use statement ID from Wikidata JSON to construct deterministic URIs matching Wikidata RDF pattern.
 
 Example:
 
 ```python
-stmt_node = bnode(hash(entity.id, stmt.property, stmt.value))
+stmt_node = URI(f"{Vocab.WDS}{stmt.statement_id}")
 ```
+
+This produces URIs like `http://www.wikidata.org/entity/statement/Q42-F078E5B3-F9A8-480E-B7AC-D97778CBBEF9`, matching the `wds:` prefix in Wikidata RDF.
 
 ---
 
 ### Emission sketch
 
 ```python
+stmt_node = URI(f"{Vocab.WDS}{stmt.statement_id}")
+
 emit(wd(e.id), p(prop), stmt_node)
 emit(stmt_node, ps(prop), value)
 
@@ -190,7 +190,7 @@ for q in stmt.qualifiers:
     emit(stmt_node, pq(q.property), q.value)
 
 for ref in stmt.references:
-    ref_node = new_bnode()
+    ref_node = URI(f"{Vocab.WDREF}{ref.hash}")
     emit(stmt_node, prov:wasDerivedFrom, ref_node)
 ```
 
@@ -202,12 +202,14 @@ Single source of truth:
 
 ```python
 class Vocab:
-    WD  = "http://www.wikidata.org/entity/"
-    WDT = "http://www.wikidata.org/prop/direct/"
-    P   = "http://www.wikidata.org/prop/"
-    PS  = "http://www.wikidata.org/prop/statement/"
-    PQ  = "http://www.wikidata.org/prop/qualifier/"
-    PR  = "http://www.wikidata.org/prop/reference/"
+    WD   = "http://www.wikidata.org/entity/"
+    WDT  = "http://www.wikidata.org/prop/direct/"
+    P    = "http://www.wikidata.org/prop/"
+    PS   = "http://www.wikidata.org/prop/statement/"
+    PQ   = "http://www.wikidata.org/prop/qualifier/"
+    PR   = "http://www.wikidata.org/prop/reference/"
+    WDS  = "http://www.wikidata.org/entity/statement/"
+    WDREF = "http://www.wikidata.org/reference/"
 ```
 
 Emitters never hardcode URIs.
