@@ -314,9 +314,9 @@ Potential improvements not included in this implementation:
 
 ### Related Documentation
 
-- [ARCHITECTURE/S3-ENTITY-DELETION.md](./S3-ENTITY-DELETION.md) - Deletion architecture overview
-- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - Storage layer design
-- [ARCHITECTURE/CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) - CAS and race conditions
+- [ARCHITECTURE/S3-ENTITY-DELETION.md](S3-ENTITY-DELETION.md) - Deletion architecture overview
+- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - Storage layer design
+- [ARCHITECTURE/CONCURRENCY-CONTROL.md](CONCURRENCY-CONTROL.md) - CAS and race conditions
 
 ---
 
@@ -568,10 +568,10 @@ Potential improvements not included in this implementation:
 
 ### Related Documentation
 
-- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 revision storage design
-- [ARCHITECTURE/CONCURRENCY-CONTROL.md](./CONCURRENCY-CONTROL.md) - CAS and race condition handling
-- [ARCHITECTURE/ENTITY-MODEL.md](./ENTITY-MODEL.md) - Entity and revision model
-- [src/schemas/s3-revision/1.0.0/schema.json](../src/schemas/s3-revision/1.0.0/schema.json) - Revision schema definition
+- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 revision storage design
+- [ARCHITECTURE/CONCURRENCY-CONTROL.md](CONCURRENCY-CONTROL.md) - CAS and race condition handling
+- [ARCHITECTURE/ENTITY-MODEL.md](ENTITY-MODEL.md) - Entity and revision model
+- [src/schemas/s3-revision/1.0.0/schema.json](../../src/schemas/s3-revision/1.0.0/schema.json) - Revision schema definition
 
 ---
 
@@ -759,8 +759,8 @@ GET /raw/Q42/1
 
 ### Related Documentation
 
-- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - Database schema
-- [ARCHITECTURE/S3-REVISION-SCHEMA-CHANGELOG.md](./S3-REVISION-SCHEMA-CHANGELOG.md) - Schema version tracking
+- [ARCHITECTURE/STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - Database schema
+- [ARCHITECTURE/S3-REVISION-SCHEMA-CHANGELOG.md](S3-REVISION-SCHEMA-CHANGELOG.md) - Schema version tracking
 
 ---
 
@@ -943,4 +943,4 @@ Potential improvements not included in this implementation:
 
 - [ARCHITECTURE/STORAGE-ARCHITECTURE.md](./ARCHITECTURE/STORAGE-ARCHITECTURE.md) - S3 and Vitess storage design
 - [ARCHITECTURE/ENTITY-MODEL.md](./ARCHITECTURE/ENTITY-MODEL.md) - Hybrid ID strategy
-- [src/schemas/s3-revision/1.0.0/schema.json](../src/schemas/s3-revision/1.0.0/schema.json) - Entity schema definition
+- [src/schemas/s3-revision/1.0.0/schema.json](../../src/schemas/s3-revision/1.0.0/schema.json) - Entity schema definition

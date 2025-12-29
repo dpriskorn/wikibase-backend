@@ -210,5 +210,5 @@ Vitess Tables:
 ## References
 
 - [IDENTIFIER-STRATEGY.md](./IDENTIFIER-STRATEGY.md) - Complete hybrid ID strategy and implementation
-- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 and Vitess storage design
-- [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) - RDF generation with external ID handling
+- [STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 and Vitess storage design
+- [JSON-RDF-CONVERTER.md](JSON-RDF-CONVERTER.md) - RDF generation with external ID handling

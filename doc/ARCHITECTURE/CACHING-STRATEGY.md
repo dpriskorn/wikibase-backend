@@ -625,6 +625,6 @@ def backfill_entity_id_cache():
 ## References
 
 - [IDENTIFIER-STRATEGY.md](./IDENTIFIER-STRATEGY.md) - Hybrid ID strategy (internal ulid-flake + external Q123)
-- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 + Vitess storage design
-- [ENTITY-MODEL.md](./ENTITY-MODEL.md) - Entity identifiers and usage patterns
-- [SCALING-PROPERTIES.md](./SCALING-PROPERTIES.md) - System scaling characteristics
+- [STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 + Vitess storage design
+- [ENTITY-MODEL.md](ENTITY-MODEL.md) - Entity identifiers and usage patterns
+- [SCALING-PROPERTIES.md](SCALING-PROPERTIES.md) - System scaling characteristics

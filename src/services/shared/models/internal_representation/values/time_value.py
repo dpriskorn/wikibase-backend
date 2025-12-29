@@ -1,7 +1,7 @@
 import re
+
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from typing_extensions import Literal
-from typing import Optional
 
 
 class TimeValue(BaseModel):

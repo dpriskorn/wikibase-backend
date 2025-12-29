@@ -394,6 +394,6 @@ def backfill_changes(vitess_client, start_time, end_time):
 
 ## References
 
-- [CHANGE-DETECTION-RDF-GENERATION.md](./CHANGE-DETECTION-RDF-GENERATION.md) - Complete change detection and RDF generation architecture
-- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
-- [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)
+- [CHANGE-DETECTION-RDF-GENERATION.md](CHANGE-DETECTION-RDF-GENERATION.md) - Complete change detection and RDF generation architecture
+- [STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
+- [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)

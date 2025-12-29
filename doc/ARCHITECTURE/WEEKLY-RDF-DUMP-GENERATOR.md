@@ -968,8 +968,8 @@ spec:
 
 ## References
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Core architecture principles
-- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
-- [CHANGE-DETECTION-RDF-GENERATION.md](./CHANGE-DETECTION-RDF-GENERATION.md) - RDF generation architecture
-- [ENTITY-MODEL.md](./ENTITY-MODEL.md) - Entity model documentation
-- [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md) - RDF diff strategy documentation
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Core architecture principles
+- [STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
+- [CHANGE-DETECTION-RDF-GENERATION.md](CHANGE-DETECTION-RDF-GENERATION.md) - RDF generation architecture
+- [ENTITY-MODEL.md](ENTITY-MODEL.md) - Entity model documentation
+- [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md) - RDF diff strategy documentation

@@ -1042,9 +1042,9 @@ spec:
 
 ## References
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Core architecture principles
-- [CHANGE-DETECTION-RDF-GENERATION.md](./CHANGE-DETECTION-RDF-GENERATION.md) - RDF generation architecture
-- [ENTITY-MODEL.md](./ENTITY-MODEL.md) - Entity model documentation
-- [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md) - RDF diff strategy documentation
-- [WEEKLY-RDF-DUMP-GENERATOR.md](./WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly dump service
-- [CONTINUOUS-RDF-CHANGE-STREAMER.md](./CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF streamer
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Core architecture principles
+- [CHANGE-DETECTION-RDF-GENERATION.md](CHANGE-DETECTION-RDF-GENERATION.md) - RDF generation architecture
+- [ENTITY-MODEL.md](ENTITY-MODEL.md) - Entity model documentation
+- [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md) - RDF diff strategy documentation
+- [WEEKLY-RDF-DUMP-GENERATOR.md](WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly dump service
+- [CONTINUOUS-RDF-CHANGE-STREAMER.md](CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF streamer

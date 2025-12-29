@@ -5,10 +5,10 @@
 This document describes services for generating RDF from entity snapshots and producing both continuous RDF change streams and weekly entity dumps (JSON + RDF formats).
 
 Related documentation:
-- [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) - JSON→RDF converter service
-- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service
-- [WEEKLY-RDF-DUMP-GENERATOR.md](./WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly RDF dump generator service
-- [CONTINUOUS-RDF-CHANGE-STREAMER.md](./CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF change streamer
+- [JSON-RDF-CONVERTER.md](JSON-RDF-CONVERTER.md) - JSON→RDF converter service
+- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service
+- [WEEKLY-RDF-DUMP-GENERATOR.md](WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly RDF dump generator service
+- [CONTINUOUS-RDF-CHANGE-STREAMER.md](CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF change streamer
 
 ## Requirements
 
@@ -20,7 +20,7 @@ Related documentation:
 
 ## Service 1: JSON→RDF Converter
 
-See [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) for complete documentation.
+See [JSON-RDF-CONVERTER.md](JSON-RDF-CONVERTER.md) for complete documentation.
 
 **Purpose**: Convert Wikibase JSON snapshots to RDF (Turtle format) using streaming generation
 
@@ -39,7 +39,7 @@ See [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) for complete documentation.
 
 ## Service 2: Weekly Dump Generator
 
-See [WEEKLY-RDF-DUMP-GENERATOR.md](./WEEKLY-RDF-DUMP-GENERATOR.md) for complete documentation.
+See [WEEKLY-RDF-DUMP-GENERATOR.md](WEEKLY-RDF-DUMP-GENERATOR.md) for complete documentation.
 
 **Purpose**: Generate weekly dumps of all entities in both JSON and RDF formats as standalone S3 files
 
@@ -94,24 +94,24 @@ Write to S3:                     Write to S3:
 ## Implementation Phases
 
 ### Phase 1: Change Detection (2-3 weeks)
-- See [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) for implementation details
+- See [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) for implementation details
 - Build Change Detector service
 - Implement entity_head polling logic
 - Add metrics and monitoring
 - Deploy to staging
 
 ### Phase 2: RDF Conversion (2-3 weeks)
-- See [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) for complete documentation
+- See [JSON-RDF-CONVERTER.md](JSON-RDF-CONVERTER.md) for complete documentation
 - [ ] Test conversion fidelity with Wikidata examples
-- [ ] Build RDF diff computation (using Jena/RDF4J) - see [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md)
+- [ ] Build RDF diff computation (using Jena/RDF4J) - see [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md)
 - [ ] Validate RDF output against Blazegraph
 
 ### Phase 3: Weekly Dumps (2-3 weeks)
-- See [WEEKLY-RDF-DUMP-GENERATOR.md](./WEEKLY-RDF-DUMP-GENERATOR.md) for complete documentation
+- See [WEEKLY-RDF-DUMP-GENERATOR.md](WEEKLY-RDF-DUMP-GENERATOR.md) for complete documentation
 - Deploy to production and set up cron schedule
 
 ### Phase 4: Continuous RDF Streaming (2 weeks)
-- See [CONTINUOUS-RDF-CHANGE-STREAMER.md](./CONTINUOUS-RDF-CHANGE-STREAMER.md) for complete documentation
+- See [CONTINUOUS-RDF-CHANGE-STREAMER.md](CONTINUOUS-RDF-CHANGE-STREAMER.md) for complete documentation
 - Deploy to production and integrate with Change Detection service
 
 ### Phase 5: Integration & Testing (2 weeks)
@@ -127,7 +127,7 @@ Write to S3:                     Write to S3:
 
 | Benefit | Description |
 |----------|-------------|
-| **MediaWiki Independence** | See [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) |
+| **MediaWiki Independence** | See [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) |
 | **Backfill Capable** | Can process historical changes from any point in time |
 | **Deterministic** | Based on immutable snapshots and ordered revision metadata |
 | **Scalable** | All services can scale independently (S3, Vitess, Kafka) |
@@ -204,18 +204,18 @@ If MediaWiki EventBus continues emitting change events, the Continuous RDF Chang
 MediaWiki Events → Fetch Entity from S3 → Convert to RDF → Emit rdf_change
 ```
 
-This is documented in [CONTINUOUS-RDF-CHANGE-STREAMER.md](./CONTINUOUS-RDF-CHANGE-STREAMER.md) as an alternative input source.
+This is documented in [CONTINUOUS-RDF-CHANGE-STREAMER.md](CONTINUOUS-RDF-CHANGE-STREAMER.md) as an alternative input source.
 
 ## References
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Core architecture principles
-- [STORAGE-ARCHITECTURE.md](./STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
-- [JSON-RDF-CONVERTER.md](./JSON-RDF-CONVERTER.md) - JSON→RDF converter service
-- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service documentation
-- [CONTINUOUS-RDF-CHANGE-STREAMER.md](./CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF change streamer service
-- [WEEKLY-RDF-DUMP-GENERATOR.md](./WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly RDF dump generator service
-- [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)
-- [CHANGE-NOTIFICATION.md](./CHANGE-NOTIFICATION.md) - Existing event notification system
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Core architecture principles
+- [STORAGE-ARCHITECTURE.md](STORAGE-ARCHITECTURE.md) - S3 + Vitess storage model
+- [JSON-RDF-CONVERTER.md](JSON-RDF-CONVERTER.md) - JSON→RDF converter service
+- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service documentation
+- [CONTINUOUS-RDF-CHANGE-STREAMER.md](CONTINUOUS-RDF-CHANGE-STREAMER.md) - Continuous RDF change streamer service
+- [WEEKLY-RDF-DUMP-GENERATOR.md](WEEKLY-RDF-DUMP-GENERATOR.md) - Weekly RDF dump generator service
+- [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)
+- [CHANGE-NOTIFICATION.md](CHANGE-NOTIFICATION.md) - Existing event notification system
 - [SCHEMAS-EVENT-PRIMARY-SUMMARY.md](../SCHEMAS-EVENT-PRIMARY-SUMMARY.md) - RDF change schema documentation
 - [STREAMING-UPDATER-PRODUCER.md](../STREAMING-UPDATER-PRODUCER.md) - Existing MediaWiki→RDF pipeline
 - [STREAMING-UPDATER-CONSUMER.md](../STREAMING-UPDATER-CONSUMER.md) - Existing RDF consumer for Blazegraph

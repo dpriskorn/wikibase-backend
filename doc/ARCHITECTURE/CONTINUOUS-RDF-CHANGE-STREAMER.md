@@ -75,7 +75,7 @@ def consume_entity_changes(kafka_config, topic):
 
 #### Implementation Strategy
 
-This service uses **Option A (Full RDF Convert + Diff)** as documented in [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md):
+This service uses **Option A (Full RDF Convert + Diff)** as documented in [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md):
 
 1. Stream from_snapshot JSON → RDF (Turtle, line-by-line)
 2. Stream to_snapshot JSON → RDF (Turtle, line-by-line)
@@ -495,7 +495,7 @@ def batch_process_events(events, batch_size=100):
 
 ### Input: Change Detection Service
 
-Consumes entity change events from the Change Detection Service documented in [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md).
+Consumes entity change events from the Change Detection Service documented in [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md).
 
 ### Output: Kafka Topic
 
@@ -613,8 +613,8 @@ spec:
 
 ## References
 
-- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](./MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service documentation
-- [RDF-DIFF-STRATEGY.md](./RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)
-- [CHANGE-DETECTION-RDF-GENERATION.md](./CHANGE-DETECTION-RDF-GENERATION.md) - Complete RDF generation architecture
+- [MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md](MEDIAWIKI-INDEPENDENT-CHANGE-DETECTION.md) - Change detection service documentation
+- [RDF-DIFF-STRATEGY.md](RDF-DIFF-STRATEGY.md) - RDF diff strategy (Option A: Full Convert + Diff)
+- [CHANGE-DETECTION-RDF-GENERATION.md](CHANGE-DETECTION-RDF-GENERATION.md) - Complete RDF generation architecture
 - [SCHEMAS-EVENT-PRIMARY-SUMMARY.md](../SCHEMAS-EVENT-PRIMARY-SUMMARY.md) - RDF change schema documentation
 - [STREAMING-UPDATER-CONSUMER.md](../STREAMING-UPDATER-CONSUMER.md) - Existing RDF consumer for Blazegraph

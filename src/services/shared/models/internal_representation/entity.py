@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field
 from typing import TYPE_CHECKING, Optional, Any
+
+from pydantic import BaseModel, ConfigDict
 
 from .entity_types import EntityKind
 

@@ -200,7 +200,7 @@ cleanup_service:
 
 ## Implementation Details
 
-For the complete implementation plan, see [POST-PROCESSING-VALIDATION.md](./POST-PROCESSING-VALIDATION.md).
+For the complete implementation plan, see [POST-PROCESSING-VALIDATION.md](POST-PROCESSING-VALIDATION.md).
 
 This document includes:
 - Database schema changes
