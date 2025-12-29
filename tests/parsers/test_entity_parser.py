@@ -1,9 +1,7 @@
 import json
-from pathlib import Path
 
 from models.json_parser import parse_entity
-
-TEST_DATA_DIR = Path(__file__).parent.parent.parent / "test_data"
+from parsers.conftest import TEST_DATA_JSON_DIR
 
 
 def test_parse_entity_basic():
@@ -29,7 +27,7 @@ def test_parse_entity_basic():
 
 def test_parse_q1_minimal():
     """Test parsing minimal entity with only id and type"""
-    with open(TEST_DATA_DIR / "entities/Q1.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q1.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -44,7 +42,7 @@ def test_parse_q1_minimal():
 
 def test_parse_q42():
     """Test parsing Douglas Adams entity from real test data - uses wrapper format"""
-    with open(TEST_DATA_DIR / "entities/Q42.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q42.json") as f:
         data = json.load(f)
 
     entity_json = data["entities"]["Q42"]
@@ -57,7 +55,7 @@ def test_parse_q42():
 
 def test_parse_q42_detailed():
     """Test parsing Q42 with detailed verification of content - uses wrapper format"""
-    with open(TEST_DATA_DIR / "entities/Q42.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q42.json") as f:
         data = json.load(f)
 
     entity_json = data["entities"]["Q42"]
@@ -84,7 +82,7 @@ def test_parse_q42_detailed():
 
 def test_parse_p2():
     """Test parsing property entity from real test data"""
-    with open(TEST_DATA_DIR / "entities/P2.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/P2.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -96,7 +94,7 @@ def test_parse_p2():
 
 def test_parse_q2_multilingual():
     """Test parsing entity with multilingual labels, descriptions, and aliases"""
-    with open(TEST_DATA_DIR / "entities/Q2.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q2.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -117,7 +115,7 @@ def test_parse_q2_multilingual():
 
 def test_parse_q17948861():
     """Test parsing entity with references from real test data - uses wrapper format"""
-    with open(TEST_DATA_DIR / "entities/Q17948861.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q17948861.json") as f:
         data = json.load(f)
 
     entity_json = data["entities"]["Q17948861"]
@@ -129,7 +127,7 @@ def test_parse_q17948861():
 
 def test_parse_q3_sitelinks():
     """Test parsing entity with sitelinks without badges"""
-    with open(TEST_DATA_DIR / "entities/Q3.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q3.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -146,7 +144,7 @@ def test_parse_q3_sitelinks():
 
 def test_parse_q5_sitelinks_with_badges():
     """Test parsing entity with sitelinks containing badges"""
-    with open(TEST_DATA_DIR / "entities/Q5.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q5.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -161,7 +159,7 @@ def test_parse_q5_sitelinks_with_badges():
 
 def test_parse_q4_complex_statements():
     """Test parsing entity with complex statements including novalue, somevalue, and deprecated rank"""
-    with open(TEST_DATA_DIR / "entities/Q4.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q4.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -200,7 +198,7 @@ def test_parse_q4_complex_statements():
 
 def test_parse_q6_complex_qualifiers():
     """Test parsing entity with complex qualifiers including multiple qualifiers per property"""
-    with open(TEST_DATA_DIR / "entities/Q6.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q6.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -229,7 +227,7 @@ def test_parse_q6_complex_qualifiers():
 
 def test_parse_q10_simple():
     """Test parsing simple entity with single statement and preferred rank"""
-    with open(TEST_DATA_DIR / "entities/Q10.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q10.json") as f:
         entity_json = json.load(f)
 
     entity = parse_entity(entity_json)
@@ -243,7 +241,7 @@ def test_parse_q10_simple():
 
 def test_parse_q120248304():
     """Test parsing another real Wikidata entity"""
-    with open(TEST_DATA_DIR / "entities/Q120248304.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q120248304.json") as f:
         data = json.load(f)
 
     entity_json = data["entities"]["Q120248304"]

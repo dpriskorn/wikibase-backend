@@ -1,17 +1,15 @@
 import json
-from pathlib import Path
 
 from models.internal_representation.entity_types import EntityKind
 from models.internal_representation.ranks import Rank
 from models.internal_representation.value_kinds import ValueKind
 from models.json_parser import parse_entity
-
-TEST_DATA_DIR = Path(__file__).parent.parent.parent / "test_data"
+from parsers.conftest import TEST_DATA_JSON_DIR
 
 
 def test_parse_q42_comprehensive():
     """Test comprehensive parsing of Q42.json (Douglas Adams entity)"""
-    with open(TEST_DATA_DIR / "entities/Q42.json") as f:
+    with open(TEST_DATA_JSON_DIR / "entities/Q42.json") as f:
         data = json.load(f)
 
     entity_json = data["entities"]["Q42"]
