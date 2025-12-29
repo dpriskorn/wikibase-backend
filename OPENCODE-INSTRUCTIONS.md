@@ -23,4 +23,5 @@
 - no strings in code - everything is enums
 
 # Current task
-Add comprehensive unit tests for IR parsers using existing test data from test_data/ directory
+Add rdf ttl builder (both full and truthy) using existing test data from test_data/ 
+directory and rdf classes in wikibase at mediawiki-extensions-Wikibase/repo/includes/Rdf
