@@ -61,7 +61,35 @@ class Statement:
 
 ---
 
-### 2.3 Value IR (this matters most)
+### 2.3 Qualifier IR
+
+```python
+class Qualifier:
+    property: str
+    value: Value
+```
+
+➡️ Qualifiers are key-value pairs that modify statement values.
+
+---
+
+### 2.4 Reference IR
+
+```python
+class ReferenceValue:
+    property: str
+    value: Value
+
+class Reference:
+    hash: str                    # e.g., "a4d108601216cffd2ff1819ccf12b483486b62e7"
+    snaks: list[ReferenceValue]  # Flat list of (property, value) pairs
+```
+
+➡️ Reference hashes are required for RDF generation to construct wdref: URIs matching Wikidata pattern.
+
+---
+
+### 2.5 Value IR (this matters most)
 
 ```python
 class Value:
@@ -71,7 +99,15 @@ class Value:
         "time",
         "quantity",
         "globe",
-        "monolingual"
+        "monolingual",
+        "external_id",
+        "commons_media",
+        "geo_shape",
+        "tabular_data",
+        "musical_notation",
+        "url",
+        "math",
+        "entity_schema"
     ]
     value: Any
     datatype_uri: str
@@ -80,9 +116,19 @@ class Value:
 Examples:
 
 * entity → `"Q5"` → `wd:Q5`
+* string → literal string value
 * time → normalized ISO string + precision
 * quantity → decimal + unit URI
 * globe → lat/long + globe URI
+* monolingual → language + text pair
+* external_id → external identifier string
+* commons_media → Commons file reference
+* geo_shape → geographic map data
+* tabular_data → tabular data reference
+* musical_notation → LilyPond notation
+* url → HTTP/HTTPS URL
+* math → LaTeX mathematical expression
+* entity_schema → entity schema reference
 
 ---
 
@@ -110,6 +156,7 @@ for stmt_json in claims["P31"]:
         rank=stmt_json["rank"],
         qualifiers=parse_qualifiers(stmt_json),
         references=parse_references(stmt_json),
+        statement_id=stmt_json["id"],
     )
 ```
 
