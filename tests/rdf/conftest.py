@@ -1,6 +1,9 @@
 from pathlib import Path
 import re
 import pytest
+import logging
+
+logger = logging.getLogger(__name__)
 
 from models.rdf_builder.property_registry.registry import PropertyRegistry
 from models.rdf_builder.ontology.datatypes import property_shape
@@ -15,31 +18,69 @@ def load_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 def normalize_ttl(ttl: str) -> str:
+    logger.debug("=== normalize_ttl() START ===")
+    logger.debug(f"Input length: {len(ttl)} chars")
+    
     ttl = re.sub(r"#.*$", "", ttl, flags=re.MULTILINE)
+    logger.debug(f"After removing comments: {len(ttl)} chars")
+    
     ttl = re.sub(r"[ \t]+", " ", ttl)
+    logger.debug(f"After normalizing whitespace: {len(ttl)} chars")
+    
     ttl = re.sub(r"\n{3,}", "\n\n", ttl)
-    return ttl.strip()
+    logger.debug(f"After normalizing newlines: {len(ttl)} chars")
+    
+    result = ttl.strip()
+    logger.debug(f"=== normalize_ttl() END ===")
+    return result
 
 def split_subject_blocks(ttl: str) -> dict[str, str]:
+    logger.debug("=== split_subject_blocks() START ===")
     blocks = {}
     current_subject = None
     current_lines = []
+    line_count = 0
 
     for line in ttl.splitlines():
-        if line.startswith("@prefix") or line.startswith("<http"):
+        line_count += 1
+        
+        if line_count <= 30:
+            logger.debug(f"Line {line_count:3}: '{line[:80]}'")
+        
+        if not line.strip():
+            if line_count <= 30:
+                logger.debug(f"  -> Skipping (empty line)")
+            continue
+        
+        line_stripped = line.strip()
+        if line_stripped.lower().startswith("@prefix"):
+            if line_count <= 30:
+                logger.debug(f"  -> Skipping (prefix): '{line[:60]}'")
+            continue
+        
+        if line_stripped.startswith("<http") or line_stripped.startswith("<https"):
+            if line_count <= 30:
+                logger.debug(f"  -> Skipping (URL): '{line[:60]}'")
             continue
         
         if line and not line.startswith((" ", "\t")):
             if current_subject:
                 blocks[current_subject] = "\n".join(current_lines).strip()
+                if line_count <= 30:
+                    logger.debug(f"  -> Saved block: '{current_subject}' ({len(current_lines)} lines)")
             current_subject = line.split()[0]
             current_lines = [line]
+            if line_count <= 30:
+                logger.debug(f"  -> New subject: '{current_subject}'")
         else:
             current_lines.append(line)
 
     if current_subject:
         blocks[current_subject] = "\n".join(current_lines).strip()
-
+        logger.debug(f"  -> Final block: '{current_subject}' ({len(current_lines)} lines)")
+    
+    logger.debug(f"=== split_subject_blocks() END === {len(blocks)} blocks found")
+    logger.debug(f"Subject keys: {list(blocks.keys())}")
     return blocks
 
 

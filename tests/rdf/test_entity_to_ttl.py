@@ -1,4 +1,7 @@
 import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 from models.rdf_builder.converter import EntityToRdfConverter
 from models.json_parser.entity_parser import parse_entity
@@ -23,6 +26,11 @@ def test_q120248304_matches_golden_ttl(property_registry):
 
     expected_blocks = split_subject_blocks(expected_ttl)
     actual_blocks = split_subject_blocks(actual_ttl)
+
+    logger.info(f"Expected blocks count: {len(expected_blocks)}")
+    logger.info(f"Actual blocks count: {len(actual_blocks)}")
+    logger.info(f"Expected block keys: {list(expected_blocks.keys())}")
+    logger.info(f"Actual block keys: {list(actual_blocks.keys())}")
 
     assert expected_blocks.keys() == actual_blocks.keys()
 
