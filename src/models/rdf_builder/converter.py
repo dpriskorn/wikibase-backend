@@ -41,6 +41,7 @@ class EntityToRdfConverter(BaseModel):
 
         for stmt in entity.statements:
             PropertyOntologyWriter.write_property(output, stmt.property)
+            PropertyOntologyWriter.write_novalue_class(output, stmt.property)
 
         for stmt in entity.statements:
             shape = self.properties.shape(stmt.property)
