@@ -46,9 +46,9 @@ Converts internal Entity models to RDF (Turtle format) following Wikibase RDF ma
 | Property predicate declarations | ✓ Implemented | `write_property()` generates owl:ObjectProperty |
 | Property value predicates | ✓ Implemented | `write_property_metadata()` includes value predicates |
 | No value constraints | ✓ Implemented | `write_novalue_class()` generates wdno:Pxxx blocks |
+| Direct claim triples | ✓ Implemented | `write_direct_claim()` generates wdt:Pxxx for best-rank |
 | **Missing Features** | | |
 | Referenced entity metadata | ✗ Not Started | Entity values need own metadata block |
-| Direct claim triples | ✗ Not Started | `wdt:Pxxx` for direct entity-to-value links |
 | Value nodes (structured) | ✗ Not Started | `wdv:` URIs for time/globe-coordinate decomposition |
 
 ---
@@ -113,6 +113,7 @@ ttl = converter.convert_to_string(entity)
 - `write_dataset_triples(output, entity_id)` - Write dataset metadata
 - `write_label(output, entity_id, lang, label)` - Write `rdfs:label`
 - `write_statement(output, entity_id, statement, shape)` - Write full statement block
+- `write_direct_claim(output, entity_id, property_id, value)` - Write direct claim triple (wdt:Pxxx) for best-rank
 
 **Class:** `PropertyOntologyWriter` (static methods)
 - `write_property_metadata(output, shape)` - Write full property metadata block with labels, descriptions, predicate links
@@ -299,6 +300,11 @@ converter = EntityConverter(property_registry=registry)
 - ✓ Multi-language support for labels/descriptions
 - ✓ Correct handling of time datatypes with value nodes
 
+**Direct Claims Implementation (COMPLETED):**
+- ✓ `write_direct_claim()` method - Generates `wdt:Pxxx` triples
+- ✓ Integration with `write_statement()` - Only generates for best-rank (truthy) statements
+- ✓ Tests - Added `tests/rdf/test_direct_claims.py` with 4 test cases
+
 ### Test Coverage:
 - `test_property_shape_with_labels_and_descriptions()` - Verify PropertyShape stores labels/descriptions
 - `test_property_shape_empty_labels_descriptions()` - Verify default empty dicts
@@ -310,6 +316,12 @@ converter = EntityConverter(property_registry=registry)
 - `test_loader_with_json_and_csv()` - Integration test: JSON + CSV merge
 - `test_loader_without_csv_fallback_to_string()` - Fallback to "string" when no CSV
 - `test_loader_empty_labels_descriptions()` - Handles missing labels/descriptions in JSON
+
+**Direct Claims Tests (tests/rdf/test_direct_claims.py):**
+- ✓ `write_direct_claim_basic()` - Basic direct claim triple generation
+- ✓ `write_direct_claim_entity_value()` - Direct claim with entity value
+- ✓ `test_entity_converter_generates_direct_claims_for_best_rank()` - Generates wdt:Pxxx for best-rank
+- ✓ `test_entity_converter_no_direct_claim_for_non_best_rank()` - No wdt:Pxxx for deprecated statements
 
 Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following features are still missing:
 
@@ -418,7 +430,7 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
     - Write all 10 predicate declarations (directClaim, claim, statementProperty, etc.)
 4. ~~Property predicate declarations~~ ✓ COMPLETED - Generate `owl:ObjectProperty` blocks for each property predicate
 5. ~~No value constraint blocks~~ ✓ COMPLETED - Generate `wdno:Pxxx` with blank node `owl:complementOf`
-6. **Direct claim triples**: Optional - generate `wdt:Pxxx` triples for direct entity-to-value links
+6. ~~Direct claim triples~~ ✓ COMPLETED - Generate `wdt:Pxxx` triples for best-rank (truthy) values
 7. **Value node decomposition**: For time/globe-coordinate quantities, decompose into `wdv:` nodes with individual components
 
 

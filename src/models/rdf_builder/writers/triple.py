@@ -55,6 +55,12 @@ class TripleWriters:
         output.write(f'{entity_uri} schema:sameAs <{wiki_url}> .\n')
 
     @staticmethod
+    def write_direct_claim(output: TextIO, entity_id: str, property_id: str, value: str):
+        """Write direct claim triple: wd:Qxxx wdt:Pxxx value"""
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
+        output.write(f'{entity_uri} wdt:{property_id} {value} .\n')
+
+    @staticmethod
     def write_statement(
         output: TextIO,
         entity_id: str,
@@ -73,10 +79,12 @@ class TripleWriters:
         
         if rdf_statement.rank == "normal":
             output.write(f'{stmt_uri_prefixed} a wikibase:Statement, wikibase:BestRank .\n')
+
+            value = ValueFormatter.format_value(rdf_statement.value)
+            TripleWriters.write_direct_claim(output, entity_id, rdf_statement.property_id, value)
         else:
             output.write(f'{stmt_uri_prefixed} a wikibase:Statement .\n')
-        
-        # Statement value
+
         value = ValueFormatter.format_value(rdf_statement.value)
         output.write(
             f'{stmt_uri_prefixed} {shape.predicates.statement} {value} .\n'
