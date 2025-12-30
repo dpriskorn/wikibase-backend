@@ -104,19 +104,19 @@ def load_full_property_registry() -> PropertyRegistry:
 def property_registry() -> PropertyRegistry:
     """Minimal property registry for Q120248304 test"""
     properties = {
-        "P31": property_shape("P31", "wikibase-item"),
-        "P17": property_shape("P17", "wikibase-item"),
-        "P127": property_shape("P127", "wikibase-item"),
-        "P131": property_shape("P131", "wikibase-item"),
-        "P137": property_shape("P137", "wikibase-item"),
-        "P912": property_shape("P912", "wikibase-item"),
-        "P248": property_shape("P248", "wikibase-item"),
-        "P11840": property_shape("P11840", "external-id"),
-        "P1810": property_shape("P1810", "string"),
-        "P2561": property_shape("P2561", "monolingualtext"),
-        "P5017": property_shape("P5017", "time"),
-        "P625": property_shape("P625", "globe-coordinate"),
-        "P6375": property_shape("P6375", "monolingualtext"),
+        "P31": property_shape("P31", "wikibase-item", labels={"en": {"language": "en", "value": "instance of"}}),
+        "P17": property_shape("P17", "wikibase-item", labels={"en": {"language": "en", "value": "country"}}),
+        "P127": property_shape("P127", "wikibase-item", labels={"en": {"language": "en", "value": "owned by"}}),
+        "P131": property_shape("P131", "wikibase-item", labels={"en": {"language": "en", "value": "located in"}}),
+        "P137": property_shape("P137", "wikibase-item", labels={"en": {"language": "en", "value": "operator"}}),
+        "P912": property_shape("P912", "wikibase-item", labels={"en": {"language": "en", "value": "sponsor"}}),
+        "P248": property_shape("P248", "wikibase-item", labels={"en": {"language": "en", "value": "stated in"}}),
+        "P11840": property_shape("P11840", "external-id", labels={"en": {"language": "en", "value": "crossref ID"}}),
+        "P1810": property_shape("P1810", "string", labels={"en": {"language": "en", "value": "short name"}}),
+        "P2561": property_shape("P2561", "monolingualtext", labels={"en": {"language": "en", "value": "description"}}),
+        "P5017": property_shape("P5017", "time", labels={"en": {"language": "en", "value": "date of official opening"}}),
+        "P625": property_shape("P625", "globe-coordinate", labels={"en": {"language": "en", "value": "coordinate location"}}),
+        "P6375": property_shape("P6375", "monolingualtext", labels={"en": {"language": "en", "value": "street address"}}),
     }
     return PropertyRegistry(properties=properties)
 

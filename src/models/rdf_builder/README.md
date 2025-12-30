@@ -40,6 +40,7 @@ Converts internal Entity models to RDF (Turtle format) following Wikibase RDF ma
 | Property metadata structure | ✓ Implemented | PropertyShape has labels/descriptions fields |
 | Property metadata loading | ✓ Implemented | Loader merges JSON + CSV, with tests |
 | **Property Metadata Output** | | |
+| Property metadata integration | ✓ Implemented | `EntityConverter._write_property_metadata()` writes all property blocks |
 | Property metadata RDF output | ✓ Implemented | `write_property_metadata()` generates wd:Pxxx blocks |
 | Property entity metadata | ✓ Implemented | Property metadata block with labels, descriptions |
 | Property predicate declarations | ✓ Implemented | `write_property()` generates owl:ObjectProperty |
@@ -95,6 +96,7 @@ Entity JSON (Wikidata API)
 - **Methods:**
   - `convert_to_turtle(entity, output: TextIO)` - Write RDF to output stream
   - `convert_to_string(entity) -> str` - Return RDF as string
+  - `_write_property_metadata(entity, output)` - Write property metadata blocks for properties used in entity
 
 **Usage:**
 ```python
@@ -411,12 +413,12 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 
 1. **Collect referenced entities**: Scan all statement values for entity references (wd:Qxxx) and collect unique set
 2. **Generate referenced entity metadata**: For each referenced entity, write full metadata block (labels, descriptions, aliases)
-3. **Property metadata generation**: For each property used in entity:
-   - Write `wd:Pxxx a wikibase:Property` with labels, descriptions, propertyType
-   - Write all 10 predicate declarations (directClaim, claim, statementProperty, etc.)
-4. **Property predicate declarations**: Generate `owl:ObjectProperty` blocks for each property predicate
-5. **No value constraint blocks**: Generate `wdno:Pxxx` with blank node `owl:complementOf`
+3. ~~Property metadata generation~~ ✓ COMPLETED - For each property used in entity:
+    - Write `wd:Pxxx a wikibase:Property` with labels, descriptions, propertyType
+    - Write all 10 predicate declarations (directClaim, claim, statementProperty, etc.)
+4. ~~Property predicate declarations~~ ✓ COMPLETED - Generate `owl:ObjectProperty` blocks for each property predicate
+5. ~~No value constraint blocks~~ ✓ COMPLETED - Generate `wdno:Pxxx` with blank node `owl:complementOf`
 6. **Direct claim triples**: Optional - generate `wdt:Pxxx` triples for direct entity-to-value links
 7. **Value node decomposition**: For time/globe-coordinate quantities, decompose into `wdv:` nodes with individual components
-8. **Consider property registry expansion**: Need full property metadata (labels, descriptions) in registry to generate property entity blocks
+
 

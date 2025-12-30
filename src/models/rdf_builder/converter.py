@@ -6,6 +6,7 @@ from models.internal_representation.entity import Entity
 from models.rdf_builder.models.rdf_statement import RDFStatement
 from models.rdf_builder.property_registry.registry import PropertyRegistry
 from models.rdf_builder.writers.triple import TripleWriters
+from models.rdf_builder.writers.property_ontology import PropertyOntologyWriter
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ class EntityConverter:
         self.writers.write_header(output)
         self._write_entity_metadata(entity, output)
         self._write_statements(entity, output)
+        self._write_property_metadata(entity, output)
 
     def _write_entity_metadata(self, entity: Entity, output: TextIO):
         """Write entity type, labels, descriptions, aliases, sitelinks."""
@@ -55,6 +57,19 @@ class EntityConverter:
         shape = self.properties.shape(rdf_stmt.property_id)
         logger.debug(f"Writing statement for {rdf_stmt.property_id}, shape: {shape}")
         self.writers.write_statement(output, entity_id, rdf_stmt, shape)
+
+    def _write_property_metadata(self, entity: Entity, output: TextIO):
+        """Write property metadata blocks for properties used in entity."""
+        property_ids = set()
+
+        for stmt in entity.statements:
+            property_ids.add(stmt.property)
+
+        for pid in sorted(property_ids):
+            shape = self.properties.shape(pid)
+            PropertyOntologyWriter.write_property_metadata(output, shape)
+            PropertyOntologyWriter.write_property(output, shape)
+            PropertyOntologyWriter.write_novalue_class(output, pid)
 
     def convert_to_string(self, entity: Entity) -> str:
         """Convert entity to Turtle string."""
