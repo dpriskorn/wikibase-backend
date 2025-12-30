@@ -53,14 +53,15 @@ def download_entity_ttl(entity_id: str, output_dir: Path) -> None:
 
 def download_entity(entity_id: str) -> None:
     """Download both JSON and TTL for an entity"""
-    output_dir = Path(__file__).parent.parent / "test_data" / "wikibase"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    
+    json_output_dir = Path(__file__).parent.parent / "test_data" / "json" / "entities"
+    json_output_dir.mkdir(parents=True, exist_ok=True)
+    ttl_output_dir = Path(__file__).parent.parent / "test_data" / "rdf" / "ttl"
+    ttl_output_dir.mkdir(parents=True, exist_ok=True)
+
     print(f"Downloading data for {entity_id}...")
-    print(f"Output directory: {output_dir}")
-    
-    download_entity_json(entity_id, output_dir)
-    download_entity_ttl(entity_id, output_dir)
+
+    download_entity_json(entity_id, json_output_dir)
+    download_entity_ttl(entity_id, ttl_output_dir)
     
     print(f"\n✅ Downloaded both {entity_id}.json and {entity_id}.ttl")
 
