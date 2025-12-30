@@ -26,6 +26,9 @@ def split_subject_blocks(ttl: str) -> dict[str, str]:
     current_lines = []
 
     for line in ttl.splitlines():
+        if line.startswith("@prefix"):
+            continue
+        
         if line and not line.startswith((" ", "\t")):
             if current_subject:
                 blocks[current_subject] = "\n".join(current_lines).strip()

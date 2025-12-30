@@ -8,7 +8,6 @@ from models.rdf_builder.writers.triple import TripleWriters
 
 class EntityToRdfConverter(BaseModel):
     properties: PropertyRegistry
-    base_uri: str
 
     def convert_to_turtle(self, entity, output: TextIO):
         TripleWriters.write_entity_type(output, entity.id)

@@ -43,52 +43,8 @@ Triples (Turtle format)
 
 ---
 
-## Implementation Plan
-
----
-
-## Phase 1: Core RDF Structure
-
-### 1.1 Create RDF Service Directory Structure
-
-src/services/shared/rdf_generator/
-├── init.py
-├── converter.py # Main conversion logic
-├── triple_writers.py # Triple writing utilities
-├── uri_generator.py # URI generation for entities, statements, references
-├── value_formatters.py # Format values as RDF literals/URIs
-└── turtle_writer.py # Buffered Turtle output writer
-
-
----
-
-### 1.2 Implement Core Models and Constants
-
-**File:** `src/services/shared/rdf_generator/__init__.py`
-
-```python
-from .converter import EntityToRdfConverter
-
-__all__ = ["EntityToRdfConverter"]
-
-class URIGenerator:
-    """Generate URIs for entities, statements, references"""
-    
-    BASE_URI = "http://acme.test"  # From test data
-    DATA_URI = "http://data.acme.test"
-    
-    @staticmethod
-    def entity_uri(entity_id: str) -> str:
-        return f"{URIGenerator.BASE_URI}/{entity_id}"
-    
-    @staticmethod
-    def data_uri(entity_id: str) -> str:
-        return f"{URIGenerator.DATA_URI}/{entity_id}"
-    
-    @staticmethod
-    def statement_uri(statement_id: str) -> str:
-        return f"{URIGenerator.BASE_URI}/statement/{statement_id}"
-    
-    @staticmethod
-    def reference_uri(statement_uri: str, ref_index: int) -> str:
-        return f"{statement_uri}-{ref_index:09d}#ref"
+4. Missing RDF Features
+Looking at golden TTL, it has features we don't generate:
+- Direct claim triples (lines 43-51): wdt:P17 wd:Q142 ;
+- Value nodes (line 91): psv:P625 wdv:9f0355cb43b5be5caf0570c31d4fb707 ;
+- BestRank (lines 54, 62, etc.): a wikibase:Statement, wikibase:BestRank ;

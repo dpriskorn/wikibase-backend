@@ -17,8 +17,7 @@ def test_q120248304_matches_golden_ttl(property_registry):
     entity = parse_entity(entity_json)
 
     converter = EntityToRdfConverter(
-        properties=property_registry,
-        base_uri="http://acme.test"
+        properties=property_registry
     )
     actual_ttl = normalize_ttl(converter.convert_to_string(entity))
 
