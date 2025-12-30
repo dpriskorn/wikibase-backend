@@ -16,43 +16,43 @@ class TripleWriters:
     @staticmethod
     def write_entity_type(output: TextIO, entity_id: str):
         output.write(
-            f'<{TripleWriters.uri.entity_uri(entity_id)}> a wikibase:Item .\n'
+            f'{TripleWriters.uri.entity_prefixed(entity_id)} a wikibase:Item .\n'
         )
 
     @staticmethod
     def write_dataset_triples(output: TextIO, entity_id: str):
-        data_uri = TripleWriters.uri.data_uri(entity_id)
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
+        data_uri = TripleWriters.uri.data_prefixed(entity_id)
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
 
-        output.write(f'<{data_uri}> a schema:Dataset .\n')
-        output.write(f'<{data_uri}> schema:about <{entity_uri}> .\n')
+        output.write(f'{data_uri} a schema:Dataset .\n')
+        output.write(f'{data_uri} schema:about {entity_uri} .\n')
         output.write(
-            '<{data_uri}> cc:license '
+            f'{data_uri} cc:license '
             '<http://creativecommons.org/publicdomain/zero/1.0/> .\n'
         )
 
     @staticmethod
     def write_label(output: TextIO, entity_id: str, lang: str, label: str):
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
-        output.write(f'<{entity_uri}> rdfs:label "{label}"@{lang} .\n')
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
+        output.write(f'{entity_uri} rdfs:label "{label}"@{lang} .\n')
 
     @staticmethod
     def write_description(output: TextIO, entity_id: str, lang: str, description: str):
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
-        output.write(f'<{entity_uri}> schema:description "{description}"@{lang} .\n')
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
+        output.write(f'{entity_uri} schema:description "{description}"@{lang} .\n')
 
     @staticmethod
     def write_alias(output: TextIO, entity_id: str, lang: str, alias: str):
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
-        output.write(f'<{entity_uri}> skos:altLabel "{alias}"@{lang} .\n')
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
+        output.write(f'{entity_uri} skos:altLabel "{alias}"@{lang} .\n')
 
     @staticmethod
     def write_sitelink(output: TextIO, entity_id: str, sitelink_data: dict):
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
         site_key = sitelink_data.get("site", "")
         title = sitelink_data.get("title", "")
         wiki_url = f"https://{site_key}.wikipedia.org/wiki/{title.replace(' ', '_')}"
-        output.write(f'<{entity_uri}> schema:sameAs <{wiki_url}> .\n')
+        output.write(f'{entity_uri} schema:sameAs <{wiki_url}> .\n')
 
     @staticmethod
     def write_statement(
@@ -63,15 +63,15 @@ class TripleWriters:
     ):
         from models.internal_representation.ranks import Rank
 
-        entity_uri = TripleWriters.uri.entity_uri(entity_id)
-        stmt_uri = TripleWriters.uri.statement_uri(statement.statement_id)
+        entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
+        stmt_uri = TripleWriters.uri.statement_prefixed(statement.statement_id)
 
         # Link entity → statement
         output.write(
-            f'<{entity_uri}> p:{statement.property} <{stmt_uri}> .\n'
+            f'{entity_uri} p:{statement.property} {stmt_uri} .\n'
         )
 
-        output.write(f'<{stmt_uri}> a wikibase:Statement .\n')
+        output.write(f'{stmt_uri} a wikibase:Statement .\n')
 
         # Statement value
         value = ValueFormatter.format_value(statement.value)

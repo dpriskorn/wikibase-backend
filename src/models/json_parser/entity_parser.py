@@ -12,6 +12,13 @@ logger = logging.getLogger(__name__)
 
 
 def parse_entity(entity_json: dict[str, Any]) -> Entity:
+    # Handle nested structure {"entities": {"Q42": {...}}}
+    if "entities" in entity_json:
+        entities = entity_json["entities"]
+        entity_ids = list(entities.keys())
+        if entity_ids:
+            entity_json = entities[entity_ids[0]]
+
     entity_id = entity_json.get(JsonField.ID.value, "")
     entity_type = EntityKind(
         entity_json.get(JsonField.TYPE.value, EntityKind.ITEM.value)

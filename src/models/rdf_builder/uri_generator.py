@@ -20,3 +20,12 @@ class URIGenerator(BaseModel):
 
     def reference_uri(self, stmt_uri: str, idx: int) -> str:
         return f"{stmt_uri}-{idx:09d}#ref"
+
+    def entity_prefixed(self, entity_id: str) -> str:
+        return f"wd:{entity_id}"
+
+    def data_prefixed(self, entity_id: str) -> str:
+        return f"data:{entity_id}"
+
+    def statement_prefixed(self, statement_id: str) -> str:
+        return f"wds:{statement_id}"
