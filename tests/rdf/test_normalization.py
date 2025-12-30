@@ -86,3 +86,24 @@ wd:Q42 a schema:Thing ."""
     result2 = normalize_ttl(result1)
 
     assert result1 == result2
+
+
+def test_q17948861_load_and_normalize():
+    """Test loading and normalizing Q17948861 files"""
+    entity_id = "Q17948861"
+
+    json_path = TEST_DATA_DIR / "json" / "entities" / f"{entity_id}.json"
+    ttl_path = TEST_DATA_DIR / "rdf" / "ttl" / f"{entity_id}.ttl"
+
+    assert json_path.exists(), f"JSON file not found: {json_path}"
+    assert ttl_path.exists(), f"TTL file not found: {ttl_path}"
+
+    json_text = json_path.read_text(encoding="utf-8")
+    ttl_text = ttl_path.read_text(encoding="utf-8")
+
+    normalized_ttl = normalize_ttl(ttl_text)
+
+    assert len(json_text) > 0
+    assert len(ttl_text) > 0
+    assert len(normalized_ttl) > 0
+    assert "wd:Q17948861" in normalized_ttl
