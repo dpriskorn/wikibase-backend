@@ -26,7 +26,7 @@ def split_subject_blocks(ttl: str) -> dict[str, str]:
     current_lines = []
 
     for line in ttl.splitlines():
-        if line.startswith("@prefix"):
+        if line.startswith("@prefix") or line.startswith("<http"):
             continue
         
         if line and not line.startswith((" ", "\t")):
