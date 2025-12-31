@@ -1,0 +1,31 @@
+{
+  "dt": "2025-12-31T15:12:09Z",
+  "entity_id": "Q137646249",
+  "meta": {
+    "domain": "www.wikidata.org",
+    "dt": "2025-12-31T15:12:10.18763Z",
+    "request_id": "c15cf4cf-8e15-4792-a306-04d69c90026f",
+    "stream": "rdf-streaming-updater.mutation.v2",
+    "id": "6cc57c31-c5c1-4a4e-9505-fda4c764082c",
+    "topic": "eqiad.rdf-streaming-updater.mutation",
+    "partition": 0,
+    "offset": 1108289605
+  },
+  "operation": "diff",
+  "rdf_added_data": {
+    "data": "\n<http://www.wikidata.org/entity/Q137646249> <http://schema.org/dateModified> \"2025-12-31T15:12:09Z\"^^<http://www.w3.org/2001/XMLSchema#dateTime> .\n\n<http://www.wikidata.org/entity/statement/Q137646249-374bb64b-45f4-bed6-e758-776076c3199a> <http://www.w3.org/ns/prov#wasDerivedFrom> <http://www.wikidata.org/reference/950ad4f850275dcc5a26614f8ce29f567db994c1> .\n\n<http://www.wikidata.org/entity/Q137646249> <http://schema.org/version> 2449711665 .\n",
+    "mime_type": "text/turtle"
+  },
+  "rdf_deleted_data": {
+    "data": "\n<http://www.wikidata.org/entity/Q137646249> <http://schema.org/version> 2449711531 ;\n\t<http://schema.org/dateModified> \"2025-12-31T15:11:48Z\"^^<http://www.w3.org/2001/XMLSchema#dateTime> .\n",
+    "mime_type": "text/turtle"
+  },
+  "rdf_linked_shared_data": {
+    "data": "\n<http://www.wikidata.org/reference/950ad4f850275dcc5a26614f8ce29f567db994c1> <http://www.wikidata.org/prop/reference/P854> <https://www.stolpersteine-konstanz.de/stolpersteine/weil_gitta/> .\n\n<http://www.wikidata.org/value/c42dc997b09737a259a5a9c12a9c5b49> <http://wikiba.se/ontology#timeTimezone> 0 ;\n\t<http://wikiba.se/ontology#timeCalendarModel> <http://www.wikidata.org/entity/Q1985727> ;\n\t<http://wikiba.se/ontology#timeValue> \"2025-12-31T00:00:00Z\"^^<http://www.w3.org/2001/XMLSchema#dateTime> .\n\n<http://www.wikidata.org/reference/950ad4f850275dcc5a26614f8ce29f567db994c1> <http://www.wikidata.org/prop/reference/P813> \"2025-12-31T00:00:00Z\"^^<http://www.w3.org/2001/XMLSchema#dateTime> ;\n\t<http://www.wikidata.org/prop/reference/value/P813> <http://www.wikidata.org/value/c42dc997b09737a259a5a9c12a9c5b49> .\n\n<http://www.wikidata.org/value/c42dc997b09737a259a5a9c12a9c5b49> <http://wikiba.se/ontology#timePrecision> 11 ;\n\ta <http://wikiba.se/ontology#TimeValue> .\n",
+    "mime_type": "text/turtle"
+  },
+  "rev_id": 2449711665,
+  "sequence": 0,
+  "sequence_length": 1,
+  "$schema": "/mediawiki/wikibase/entity/rdf_change/2.0.0"
+}
