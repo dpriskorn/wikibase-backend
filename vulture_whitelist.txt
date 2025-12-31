@@ -215,9 +215,14 @@ ENTITIES
 MONOLINGUAL
 NOVALUE
 SOMEVALUE
+EntityConverter
+convert_to_string
+TurtleWriter
+_fetch_entity_metadata_batch
+load_property_registry
+generate_value_node_uri
+_load_referenced_entity
 normalize_from_sparql
 parse_property
-load_entity_metadata_batch
 wikibase_predicates
-DATATYPE_PREDICATES
-generate_value_node_uri
+direct

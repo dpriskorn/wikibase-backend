@@ -10,9 +10,8 @@ class RDFReference:
     """
     
     def __init__(self, reference: Reference, statement_uri: str):
-        self.original = reference
         self.statement_uri = statement_uri
-        
+
         if not reference.hash:
             raise ValueError(
                 f"Reference has no hash. "

@@ -5,7 +5,6 @@ class URIGenerator(BaseModel):
     wd: str = "http://www.wikidata.org/entity"
     data: str = "https://www.wikidata.org/wiki/Special:EntityData"
     wds: str = "http://www.wikidata.org/entity/statement"
-    wdref: str = "http://www.wikidata.org/reference"
 
     model_config = ConfigDict(frozen=True)
 
@@ -18,9 +17,6 @@ class URIGenerator(BaseModel):
     def statement_uri(self, statement_id: str) -> str:
         statement_id_normalized = statement_id.replace('$', '-')
         return f"{self.wds}/{statement_id_normalized}"
-
-    def reference_uri(self, stmt_uri: str, idx: int) -> str:
-        return f"{stmt_uri}-{idx:09d}#ref"
 
     def entity_prefixed(self, entity_id: str) -> str:
         return f"wd:{entity_id}"

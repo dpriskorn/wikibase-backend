@@ -448,10 +448,19 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 
 ### RECENT CHANGES
 
-**Entity Cache Simplification:**
+**Entity Cache Simplification (Dec 2024):**
 - ✓ Disabled SPARQL fallback in `load_entity_metadata()` - Now only loads from local JSON files
 - ✓ Fixed referenced entity metadata writing - Now uses `parse_entity()` to handle full Wikidata JSON format
 - ✓ Manual entity downloading - Use `python scripts/download_wikidata_entity.py Qxxx` to fetch entities as needed
+
+**Code Cleanup (Dec 2024):**
+- ✓ Removed unused enum values: `GLOBE_COORDINATE`, `MONOLINGUAL_TEXT` from WikibaseDatatype
+- ✓ Removed unused file: `property_predicates.py` (replaced by PropertyPredicates in models.py)
+- ✓ Removed unused attributes: `original` from RDFReference
+- ✓ Removed unused methods: `get_statement_uri()` from RDFStatement, `reference_uri()` from URIGenerator
+- ✓ Removed unused code: `_fetch_entity_metadata_batch()` (kept in whitelist for potential future use)
+- ✓ Updated vulture whitelist to reduce false positives
+- ✓ Kept `direct` field in PropertyPredicates for test compatibility (not used in production code)
 
 ### IN PROGRESS: Value Node Decomposition
 Small incremental steps for structured value support:

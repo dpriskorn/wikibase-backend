@@ -18,6 +18,7 @@
 - /raw/ endpoint returns full revision schema, /entity/ endpoint extracts nested entity
 - after each edit lets use vulture using ./run-vulture.sh to check for dead code
 - after each edit lets use vulture using ./run-black.sh to format code
+- after each edit with new tests lets use pytest to check that new tests pass
 - generally one class per file for all classes with at least 1 method
 - no relative imports
 - no __future__ imports

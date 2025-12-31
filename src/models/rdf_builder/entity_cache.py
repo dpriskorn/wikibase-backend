@@ -71,27 +71,3 @@ def load_entity_metadata(entity_id: str, metadata_dir: Path) -> dict:
 
     raise FileNotFoundError(f"Entity {entity_id} not found at {json_path}")
 
-
-def     load_entity_metadata_batch(entity_ids: list[str], metadata_dir: Path) -> dict[str, dict]:
-    """Load multiple entity metadata, fetching missing ones."""
-    results = {}
-    to_fetch = []
-
-    for entity_id in entity_ids:
-        json_path = metadata_dir / f"{entity_id}.json"
-        if json_path.exists():
-            results[entity_id] = json.loads(json_path.read_text(encoding="utf-8"))
-        else:
-            to_fetch.append(entity_id)
-
-    if to_fetch:
-        logger.info(f"Fetching metadata for {len(to_fetch)} missing entities")
-        fetched = _fetch_entity_metadata_batch(to_fetch)
-        results.update(fetched)
-
-        for entity_id, metadata in fetched.items():
-            if metadata:
-                json_path = metadata_dir / f"{entity_id}.json"
-                json_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-
-    return results

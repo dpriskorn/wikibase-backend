@@ -21,11 +21,3 @@ class RDFStatement:
         self.rank = statement.rank.value
         self.qualifiers = statement.qualifiers
         self.references = statement.references
-    
-    def get_statement_uri(self) -> str:
-        """
-        Generate wds: URI from statement GUID.
-        Replaces '$' with '-' for URI-safe format.
-        """
-        uri_guid = self.guid.replace('$', '-')
-        return f"http://www.wikidata.org/entity/statement/{uri_guid}"
