@@ -5,7 +5,7 @@
 Converts internal Entity models to RDF (Turtle format) following Wikibase RDF mapping rules.
 
 **Parser Status:** ✓ COMPLETE
-**RDF Generation Status:** 🟡 IN PROGRESS - Value nodes remaining
+**RDF Generation Status:** ✅ CORE FEATURES COMPLETE
 
 ### Parser Capabilities
 
@@ -440,93 +440,24 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 
 ## Next Steps
 
-### IN PROGRESS: Missing Value Node Features
-Remaining features for complete value node support:
+### COMPLETED: Core Features
+All major RDF generation features implemented:
 
-1. **Quantity bounds** - ✓ Completed
-   - ✓ Support `upper_bound` and `lower_bound` in QuantityValue
-   - ✓ Write `wikibase:quantityUpperBound` / `wikibase:quantityLowerBound` predicates
-   - ✓ Tests passing for bounds handling
-
-2. **Qualifier value nodes** - ✓ Completed
-   - ✓ Generate `pqv:Pxxx` links for structured qualifiers
-   - ✓ Write corresponding `wdv:` nodes for time/quantity/globe qualifiers
-   - ✓ Added `qualifier_value` predicate to PropertyPredicates
-
-3. **Reference value nodes** - ✓ Completed
-   - ✓ Generate `prv:Pxxx` links for structured references
-   - ✓ Write corresponding `wdv:` nodes for time/quantity/globe references
-   - ✓ Added `reference_value` predicate to PropertyPredicates
+- Entity type declaration
+- Labels, descriptions, aliases
+- Statements with all value types
+- Statement ranks (normal, preferred, deprecated)
+- Qualifiers with value nodes
+- References with value nodes
+- Sitelinks
+- Dataset metadata
+- Property ontology (metadata, predicates, no-value constraints)
+- Direct claims for best-rank
+- Structured value nodes (time, quantity, globe) with bounds
+- Qualifier value nodes
+- Reference value nodes
 
 ### PLANNED: Truthy Mode
-Implement lightweight RDF generation for queries:
-
-1. **Truthy-only statements** - Filter to best-rank only
-2. **Simplified output** - Direct claims only, no qualifiers/references
-3. **No value nodes** - Direct literals for all values
-
-### COMPLETED
-- ✓ Collect referenced entities - Scan all statement values for entity references (wd:Qxxx) and collect unique set
-- ✓ Generate referenced entity metadata - For each referenced entity, write full metadata block (labels, descriptions, aliases)
-- ✓ Property metadata generation - For each property used in entity:
-    - Write `wd:Pxxx a wikibase:Property` with labels, descriptions, propertyType
-    - Write all 10 predicate declarations (directClaim, claim, statementProperty, etc.)
-- ✓ Property predicate declarations - Generate `owl:ObjectProperty` blocks for each property predicate
-- ✓ No value constraint blocks - Generate `wdno:Pxxx` with blank node `owl:complementOf`
-- ✓ Direct claim triples - Generate `wdt:Pxxx` triples for best-rank (truthy) values
- - ✓ Value node decomposition - Generate `wdv:` nodes for time, quantity, and globe coordinates
-  - ✓ Value node linking - Use `psv:Pxxx` predicates to link statements to value nodes
-  - ✓ Quantity bounds - Support `upper_bound` and `lower_bound` in quantity value nodes
-  - ✓ Qualifier value nodes - Support `pqv:Pxxx` predicates for structured qualifiers
-  - ✓ Reference value nodes - Support `prv:Pxxx` predicates for structured references
-
-### COMPLETED: Structured Value Node Implementation
-
-**Value node ID generation** - ✓ Completed
-- ✓ MD5-based hash for consistent `wdv:` IDs
-- ✓ Tests passing for URI generation
-
-**Time value decomposition** - ✓ Completed
-- ✓ `wdv:` nodes with timeValue, timePrecision, timeTimezone, timeCalendarModel
-- ✓ `write_time_value_node()` writer implemented
-
-**Quantity value decomposition** - ✓ Completed
-- ✓ `wdv:` nodes with quantityAmount, quantityUnit
-- ✓ `write_quantity_value_node()` writer implemented
-
-**Globe coordinate decomposition** - ✓ Completed
-- ✓ `wdv:` nodes with geoLatitude, geoLongitude, geoPrecision, geoGlobe
-- ✓ `write_globe_value_node()` writer implemented
-
-**Value node linking** - ✓ Completed
-- ✓ `psv:Pxxx` predicates link statements to `wdv:` nodes
-- ✓ `_needs_value_node()` helper detects structured values
-- ✓ Integrated into `write_statement()` method
-
-**Test Results:**
-- ✓ 58 tests passed, 2 skipped
-- ✓ Value node writers tested (time, quantity, globe)
-- ✓ Triple writer value node detection tested
-- ✓ End-to-end conversion tested (Q120248304 with globe coordinates)
-
-### Value Node Examples
-
-Time value node:
-```turtle
-wds:Q182397-FA20AC3A-5627-4EC5-93CA-24F0F00C8AA6 psv:P569 wdv:cd6dd2e48a93286891b0753a1110ac0a .
-
-wdv:cd6dd2e48a93286891b0753a1110ac0a a wikibase:TimeValue ;
-	wikibase:timeValue "1964-05-15T00:00:00Z"^^xsd:dateTime ;
-	wikibase:timePrecision "11"^^xsd:integer ;
-	wikibase:timeTimezone "0"^^xsd:integer ;
-	wikibase:timeCalendarModel <http://www.wikidata.org/entity/Q1985727> .
-```
-
-Quantity value node:
-```turtle
-wds:Q182397-F7204F5E-AC17-4484-B35F-F3582715B77B psv:P1971 wdv:26735f5641071ce58303f506fe005a54 .
-
-wdv:26735f5641071ce58303f506fe005a54 a wikibase:QuantityValue ;
 	wikibase:quantityAmount "+3"^^xsd:decimal ;
 	wikibase:quantityUnit <http://www.wikidata.org/entity/Q199> .
 ```
