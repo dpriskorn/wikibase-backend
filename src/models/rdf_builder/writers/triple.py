@@ -1,12 +1,24 @@
+import logging
 from typing import TextIO
 
 from models.rdf_builder.property_registry.models import PropertyShape
 from models.rdf_builder.uri_generator import URIGenerator
 from models.rdf_builder.value_formatters import ValueFormatter
+from models.rdf_builder.value_node import generate_value_node_uri
+from models.rdf_builder.writers.value_node import ValueNodeWriter
+
+logger = logging.getLogger(__name__)
 
 
 class TripleWriters:
     uri = URIGenerator()
+
+    @staticmethod
+    def _needs_value_node(value) -> bool:
+        """Check if value requires structured value node"""
+        if hasattr(value, "kind"):
+            return value.kind in ("time", "quantity", "globe")
+        return False
 
     @staticmethod
     def write_header(output: TextIO):
@@ -68,15 +80,15 @@ class TripleWriters:
         shape: PropertyShape,
     ):
         from models.rdf_builder.models.rdf_reference import RDFReference
-        
+
         entity_uri = TripleWriters.uri.entity_prefixed(entity_id)
         stmt_uri_prefixed = TripleWriters.uri.statement_prefixed(rdf_statement.guid)
-        
+
         # Link entity → statement
         output.write(
             f'{entity_uri} p:{rdf_statement.property_id} {stmt_uri_prefixed} .\n'
         )
-        
+
         if rdf_statement.rank == "normal":
             output.write(f'{stmt_uri_prefixed} a wikibase:Statement, wikibase:BestRank .\n')
 
@@ -85,10 +97,25 @@ class TripleWriters:
         else:
             output.write(f'{stmt_uri_prefixed} a wikibase:Statement .\n')
 
-        value = ValueFormatter.format_value(rdf_statement.value)
-        output.write(
-            f'{stmt_uri_prefixed} {shape.predicates.statement} {value} .\n'
-        )
+        # Write statement value
+        if TripleWriters._needs_value_node(rdf_statement.value):
+            value_node_id = generate_value_node_uri(rdf_statement.value, rdf_statement.property_id)
+
+            output.write(
+                f'{stmt_uri_prefixed} {shape.predicates.value_node} wdv:{value_node_id} .\n'
+            )
+
+            if rdf_statement.value.kind == "time":
+                ValueNodeWriter.write_time_value_node(output, value_node_id, rdf_statement.value)
+            elif rdf_statement.value.kind == "quantity":
+                ValueNodeWriter.write_quantity_value_node(output, value_node_id, rdf_statement.value)
+            elif rdf_statement.value.kind == "globe":
+                ValueNodeWriter.write_globe_value_node(output, value_node_id, rdf_statement.value)
+        else:
+            value = ValueFormatter.format_value(rdf_statement.value)
+            output.write(
+                f'{stmt_uri_prefixed} {shape.predicates.statement} {value} .\n'
+            )
         
         # Rank
         rank = (

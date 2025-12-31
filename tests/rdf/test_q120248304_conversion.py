@@ -50,6 +50,10 @@ def test_q120248304_conversion(full_property_registry):
     # Check some statement values
     assert "ps:P17 wd:Q142" in actual_ttl
     assert "ps:P11840 \"I621930023\"" in actual_ttl
-    assert "ps:P625 \"Point(1.88108 50.94636)\"^^geo:wktLiteral" in actual_ttl
+    # Globe coordinate now uses value node (psv:P625 -> wdv:xxx)
+    assert "psv:P625 wdv:" in actual_ttl
+    assert "wikibase:GlobecoordinateValue" in actual_ttl
+    assert "wikibase:geoLatitude \"50.94636\"^^xsd:double" in actual_ttl
+    assert "wikibase:geoLongitude \"1.88108\"^^xsd:double" in actual_ttl
 
     logger.info("Q120248304 conversion test passed!")

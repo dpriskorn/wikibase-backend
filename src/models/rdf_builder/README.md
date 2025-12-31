@@ -49,10 +49,11 @@ Converts internal Entity models to RDF (Turtle format) following Wikibase RDF ma
 | Direct claim triples | ✓ Implemented | `write_direct_claim()` generates wdt:Pxxx for best-rank |
  | Referenced entity metadata | ✓ Implemented | Collects and writes wd:Qxxx metadata blocks |
  | **Structured Value Nodes** | | |
- | Time value decomposition | 🟡 TODO | `wdv:` nodes with timeValue, timePrecision, timeTimezone, timeCalendarModel |
- | Quantity value decomposition | 🟡 TODO | `wdv:` nodes with quantityAmount, quantityUnit, optional bounds |
- | Globe coordinate decomposition | 🟡 TODO | `wdv:` nodes with geoLatitude, geoLongitude, geoPrecision, geoGlobe |
- | Value node linking | 🟡 TODO | psv:Pxxx, pqv:Pxxx, prv:Pxxx predicates linking to wdv: nodes |
+ | Time value decomposition | ✓ Implemented | `wdv:` nodes with timeValue, timePrecision, timeTimezone, timeCalendarModel |
+ | Quantity value decomposition | ✓ Implemented | `wdv:` nodes with quantityAmount, quantityUnit |
+ | Globe coordinate decomposition | ✓ Implemented | `wdv:` nodes with geoLatitude, geoLongitude, geoPrecision, geoGlobe |
+ | Value node linking | ✓ Implemented | psv:Pxxx predicates link statements to wdv: nodes |
+ | Value node URI generation | ✓ Implemented | MD5-based hash for consistent `wdv:` IDs |
 
 ---
 
@@ -445,42 +446,37 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 - ✓ Property predicate declarations - Generate `owl:ObjectProperty` blocks for each property predicate
 - ✓ No value constraint blocks - Generate `wdno:Pxxx` with blank node `owl:complementOf`
 - ✓ Direct claim triples - Generate `wdt:Pxxx` triples for best-rank (truthy) values
+- ✓ Value node decomposition - Generate `wdv:` nodes for time, quantity, and globe coordinates
+ - ✓ Value node linking - Use `psv:Pxxx` predicates to link statements to value nodes
 
-### RECENT CHANGES
+### COMPLETED: Structured Value Node Implementation
 
-**Entity Cache Simplification (Dec 2024):**
-- ✓ Disabled SPARQL fallback in `load_entity_metadata()` - Now only loads from local JSON files
-- ✓ Fixed referenced entity metadata writing - Now uses `parse_entity()` to handle full Wikidata JSON format
-- ✓ Manual entity downloading - Use `python scripts/download_wikidata_entity.py Qxxx` to fetch entities as needed
+**Value node ID generation** - ✓ Completed
+- ✓ MD5-based hash for consistent `wdv:` IDs
+- ✓ Tests passing for URI generation
 
-**Code Cleanup (Dec 2024):**
-- ✓ Removed unused enum values: `GLOBE_COORDINATE`, `MONOLINGUAL_TEXT` from WikibaseDatatype
-- ✓ Removed unused file: `property_predicates.py` (replaced by PropertyPredicates in models.py)
-- ✓ Removed unused attributes: `original` from RDFReference
-- ✓ Removed unused methods: `get_statement_uri()` from RDFStatement, `reference_uri()` from URIGenerator
-- ✓ Removed unused code: `_fetch_entity_metadata_batch()` (kept in whitelist for potential future use)
-- ✓ Updated vulture whitelist to reduce false positives
-- ✓ Kept `direct` field in PropertyPredicates for test compatibility (not used in production code)
+**Time value decomposition** - ✓ Completed
+- ✓ `wdv:` nodes with timeValue, timePrecision, timeTimezone, timeCalendarModel
+- ✓ `write_time_value_node()` writer implemented
 
-### IN PROGRESS: Value Node Decomposition
-Small incremental steps for structured value support:
+**Quantity value decomposition** - ✓ Completed
+- ✓ `wdv:` nodes with quantityAmount, quantityUnit
+- ✓ `write_quantity_value_node()` writer implemented
 
-1. **Value node ID generation** - Create hash-based `wdv:` URIs for structured values
-2. **Time value decomposition** - Generate `wdv:` nodes for time values with:
-   - `wikibase:timeValue` - The datetime value
-   - `wikibase:timePrecision` - Precision level (0-14)
-   - `wikibase:timeTimezone` - Timezone offset
-   - `wikibase:timeCalendarModel` - Calendar model URI
-3. **Quantity value decomposition** - Generate `wdv:` nodes for quantity values with:
-   - `wikibase:quantityAmount` - The numeric value
-   - `wikibase:quantityUnit` - Unit entity URI
-   - Optional `wikibase:quantityUpperBound` / `wikibase:quantityLowerBound`
-4. **Globe coordinate decomposition** - Generate `wdv:` nodes for geo coordinates with:
-   - `wikibase:geoLatitude` - Latitude value
-   - `wikibase:geoLongitude` - Longitude value
-   - `wikibase:geoPrecision` - Precision value
-   - `wikibase:geoGlobe` - Globe entity URI
-5. **Value node linking** - Use `psv:`, `pqv:`, `prv:` predicates to link statements to value nodes
+**Globe coordinate decomposition** - ✓ Completed
+- ✓ `wdv:` nodes with geoLatitude, geoLongitude, geoPrecision, geoGlobe
+- ✓ `write_globe_value_node()` writer implemented
+
+**Value node linking** - ✓ Completed
+- ✓ `psv:Pxxx` predicates link statements to `wdv:` nodes
+- ✓ `_needs_value_node()` helper detects structured values
+- ✓ Integrated into `write_statement()` method
+
+**Test Results:**
+- ✓ 58 tests passed, 2 skipped
+- ✓ Value node writers tested (time, quantity, globe)
+- ✓ Triple writer value node detection tested
+- ✓ End-to-end conversion tested (Q120248304 with globe coordinates)
 
 ### Value Node Examples
 
