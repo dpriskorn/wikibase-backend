@@ -9,8 +9,6 @@ class WikibaseDatatype(str, Enum):
     STRING = "string"
     TIME = "time"
     QUANTITY = "quantity"
-    GLOBE_COORDINATE = "globe-coordinate"
-    MONOLINGUAL_TEXT = "monolingualtext"
     COMMONS_MEDIA = "commonsMedia"
     EXTERNAL_ID = "external-id"
     URL = "url"

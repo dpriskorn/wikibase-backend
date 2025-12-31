@@ -215,3 +215,9 @@ ENTITIES
 MONOLINGUAL
 NOVALUE
 SOMEVALUE
+normalize_from_sparql
+parse_property
+load_entity_metadata_batch
+wikibase_predicates
+DATATYPE_PREDICATES
+generate_value_node_uri

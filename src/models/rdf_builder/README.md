@@ -446,6 +446,13 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 - ✓ No value constraint blocks - Generate `wdno:Pxxx` with blank node `owl:complementOf`
 - ✓ Direct claim triples - Generate `wdt:Pxxx` triples for best-rank (truthy) values
 
+### RECENT CHANGES
+
+**Entity Cache Simplification:**
+- ✓ Disabled SPARQL fallback in `load_entity_metadata()` - Now only loads from local JSON files
+- ✓ Fixed referenced entity metadata writing - Now uses `parse_entity()` to handle full Wikidata JSON format
+- ✓ Manual entity downloading - Use `python scripts/download_wikidata_entity.py Qxxx` to fetch entities as needed
+
 ### IN PROGRESS: Value Node Decomposition
 Small incremental steps for structured value support:
 

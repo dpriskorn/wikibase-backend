@@ -63,21 +63,13 @@ def _fetch_entity_metadata_batch(entity_ids: list[str]) -> dict[str, dict]:
 
 
 def load_entity_metadata(entity_id: str, metadata_dir: Path) -> dict:
-    """Load entity metadata (labels, descriptions) from disk, or fetch via SPARQL if missing."""
+    """Load entity metadata (labels, descriptions) from disk only."""
     json_path = metadata_dir / f"{entity_id}.json"
 
     if json_path.exists():
         return json.loads(json_path.read_text(encoding="utf-8"))
 
-    metadata = _fetch_entity_metadata_batch([entity_id]).get(entity_id)
-
-    if not metadata:
-        raise FileNotFoundError(f"Entity {entity_id} not found")
-
-    if metadata:
-        json_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-
-    return metadata
+    raise FileNotFoundError(f"Entity {entity_id} not found at {json_path}")
 
 
 def     load_entity_metadata_batch(entity_ids: list[str], metadata_dir: Path) -> dict[str, dict]:

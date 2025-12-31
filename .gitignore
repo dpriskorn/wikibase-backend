@@ -24,3 +24,4 @@ mediawiki-extensions-Wikibase
 # test data cache
 test_data/properties/*.csv
 test_data/properties/*.json
+/safe-sh
