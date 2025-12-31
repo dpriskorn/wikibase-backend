@@ -437,6 +437,28 @@ Looking at `test_data/rdf/ttl/Q17948861.ttl` vs generated output, following feat
 
 ## Next Steps
 
+### IN PROGRESS: Missing Value Node Features
+Remaining features for complete value node support:
+
+1. **Quantity bounds** - 🟡 TODO
+   - Support `upper_bound` and `lower_bound` in QuantityValue
+   - Write `wikibase:quantityUpperBound` / `wikibase:quantityLowerBound` predicates
+
+2. **Qualifier value nodes** - 🟡 TODO
+   - Generate `pqv:Pxxx` links for structured qualifiers
+   - Write corresponding `wdv:` nodes for time/quantity/globe qualifiers
+
+3. **Reference value nodes** - 🟡 TODO
+   - Generate `prv:Pxxx` links for structured references
+   - Write corresponding `wdv:` nodes for time/quantity/globe references
+
+### PLANNED: Truthy Mode
+Implement lightweight RDF generation for queries:
+
+1. **Truthy-only statements** - Filter to best-rank only
+2. **Simplified output** - Direct claims only, no qualifiers/references
+3. **No value nodes** - Direct literals for all values
+
 ### COMPLETED
 - ✓ Collect referenced entities - Scan all statement values for entity references (wd:Qxxx) and collect unique set
 - ✓ Generate referenced entity metadata - For each referenced entity, write full metadata block (labels, descriptions, aliases)
