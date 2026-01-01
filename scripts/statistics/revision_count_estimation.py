@@ -12,19 +12,25 @@ HEADERS = {
 session = requests.Session()
 session.headers.update(HEADERS)
 
+
 def random_qids(n, batch=50):
     qids = []
     while len(qids) < n:
-        r = session.get(API, params={
-            "action": "query",
-            "list": "random",
-            "rnnamespace": 0,
-            "rnlimit": min(batch, n - len(qids)),
-            "format": "json"
-        }, timeout=10)
+        r = session.get(
+            API,
+            params={
+                "action": "query",
+                "list": "random",
+                "rnnamespace": 0,
+                "rnlimit": min(batch, n - len(qids)),
+                "format": "json",
+            },
+            timeout=10,
+        )
         r.raise_for_status()
         qids.extend(x["title"] for x in r.json()["query"]["random"])
     return qids
+
 
 def count_revisions(qid):
     count = 0
@@ -34,7 +40,7 @@ def count_revisions(qid):
         "titles": qid,
         "rvlimit": "max",
         "rvprop": "ids",
-        "format": "json"
+        "format": "json",
     }
 
     while True:
@@ -55,6 +61,7 @@ def count_revisions(qid):
         time.sleep(0.05)
 
     return count
+
 
 qids = random_qids(300)
 rev_counts = []

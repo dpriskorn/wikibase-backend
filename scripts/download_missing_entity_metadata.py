@@ -22,10 +22,28 @@ def find_missing_referenced_entities(entities_dir: Path) -> list[str]:
                     if "mainsnak" in claim and "datavalue" in claim["mainsnak"]:
                         datavalue = claim["mainsnak"]["datavalue"]
                         if datavalue.get("type") == "wikibase-entityid":
-                            numeric_id = datavalue.get("value", {}).get("numeric-id")
-                            if numeric_id:
-                                entity_id = f"Q{numeric_id}"
+                            entity_id = datavalue.get("value", {}).get("id")
+                            if entity_id:
                                 referenced.add(entity_id)
+                    
+                    for qual_list in claim.get("qualifiers", {}).values():
+                        for qual in qual_list:
+                            if "datavalue" in qual:
+                                datavalue = qual["datavalue"]
+                                if datavalue.get("type") == "wikibase-entityid":
+                                    entity_id = datavalue.get("value", {}).get("id")
+                                    if entity_id:
+                                        referenced.add(entity_id)
+                    
+                    for ref in claim.get("references", []):
+                        for snak_list in ref.get("snaks", {}).values():
+                            for snak in snak_list:
+                                if "datavalue" in snak:
+                                    datavalue = snak["datavalue"]
+                                    if datavalue.get("type") == "wikibase-entityid":
+                                        entity_id = datavalue.get("value", {}).get("id")
+                                        if entity_id:
+                                            referenced.add(entity_id)
 
     missing = referenced - existing
     return sorted(missing)

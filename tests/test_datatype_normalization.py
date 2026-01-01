@@ -1,6 +1,7 @@
 """
 Test CamelCase to kebab-case normalization
 """
+
 import sys
 from pathlib import Path
 
@@ -14,11 +15,16 @@ def test_camelcase_to_kebab_normalization():
     # Test Wikibase prefixes
     assert Datatype.normalize_from_sparql("WikibaseItem") == "wikibase-item"
     assert Datatype.normalize_from_sparql("WikibaseString") == "wikibase-string"
-    assert Datatype.normalize_from_sparql("WikibaseMonolingualtext") == "wikibase-monolingualtext"
+    assert (
+        Datatype.normalize_from_sparql("WikibaseMonolingualtext")
+        == "wikibase-monolingualtext"
+    )
     assert Datatype.normalize_from_sparql("WikibaseExternalId") == "external-id"
     assert Datatype.normalize_from_sparql("WikibaseUrl") == "url"
     assert Datatype.normalize_from_sparql("WikibaseProperty") == "wikibase-property"
-    assert Datatype.normalize_from_sparql("WikibaseMusicalNotation") == "musical-notation"
+    assert (
+        Datatype.normalize_from_sparql("WikibaseMusicalNotation") == "musical-notation"
+    )
 
     # Test without prefix (variants)
     assert Datatype.normalize_from_sparql("Item") == "item"

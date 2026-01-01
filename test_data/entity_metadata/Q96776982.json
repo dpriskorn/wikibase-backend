@@ -1,0 +1,15 @@
+{
+  "id": "Q96776982",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Share Virtual Discovery Environment 1.0"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "vendor-owned, library-driven initiative which brings together the bibliographic catalogues and authority files of a community of libraries in a shared discovery environment based on linked data"
+    }
+  }
+}

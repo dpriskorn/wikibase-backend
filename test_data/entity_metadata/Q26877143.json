@@ -1,0 +1,15 @@
+{
+  "id": "Q26877143",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "unspecified calendar, assumed Julian"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "The calendar used for this date is assumed to be the Julian calendar, qualifier for P1480"
+    }
+  }
+}

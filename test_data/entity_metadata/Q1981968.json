@@ -1,0 +1,15 @@
+{
+  "id": "Q1981968",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "heuristic"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "type of algorithm that may sometimes fail or produce an approximate, incorrect, or suboptimal result"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "Q43649390",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Wikidata Q identifier"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "unique identifier (UID) used in Wikidata"
+    }
+  }
+}

@@ -1,4 +1,7 @@
-from models.rdf_builder.property_registry.models import PropertyShape, PropertyPredicates
+from models.rdf_builder.property_registry.models import (
+    PropertyShape,
+    PropertyPredicates,
+)
 
 
 def property_shape(

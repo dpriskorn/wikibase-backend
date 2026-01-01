@@ -1,0 +1,15 @@
+{
+  "id": "P18",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "image"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "image of relevant illustration of the subject; if available, also use more specific properties (sample: coat of arms image, locator map, flag image, signature image, logo image, collage image)"
+    }
+  }
+}

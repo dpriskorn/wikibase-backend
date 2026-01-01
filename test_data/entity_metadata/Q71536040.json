@@ -1,0 +1,15 @@
+{
+  "id": "Q71536040",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "most precise value"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "reason for preferred rank based on level of detail, time precision (e.g. day instead of year)"
+    }
+  }
+}

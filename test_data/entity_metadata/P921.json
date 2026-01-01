@@ -1,0 +1,15 @@
+{
+  "id": "P921",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "main subject"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "primary topic of a work or act of communication"
+    }
+  }
+}

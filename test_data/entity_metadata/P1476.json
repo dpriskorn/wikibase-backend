@@ -1,0 +1,15 @@
+{
+  "id": "P1476",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "title"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "published name of a work, such as a newspaper article, a literary work, piece of music, a website, or a performance work"
+    }
+  }
+}

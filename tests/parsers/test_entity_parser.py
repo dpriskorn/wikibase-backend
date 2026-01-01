@@ -30,9 +30,9 @@ def test_parse_q1_minimal():
     """Test parsing minimal entity with only id and type"""
     with open(TEST_DATA_JSON_DIR / "entities/Q1.json") as f:
         entity_json = json.load(f)
-    
+
     entity = parse_entity(entity_json)
-    
+
     assert entity.id == "Q1"
     assert entity.type == "item"
     assert len(entity.labels) > 0  # Q1 now has labels
@@ -85,15 +85,15 @@ def test_parse_q42_detailed():
 def test_parse_p2():
     """Test parsing P2.json"""
     p2_path = TEST_DATA_JSON_DIR / "entities/P2.json"
-    
+
     if not p2_path.exists():
         pytest.skip("P2.json not found in test data")
-    
+
     with open(p2_path) as f:
         entity_json = json.load(f)
-    
+
     entity = parse_entity(entity_json)
-    
+
     assert entity.id == "P2"
     assert entity.type == "item"
     assert entity.labels == {

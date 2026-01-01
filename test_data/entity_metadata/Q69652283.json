@@ -1,0 +1,15 @@
+{
+  "id": "Q69652283",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "inferred from title"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "inferring a statement for a work item from the title"
+    }
+  }
+}

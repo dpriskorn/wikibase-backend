@@ -1,0 +1,15 @@
+{
+  "id": "Q28054658",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Mix'n'match"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "tool for importing data sets into Wikidata"
+    }
+  }
+}

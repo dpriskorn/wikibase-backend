@@ -1,0 +1,15 @@
+{
+  "id": "P1680",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "subtitle"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "for works, when the title is followed by a subtitle"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "Q45403344",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "redirect"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "deprecation because this identifier redirects to another identifier"
+    }
+  }
+}

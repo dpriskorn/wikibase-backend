@@ -1,0 +1,15 @@
+{
+  "id": "Q465",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "DBpedia"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "online database project of structured data extracted from Wikipedia"
+    }
+  }
+}

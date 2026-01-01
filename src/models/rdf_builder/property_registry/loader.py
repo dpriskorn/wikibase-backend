@@ -6,7 +6,6 @@ from models.rdf_builder.property_registry.registry import PropertyRegistry
 from models.rdf_builder.ontology.datatypes import property_shape
 
 
-
 def load_property_registry(path: Path) -> PropertyRegistry:
     """Load property registry from CSV and JSON files.
 
@@ -19,7 +18,7 @@ def load_property_registry(path: Path) -> PropertyRegistry:
     datatypes = {}
 
     if csv_path.exists():
-        with open(csv_path, encoding='utf-8') as f:
+        with open(csv_path, encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 datatypes[row["property_id"]] = row["datatype"]
@@ -32,6 +31,8 @@ def load_property_registry(path: Path) -> PropertyRegistry:
         labels = data.get("labels", {})
         descriptions = data.get("descriptions", {})
 
-        shapes[pid] = property_shape(pid, datatype, labels=labels, descriptions=descriptions)
+        shapes[pid] = property_shape(
+            pid, datatype, labels=labels, descriptions=descriptions
+        )
 
     return PropertyRegistry(properties=shapes)

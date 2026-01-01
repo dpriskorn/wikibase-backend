@@ -1,0 +1,15 @@
+{
+  "id": "Q90720978",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Provenio"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "provenance database of book owners and the book provenance records"
+    }
+  }
+}

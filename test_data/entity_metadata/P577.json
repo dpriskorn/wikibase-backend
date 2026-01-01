@@ -1,0 +1,15 @@
+{
+  "id": "P577",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "publication date"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "date or point in time when a work or product was first published or released"
+    }
+  }
+}

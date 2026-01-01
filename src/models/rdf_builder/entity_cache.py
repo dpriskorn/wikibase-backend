@@ -17,7 +17,7 @@ def _fetch_entity_metadata_batch(entity_ids: list[str]) -> dict[str, dict]:
     results = {}
 
     for i in range(0, len(entity_ids), batch_size):
-        batch = entity_ids[i:i + batch_size]
+        batch = entity_ids[i : i + batch_size]
         values_clause = " ".join([f"wd:{eid}" for eid in batch])
 
         query = f"""
@@ -33,7 +33,9 @@ def _fetch_entity_metadata_batch(entity_ids: list[str]) -> dict[str, dict]:
                 "https://query.wikidata.org/sparql",
                 params={"query": query, "format": "json"},
                 timeout=60,
-                headers={"User-Agent": "WikibaseBackend/1.0 (research@wikibase-backend.org)"}
+                headers={
+                    "User-Agent": "WikibaseBackend/1.0 (research@wikibase-backend.org)"
+                },
             )
             response.raise_for_status()
 
@@ -48,11 +50,15 @@ def _fetch_entity_metadata_batch(entity_ids: list[str]) -> dict[str, dict]:
                 if label:
                     metadata["labels"] = {"en": {"language": "en", "value": label}}
                 if description:
-                    metadata["descriptions"] = {"en": {"language": "en", "value": description}}
+                    metadata["descriptions"] = {
+                        "en": {"language": "en", "value": description}
+                    }
 
                 results[entity_id] = metadata
 
-            logger.info(f"Fetched metadata for {len(batch)} entities (batch {i//batch_size + 1})")
+            logger.info(
+                f"Fetched metadata for {len(batch)} entities (batch {i//batch_size + 1})"
+            )
             time.sleep(2)
 
         except Exception as e:
@@ -63,7 +69,9 @@ def _fetch_entity_metadata_batch(entity_ids: list[str]) -> dict[str, dict]:
     return results
 
 
-def load_entity_metadata_batch(entity_ids: list[str], metadata_dir: Path) -> dict[str, bool]:
+def load_entity_metadata_batch(
+    entity_ids: list[str], metadata_dir: Path
+) -> dict[str, bool]:
     """Fetch and save metadata for multiple entities.
 
     Args:
@@ -81,7 +89,7 @@ def load_entity_metadata_batch(entity_ids: list[str], metadata_dir: Path) -> dic
     for entity_id, metadata in fetched_metadata.items():
         if metadata:
             output_path = metadata_dir / f"{entity_id}.json"
-            with open(output_path, 'w', encoding='utf-8') as f:
+            with open(output_path, "w", encoding="utf-8") as f:
                 json.dump(metadata, f, indent=2, ensure_ascii=False)
             logger.info(f"Saved metadata for {entity_id} to {output_path}")
             results[entity_id] = True
@@ -100,4 +108,3 @@ def load_entity_metadata(entity_id: str, metadata_dir: Path) -> dict:
         return json.loads(json_path.read_text(encoding="utf-8"))
 
     raise FileNotFoundError(f"Entity {entity_id} not found at {json_path}")
-

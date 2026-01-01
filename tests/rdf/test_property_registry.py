@@ -2,16 +2,17 @@ import json
 from pathlib import Path
 import pytest
 
-from models.rdf_builder.property_registry.models import PropertyShape, PropertyPredicates
+from models.rdf_builder.property_registry.models import (
+    PropertyShape,
+    PropertyPredicates,
+)
 from models.rdf_builder.property_registry.registry import PropertyRegistry
 from models.rdf_builder.property_registry.loader import load_property_registry
 from models.rdf_builder.ontology.datatypes import property_shape
 
 
 def test_property_shape_with_labels_and_descriptions():
-    labels = {
-        "en": {"language": "en", "value": "instance of"}
-    }
+    labels = {"en": {"language": "en", "value": "instance of"}}
     descriptions = {
         "en": {"language": "en", "value": "type to which this subject corresponds"}
     }
@@ -20,13 +21,10 @@ def test_property_shape_with_labels_and_descriptions():
         pid="P31",
         datatype="wikibase-item",
         predicates=PropertyPredicates(
-            direct="wdt:P31",
-            statement="ps:P31",
-            qualifier="pq:P31",
-            reference="pr:P31"
+            direct="wdt:P31", statement="ps:P31", qualifier="pq:P31", reference="pr:P31"
         ),
         labels=labels,
-        descriptions=descriptions
+        descriptions=descriptions,
     )
 
     assert shape.pid == "P31"
@@ -41,11 +39,8 @@ def test_property_shape_empty_labels_descriptions():
         pid="P17",
         datatype="wikibase-item",
         predicates=PropertyPredicates(
-            direct="wdt:P17",
-            statement="ps:P17",
-            qualifier="pq:P17",
-            reference="pr:P17"
-        )
+            direct="wdt:P17", statement="ps:P17", qualifier="pq:P17", reference="pr:P17"
+        ),
     )
 
     assert shape.labels == {}
@@ -54,13 +49,12 @@ def test_property_shape_empty_labels_descriptions():
 
 def test_property_shape_factory_with_labels_descriptions():
     labels = {"en": {"language": "en", "value": "instance of"}}
-    descriptions = {"en": {"language": "en", "value": "type to which this subject corresponds"}}
+    descriptions = {
+        "en": {"language": "en", "value": "type to which this subject corresponds"}
+    }
 
     shape = property_shape(
-        "P31",
-        "wikibase-item",
-        labels=labels,
-        descriptions=descriptions
+        "P31", "wikibase-item", labels=labels, descriptions=descriptions
     )
 
     assert shape.pid == "P31"
@@ -79,14 +73,11 @@ def test_property_shape_factory_without_labels_descriptions():
 
 def test_property_shape_factory_time_datatype_with_metadata():
     labels = {"en": {"language": "en", "value": "point in time"}}
-    descriptions = {"en": {"language": "en", "value": "time and date something took place"}}
+    descriptions = {
+        "en": {"language": "en", "value": "time and date something took place"}
+    }
 
-    shape = property_shape(
-        "P585",
-        "time",
-        labels=labels,
-        descriptions=descriptions
-    )
+    shape = property_shape("P585", "time", labels=labels, descriptions=descriptions)
 
     assert shape.pid == "P585"
     assert shape.datatype == "time"
@@ -97,8 +88,12 @@ def test_property_shape_factory_time_datatype_with_metadata():
 
 def test_property_registry_shape_method():
     properties = {
-        "P31": property_shape("P31", "wikibase-item", labels={"en": {"language": "en", "value": "instance of"}}),
-        "P17": property_shape("P17", "wikibase-item")
+        "P31": property_shape(
+            "P31",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "instance of"}},
+        ),
+        "P17": property_shape("P17", "wikibase-item"),
     }
     registry = PropertyRegistry(properties=properties)
 
@@ -124,7 +119,9 @@ def test_loader_with_json_and_csv(tmp_path: Path):
     p31_json = {
         "id": "P31",
         "labels": {"en": {"language": "en", "value": "instance of"}},
-        "descriptions": {"en": {"language": "en", "value": "type to which this subject corresponds"}}
+        "descriptions": {
+            "en": {"language": "en", "value": "type to which this subject corresponds"}
+        },
     }
     p31_path = tmp_path / "P31.json"
     p31_path.write_text(json.dumps(p31_json))
@@ -132,7 +129,7 @@ def test_loader_with_json_and_csv(tmp_path: Path):
     p17_json = {
         "id": "P17",
         "labels": {"en": {"language": "en", "value": "country"}},
-        "descriptions": {}
+        "descriptions": {},
     }
     p17_path = tmp_path / "P17.json"
     p17_path.write_text(json.dumps(p17_json))
@@ -143,7 +140,10 @@ def test_loader_with_json_and_csv(tmp_path: Path):
     assert p31_shape.pid == "P31"
     assert p31_shape.datatype == "wikibase-item"
     assert p31_shape.labels["en"]["value"] == "instance of"
-    assert p31_shape.descriptions["en"]["value"] == "type to which this subject corresponds"
+    assert (
+        p31_shape.descriptions["en"]["value"]
+        == "type to which this subject corresponds"
+    )
 
     p17_shape = registry.shape("P17")
     assert p17_shape.pid == "P17"
@@ -155,7 +155,7 @@ def test_loader_with_json_and_csv(tmp_path: Path):
 def test_loader_without_csv_fallback_to_string(tmp_path: Path):
     p31_json = {
         "id": "P31",
-        "labels": {"en": {"language": "en", "value": "instance of"}}
+        "labels": {"en": {"language": "en", "value": "instance of"}},
     }
     p31_path = tmp_path / "P31.json"
     p31_path.write_text(json.dumps(p31_json))

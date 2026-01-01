@@ -1,0 +1,15 @@
+{
+  "id": "Q112943271",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "disfavored"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "reason for deprecated rank applicable to values which are seen as less preferable to another form or to the omission of that value"
+    }
+  }
+}

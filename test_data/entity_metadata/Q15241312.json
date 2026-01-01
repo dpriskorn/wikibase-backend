@@ -1,0 +1,15 @@
+{
+  "id": "Q15241312",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Freebase Data Dumps"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "dumps of the public part of Google's Knowledge Graph"
+    }
+  }
+}

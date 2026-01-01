@@ -2,17 +2,15 @@ import hashlib
 import re
 from typing import Any
 
-from models.rdf_builder.hashing.deduplication_cache import HashDedupeBag
-
 
 def _format_scientific_notation(value: float) -> str:
     """Format value in scientific notation without leading zeros in exponent.
-    
+
     Converts Python's 1.0E-05 format to Wikidata's 1.0E-5 format.
-    
+
     Args:
         value: Numeric value to format
-        
+
     Returns:
         String in scientific notation (e.g., "1.0E-5")
     """
@@ -26,41 +24,34 @@ def _format_scientific_notation(value: float) -> str:
     return formatted
 
 
-def generate_value_node_uri(value: Any, property_id: str, dedupe=None) -> str:
+def generate_value_node_uri(value: Any) -> str:
     """
     Generate wdv: URI for structured values using MD5 hash.
-    
-    The hash is based on the serialized value representation.
-    This ensures consistent URIs for identical values across entities.
-    
+
+    The hash is based on the serialized value representation only,
+    ensuring consistent URIs for identical values across entities,
+    properties, and contexts (statements, qualifiers, references).
+
     Args:
-        value: The value object (TimeValue, QuantityValue, etc.)
-        property_id: Property ID for context (e.g., "P569")
-        dedupe: Optional HashDedupeBag for deduplication tracking
-    
+        value: The value object (TimeValue, QuantityValue, GlobeValue)
+
     Returns:
         Value node ID (e.g., "cd6dd2e48a93286891b0753a1110ac0a")
-    
+
     Examples:
         >>> time_val = TimeValue(value="+1964-05-15T00:00:00Z", precision=11)
-        >>> generate_value_node_uri(time_val, "P569")
+        >>> generate_value_node_uri(time_val)
         'cd6dd2e48a93286891b0753a1110ac0a'
     """
     value_str = _serialize_value(value)
-    hash_input = f"{property_id}:{value_str}".encode("utf-8")
-    hash_val = hashlib.md5(hash_input).hexdigest()
-    
-    if dedupe is not None:
-        seen = dedupe.already_seen(hash_val, 'wdv')
-        print(f"DEBUG: Hash {hash_val} seen before: {seen}")
-    
+    hash_val = hashlib.md5(value_str.encode("utf-8")).hexdigest()
     return hash_val
 
 
 def _serialize_value(value: Any) -> str:
     """
     Serialize value object to string for hashing.
-    
+
     Different value types have different serialization formats.
     """
     if hasattr(value, "kind"):

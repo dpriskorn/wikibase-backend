@@ -1,0 +1,15 @@
+{
+  "id": "Q42727519",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "item/value with less precision and/or accuracy"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "use for less 'correct' statements, but not less precise statements"
+    }
+  }
+}

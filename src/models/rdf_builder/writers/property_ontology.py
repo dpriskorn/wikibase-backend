@@ -25,29 +25,29 @@ class PropertyOntologyWriter:
             output.write(f'\tschema:description "{description}"@{lang} ;\n')
 
         datatype_uri = PropertyOntologyWriter._datatype_uri(shape.datatype)
-        output.write(f'\twikibase:propertyType <{datatype_uri}> ;\n')
+        output.write(f"\twikibase:propertyType <{datatype_uri}> ;\n")
 
-        output.write(f'\twikibase:directClaim wdt:{pid} ;\n')
-        output.write(f'\twikibase:claim p:{pid} ;\n')
-        output.write(f'\twikibase:statementProperty ps:{pid} ;\n')
+        output.write(f"\twikibase:directClaim wdt:{pid} ;\n")
+        output.write(f"\twikibase:claim p:{pid} ;\n")
+        output.write(f"\twikibase:statementProperty ps:{pid} ;\n")
 
         if shape.predicates.value_node:
-            output.write(f'\twikibase:statementValue {shape.predicates.value_node} ;\n')
-            output.write(f'\twikibase:qualifierValue pqv:{pid} ;\n')
-            output.write(f'\twikibase:referenceValue prv:{pid} ;\n')
+            output.write(f"\twikibase:statementValue {shape.predicates.value_node} ;\n")
+            output.write(f"\twikibase:qualifierValue pqv:{pid} ;\n")
+            output.write(f"\twikibase:referenceValue prv:{pid} ;\n")
 
         if shape.predicates.statement_normalized:
-            output.write(f'\twikibase:statementValueNormalized psn:{pid} ;\n')
+            output.write(f"\twikibase:statementValueNormalized psn:{pid} ;\n")
         if shape.predicates.qualifier_normalized:
-            output.write(f'\twikibase:qualifierValueNormalized pqn:{pid} ;\n')
+            output.write(f"\twikibase:qualifierValueNormalized pqn:{pid} ;\n")
         if shape.predicates.reference_normalized:
-            output.write(f'\twikibase:referenceValueNormalized prn:{pid} ;\n')
+            output.write(f"\twikibase:referenceValueNormalized prn:{pid} ;\n")
         if shape.predicates.direct_normalized:
-            output.write(f'\twikibase:directClaimNormalized wdtn:{pid} ;\n')
+            output.write(f"\twikibase:directClaimNormalized wdtn:{pid} ;\n")
 
-        output.write(f'\twikibase:qualifier pq:{pid} ;\n')
-        output.write(f'\twikibase:reference pr:{pid} ;\n')
-        output.write(f'\twikibase:novalue wdno:{pid} .\n')
+        output.write(f"\twikibase:qualifier pq:{pid} ;\n")
+        output.write(f"\twikibase:reference pr:{pid} ;\n")
+        output.write(f"\twikibase:novalue wdno:{pid} .\n")
 
     @staticmethod
     def _datatype_uri(datatype: str) -> str:
@@ -77,22 +77,22 @@ class PropertyOntologyWriter:
     def write_property(output: TextIO, shape: PropertyShape):
         """Write property ontology with all predicate declarations"""
         pid = shape.pid
-        output.write(f'p:{pid} a owl:ObjectProperty .\n')
-        output.write(f'psv:{pid} a owl:ObjectProperty .\n')
-        output.write(f'pqv:{pid} a owl:ObjectProperty .\n')
-        output.write(f'prv:{pid} a owl:ObjectProperty .\n')
-        output.write(f'wdt:{pid} a {get_owl_type(shape.datatype)} .\n')
-        output.write(f'ps:{pid} a owl:ObjectProperty .\n')
-        output.write(f'pq:{pid} a owl:ObjectProperty .\n')
-        output.write(f'pr:{pid} a owl:ObjectProperty .\n')
+        output.write(f"p:{pid} a owl:ObjectProperty .\n")
+        output.write(f"psv:{pid} a owl:ObjectProperty .\n")
+        output.write(f"pqv:{pid} a owl:ObjectProperty .\n")
+        output.write(f"prv:{pid} a owl:ObjectProperty .\n")
+        output.write(f"wdt:{pid} a {get_owl_type(shape.datatype)} .\n")
+        output.write(f"ps:{pid} a owl:ObjectProperty .\n")
+        output.write(f"pq:{pid} a owl:ObjectProperty .\n")
+        output.write(f"pr:{pid} a owl:ObjectProperty .\n")
         if shape.predicates.statement_normalized:
-            output.write(f'psn:{pid} a owl:ObjectProperty .\n')
+            output.write(f"psn:{pid} a owl:ObjectProperty .\n")
         if shape.predicates.qualifier_normalized:
-            output.write(f'pqn:{pid} a owl:ObjectProperty .\n')
+            output.write(f"pqn:{pid} a owl:ObjectProperty .\n")
         if shape.predicates.reference_normalized:
-            output.write(f'prn:{pid} a owl:ObjectProperty .\n')
+            output.write(f"prn:{pid} a owl:ObjectProperty .\n")
         if shape.predicates.direct_normalized:
-            output.write(f'wdtn:{pid} a owl:ObjectProperty .\n')
+            output.write(f"wdtn:{pid} a owl:ObjectProperty .\n")
 
     @staticmethod
     def _generate_blank_node_id(property_id: str) -> str:
@@ -111,10 +111,9 @@ class PropertyOntologyWriter:
     def write_novalue_class(output: TextIO, property_id: str):
         """Write no-value class with OWL complement restriction"""
         blank_node_id = PropertyOntologyWriter._generate_blank_node_id(property_id)
-        output.write(f'wdno:{property_id} a owl:Class ;\n')
-        output.write(f'\towl:complementOf _:{blank_node_id} .\n')
-        output.write(f'\n')
-        output.write(f'_:{blank_node_id} a owl:Restriction ;\n')
-        output.write(f'\towl:onProperty wdt:{property_id} ;\n')
-        output.write(f'\towl:someValuesFrom owl:Thing .\n')
-
+        output.write(f"wdno:{property_id} a owl:Class ;\n")
+        output.write(f"\towl:complementOf _:{blank_node_id} .\n")
+        output.write(f"\n")
+        output.write(f"_:{blank_node_id} a owl:Restriction ;\n")
+        output.write(f"\towl:onProperty wdt:{property_id} ;\n")
+        output.write(f"\towl:someValuesFrom owl:Thing .\n")

@@ -1,0 +1,15 @@
+{
+  "id": "P407",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "language of work or name"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "language associated with this creative work (such as books, shows, songs, broadcasts or websites) or a name (for persons use \"native language\" (P103) and \"languages spoken, written or signed\" (P1412))"
+    }
+  }
+}

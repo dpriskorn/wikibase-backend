@@ -14,30 +14,33 @@ from models.rdf_builder.ontology.datatypes import property_shape
 
 TEST_DATA_DIR = Path(__file__).parent.parent.parent / "test_data"
 
+
 def load_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
 
 def normalize_ttl(ttl: str) -> str:
     logger.debug("=== normalize_ttl() START ===")
     logger.debug(f"Input length: {len(ttl)} chars")
     logger.debug(f"First 100 chars of input: {repr(ttl[:100])}")
-    
+
     ttl = re.sub(r"#.*$", "", ttl, flags=re.MULTILINE)
     logger.debug(f"After removing comments: {len(ttl)} chars")
-    
+
     ttl = re.sub(r"[ \t]+", " ", ttl)
     logger.debug(f"After normalizing whitespace: {len(ttl)} chars")
     logger.debug(f"First 100 chars: {repr(ttl[:100])}")
-    
+
     ttl = re.sub(r"\n\n+", "\n\n", ttl)
     logger.debug(f"After normalizing newlines: {len(ttl)} chars")
     logger.debug(f"First 100 chars: {repr(ttl[:100])}")
-    
+
     result = ttl.strip()
     logger.debug(f"Result length: {len(result)} chars")
     logger.debug(f"First 100 chars: {repr(result[:100])}")
     logger.debug(f"=== normalize_ttl() END ===")
     return result
+
 
 def split_subject_blocks(ttl: str) -> dict[str, str]:
     blocks = {}
@@ -85,12 +88,11 @@ def load_full_property_registry() -> PropertyRegistry:
         )
 
     properties = {}
-    with open(cache_path, encoding='utf-8') as f:
+    with open(cache_path, encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             properties[row["property_id"]] = property_shape(
-                row["property_id"],
-                row["datatype"]
+                row["property_id"], row["datatype"]
             )
 
     logger.debug(f"Loaded {len(properties)} properties from registry")
@@ -104,19 +106,69 @@ def load_full_property_registry() -> PropertyRegistry:
 def property_registry() -> PropertyRegistry:
     """Minimal property registry for Q120248304 test"""
     properties = {
-        "P31": property_shape("P31", "wikibase-item", labels={"en": {"language": "en", "value": "instance of"}}),
-        "P17": property_shape("P17", "wikibase-item", labels={"en": {"language": "en", "value": "country"}}),
-        "P127": property_shape("P127", "wikibase-item", labels={"en": {"language": "en", "value": "owned by"}}),
-        "P131": property_shape("P131", "wikibase-item", labels={"en": {"language": "en", "value": "located in"}}),
-        "P137": property_shape("P137", "wikibase-item", labels={"en": {"language": "en", "value": "operator"}}),
-        "P912": property_shape("P912", "wikibase-item", labels={"en": {"language": "en", "value": "sponsor"}}),
-        "P248": property_shape("P248", "wikibase-item", labels={"en": {"language": "en", "value": "stated in"}}),
-        "P11840": property_shape("P11840", "external-id", labels={"en": {"language": "en", "value": "crossref ID"}}),
-        "P1810": property_shape("P1810", "string", labels={"en": {"language": "en", "value": "short name"}}),
-        "P2561": property_shape("P2561", "monolingualtext", labels={"en": {"language": "en", "value": "description"}}),
-        "P5017": property_shape("P5017", "time", labels={"en": {"language": "en", "value": "date of official opening"}}),
-        "P625": property_shape("P625", "globe-coordinate", labels={"en": {"language": "en", "value": "coordinate location"}}),
-        "P6375": property_shape("P6375", "monolingualtext", labels={"en": {"language": "en", "value": "street address"}}),
+        "P31": property_shape(
+            "P31",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "instance of"}},
+        ),
+        "P17": property_shape(
+            "P17",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "country"}},
+        ),
+        "P127": property_shape(
+            "P127",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "owned by"}},
+        ),
+        "P131": property_shape(
+            "P131",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "located in"}},
+        ),
+        "P137": property_shape(
+            "P137",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "operator"}},
+        ),
+        "P912": property_shape(
+            "P912",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "sponsor"}},
+        ),
+        "P248": property_shape(
+            "P248",
+            "wikibase-item",
+            labels={"en": {"language": "en", "value": "stated in"}},
+        ),
+        "P11840": property_shape(
+            "P11840",
+            "external-id",
+            labels={"en": {"language": "en", "value": "crossref ID"}},
+        ),
+        "P1810": property_shape(
+            "P1810", "string", labels={"en": {"language": "en", "value": "short name"}}
+        ),
+        "P2561": property_shape(
+            "P2561",
+            "monolingualtext",
+            labels={"en": {"language": "en", "value": "description"}},
+        ),
+        "P5017": property_shape(
+            "P5017",
+            "time",
+            labels={"en": {"language": "en", "value": "date of official opening"}},
+        ),
+        "P625": property_shape(
+            "P625",
+            "globe-coordinate",
+            labels={"en": {"language": "en", "value": "coordinate location"}},
+        ),
+        "P6375": property_shape(
+            "P6375",
+            "monolingualtext",
+            labels={"en": {"language": "en", "value": "street address"}},
+        ),
     }
     return PropertyRegistry(properties=properties)
 

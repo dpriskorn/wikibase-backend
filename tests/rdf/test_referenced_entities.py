@@ -30,7 +30,7 @@ def test_collect_referenced_entities():
                 rank="normal",
                 statement_id="Q1$1",
                 qualifiers=[],
-                references=[]
+                references=[],
             ),
             Statement(
                 property="P17",
@@ -38,7 +38,7 @@ def test_collect_referenced_entities():
                 rank="normal",
                 statement_id="Q1$2",
                 qualifiers=[],
-                references=[]
+                references=[],
             ),
             Statement(
                 property="P127",
@@ -46,10 +46,10 @@ def test_collect_referenced_entities():
                 rank="normal",
                 statement_id="Q1$3",
                 qualifiers=[],
-                references=[]
-            )
+                references=[],
+            ),
         ],
-        sitelinks=None
+        sitelinks=None,
     )
 
     properties = {
@@ -82,10 +82,10 @@ def test_write_referenced_entity_metadata():
                 rank="normal",
                 statement_id="Q17948861$1",
                 qualifiers=[],
-                references=[]
+                references=[],
             )
         ],
-        sitelinks=None
+        sitelinks=None,
     )
 
     properties = {
@@ -94,8 +94,7 @@ def test_write_referenced_entity_metadata():
     registry = PropertyRegistry(properties=properties)
 
     converter = EntityConverter(
-        property_registry=registry,
-        entity_metadata_dir=entity_metadata_dir
+        property_registry=registry, entity_metadata_dir=entity_metadata_dir
     )
 
     output = StringIO()
@@ -124,10 +123,10 @@ def test_load_referenced_entity_missing_file():
                 rank="normal",
                 statement_id="Q999$1",
                 qualifiers=[],
-                references=[]
+                references=[],
             )
         ],
-        sitelinks=None
+        sitelinks=None,
     )
 
     properties = {
@@ -136,8 +135,7 @@ def test_load_referenced_entity_missing_file():
     registry = PropertyRegistry(properties=properties)
 
     converter = EntityConverter(
-        property_registry=registry,
-        entity_metadata_dir=entity_metadata_dir
+        property_registry=registry, entity_metadata_dir=entity_metadata_dir
     )
 
     try:
@@ -155,8 +153,10 @@ def test_converter_with_cache_path_generates_referenced_entity():
     json_path = entity_metadata_dir / f"{entity_id}.json"
 
     import json
+
     entity_json = json.loads(json_path.read_text(encoding="utf-8"))
     from models.json_parser.entity_parser import parse_entity
+
     entity = parse_entity(entity_json)
 
     properties = {
@@ -165,8 +165,7 @@ def test_converter_with_cache_path_generates_referenced_entity():
     registry = PropertyRegistry(properties=properties)
 
     converter = EntityConverter(
-        property_registry=registry,
-        entity_metadata_dir=entity_metadata_dir
+        property_registry=registry, entity_metadata_dir=entity_metadata_dir
     )
     actual_ttl = converter.convert_to_string(entity)
 

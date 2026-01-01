@@ -1,0 +1,15 @@
+{
+  "id": "Q10000",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Dutch Wikipedia"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "Dutch-language edition of Wikipedia, the free encyclopedia"
+    }
+  }
+}

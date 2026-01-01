@@ -1,0 +1,15 @@
+{
+  "id": "Q41787617",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "award subsidiary in rank to later award"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "reason for deprecation to be used with P2241; end cause to be used with P1534"
+    }
+  }
+}

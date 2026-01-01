@@ -36,6 +36,7 @@ def test_entity_converter_generates_direct_claims_for_best_rank():
     json_path = TEST_DATA_DIR / "json" / "entities" / f"{entity_id}.json"
 
     import json
+
     entity_json = json.loads(json_path.read_text(encoding="utf-8"))
     entity = parse_entity(entity_json)
 
@@ -70,10 +71,10 @@ def test_entity_converter_no_direct_claim_for_non_best_rank():
                 rank="deprecated",
                 statement_id="Q999$12345",
                 qualifiers=[],
-                references=[]
+                references=[],
             )
         ],
-        sitelinks=None
+        sitelinks=None,
     )
 
     properties = {

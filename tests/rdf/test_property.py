@@ -1,6 +1,9 @@
 from io import StringIO
 
-from models.internal_representation.property_metadata import PropertyMetadata, WikibaseDatatype
+from models.internal_representation.property_metadata import (
+    PropertyMetadata,
+    WikibaseDatatype,
+)
 from models.rdf_builder.writers.property import PropertyWriter
 
 

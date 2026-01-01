@@ -1,0 +1,15 @@
+{
+  "id": "Q54919",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Virtual International Authority File"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "OCLC dataset and service that virtually combines multiple name authority files into a single name authority service"
+    }
+  }
+}

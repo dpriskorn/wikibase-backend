@@ -54,5 +54,5 @@ class Datatype(str, Enum):
         if datatype in special_mappings:
             return special_mappings[datatype]
 
-        kebab = re.sub(r'([a-z])([A-Z])', r'\1-\2', datatype)
+        kebab = re.sub(r"([a-z])([A-Z])", r"\1-\2", datatype)
         return kebab.lower()

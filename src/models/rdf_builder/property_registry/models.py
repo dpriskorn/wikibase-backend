@@ -41,7 +41,11 @@ def get_owl_type(datatype: str) -> str:
         "musical-notation",
         "entity-schema",
     }
-    return "owl:ObjectProperty" if datatype in object_properties else "owl:DatatypeProperty"
+    return (
+        "owl:ObjectProperty"
+        if datatype in object_properties
+        else "owl:DatatypeProperty"
+    )
 
 
 class PropertyShape(BaseModel):

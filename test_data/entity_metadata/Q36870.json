@@ -1,0 +1,15 @@
+{
+  "id": "Q36870",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "first language"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "language a person was raised speaking from birth"
+    }
+  }
+}

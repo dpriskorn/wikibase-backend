@@ -12,16 +12,22 @@ HEADERS = {
 session = requests.Session()
 session.headers.update(HEADERS)
 
+
 def random_qids(n):
-    r = session.get(API, params={
-        "action": "query",
-        "list": "random",
-        "rnnamespace": 0,
-        "rnlimit": n,
-        "format": "json"
-    }, timeout=10)
+    r = session.get(
+        API,
+        params={
+            "action": "query",
+            "list": "random",
+            "rnnamespace": 0,
+            "rnlimit": n,
+            "format": "json",
+        },
+        timeout=10,
+    )
     r.raise_for_status()
     return [x["title"] for x in r.json()["query"]["random"]]
+
 
 qids = random_qids(300)
 sizes = []

@@ -1,0 +1,15 @@
+{
+  "id": "Q13780930",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "worldwide"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "published or operating in multiple or all jurisdictions on Earth; special value for \"place of publication\" (P291) and \"operating area\" (P2541)"
+    }
+  }
+}

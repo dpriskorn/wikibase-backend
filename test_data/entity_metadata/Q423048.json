@@ -1,0 +1,15 @@
+{
+  "id": "Q423048",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "International Standard Name Identifier"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "authority file with 16-digit identifier for people and organisations"
+    }
+  }
+}

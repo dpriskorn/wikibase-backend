@@ -1,0 +1,15 @@
+{
+  "id": "Q97479954",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "source considered most trustworthy"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "reason for preferred rank; for use with P7452"
+    }
+  }
+}

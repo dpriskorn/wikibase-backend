@@ -1,0 +1,15 @@
+{
+  "id": "Q191769",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "Norwegian Wikipedias"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "umbrella term for the two separate Norwegian-language editions of Wikipedia (Nynorsk [nn] and Bokmål/Riksmål [nb]) which shared a single wiki until the creation of [nn] and redefinition of [no] as Bokmål/Riksmål only – prefix \"nb\" redirects to \"no\""
+    }
+  }
+}

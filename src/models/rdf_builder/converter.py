@@ -19,7 +19,12 @@ class EntityConverter:
     Converts internal Entity representation to RDF Turtle format.
     """
 
-    def __init__(self, property_registry: PropertyRegistry, entity_metadata_dir: Path | None = None, enable_deduplication: bool = True):
+    def __init__(
+        self,
+        property_registry: PropertyRegistry,
+        entity_metadata_dir: Path | None = None,
+        enable_deduplication: bool = True,
+    ):
         self.properties = property_registry
         self.writers = TripleWriters()
         self.entity_metadata_dir = entity_metadata_dir
@@ -62,7 +67,9 @@ class EntityConverter:
         """Write single statement with references."""
         shape = self.properties.shape(rdf_stmt.property_id)
         logger.debug(f"Writing statement for {rdf_stmt.property_id}, shape: {shape}")
-        self.writers.write_statement(output, entity_id, rdf_stmt, shape, self.properties, self.dedupe)
+        self.writers.write_statement(
+            output, entity_id, rdf_stmt, shape, self.properties, self.dedupe
+        )
 
     def _write_property_metadata(self, entity: Entity, output: TextIO):
         """Write property metadata blocks for properties used in entity."""
@@ -107,7 +114,9 @@ class EntityConverter:
         from models.json_parser.entity_parser import parse_entity
 
         if not self.entity_metadata_dir:
-            raise FileNotFoundError(f"No entity_metadata_dir set, cannot load {entity_id}")
+            raise FileNotFoundError(
+                f"No entity_metadata_dir set, cannot load {entity_id}"
+            )
 
         entity_json = load_entity_metadata(entity_id, self.entity_metadata_dir)
         return parse_entity(entity_json)
@@ -123,7 +132,9 @@ class EntityConverter:
             try:
                 ref_entity = self._load_referenced_entity(entity_id)
             except FileNotFoundError:
-                logger.warning(f"Metadata file not found for referenced entity {entity_id}")
+                logger.warning(
+                    f"Metadata file not found for referenced entity {entity_id}"
+                )
                 continue
 
             self.writers.write_entity_type(output, ref_entity.id)
@@ -134,7 +145,9 @@ class EntityConverter:
 
             for lang, description in ref_entity.descriptions.items():
                 if description:
-                    self.writers.write_description(output, ref_entity.id, lang, description)
+                    self.writers.write_description(
+                        output, ref_entity.id, lang, description
+                    )
 
     def convert_to_string(self, entity: Entity) -> str:
         """Convert entity to Turtle string."""

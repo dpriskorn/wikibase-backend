@@ -1,6 +1,9 @@
 from io import StringIO
 
-from models.rdf_builder.property_registry.models import PropertyShape, PropertyPredicates
+from models.rdf_builder.property_registry.models import (
+    PropertyShape,
+    PropertyPredicates,
+)
 from models.rdf_builder.property_registry.registry import PropertyRegistry
 from models.rdf_builder.ontology.datatypes import property_shape
 from models.rdf_builder.writers.property_ontology import PropertyOntologyWriter
@@ -8,8 +11,12 @@ from models.rdf_builder.writers.property_ontology import PropertyOntologyWriter
 
 def test_write_property_metadata_with_english_labels():
     labels = {"en": {"language": "en", "value": "instance of"}}
-    descriptions = {"en": {"language": "en", "value": "type to which this subject corresponds"}}
-    shape = property_shape("P31", "wikibase-item", labels=labels, descriptions=descriptions)
+    descriptions = {
+        "en": {"language": "en", "value": "type to which this subject corresponds"}
+    }
+    shape = property_shape(
+        "P31", "wikibase-item", labels=labels, descriptions=descriptions
+    )
 
     output = StringIO()
     PropertyOntologyWriter.write_property_metadata(output, shape)
@@ -38,7 +45,9 @@ def test_write_property_metadata_multiple_languages():
         "en": {"language": "en", "value": "type to which this subject corresponds"},
         "de": {"language": "de", "value": "Typ, dem dieses Subjekt entspricht"},
     }
-    shape = property_shape("P31", "wikibase-item", labels=labels, descriptions=descriptions)
+    shape = property_shape(
+        "P31", "wikibase-item", labels=labels, descriptions=descriptions
+    )
 
     output = StringIO()
     PropertyOntologyWriter.write_property_metadata(output, shape)
@@ -113,18 +122,18 @@ def test_write_property_metadata_conditional():
     output = StringIO()
     PropertyOntologyWriter.write_property_metadata(output, shape)
     result = output.getvalue()
-    
+
     # All properties get wikibase:statementProperty
     assert "wikibase:statementProperty ps:P31" in result
     # But only properties with value nodes get wikibase:statementValue
     assert "wikibase:statementValue psv:P31" not in result
-    
+
     # globe-coordinate (has value node predicate)
     shape2 = property_shape("P625", "globe-coordinate", labels={}, descriptions={})
     output2 = StringIO()
     PropertyOntologyWriter.write_property_metadata(output2, shape2)
     result2 = output2.getvalue()
-    
+
     # Has wikibase:statementValue for value node properties
     assert "wikibase:statementValue psv:P625" in result2
 

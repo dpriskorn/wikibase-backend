@@ -1,0 +1,15 @@
+{
+  "id": "Q98386534",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "best referenced value"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "reason for preferred rank: the value best supported considering the references of this value and other possible values"
+    }
+  }
+}

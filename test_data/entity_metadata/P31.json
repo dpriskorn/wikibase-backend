@@ -1,0 +1,15 @@
+{
+  "id": "P31",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "instance of"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "type to which this subject corresponds/belongs. Different from P279 (subclass of); for example: K2 is an instance of mountain; volcano is a subclass of mountain"
+    }
+  }
+}

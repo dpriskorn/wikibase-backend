@@ -31,7 +31,7 @@ def main() -> None:
         SPARQL_ENDPOINT,
         params={"query": query, "format": "json"},
         timeout=60,
-        headers={"User-Agent": "WikibaseBackend/1.0 (research@wikibase-backend.org)"}
+        headers={"User-Agent": "WikibaseBackend/1.0 (research@wikibase-backend.org)"},
     )
     response.raise_for_status()
 
@@ -41,7 +41,9 @@ def main() -> None:
     print(f"Got {len(properties)} properties")
 
     # Determine output path
-    output_path = Path(__file__).parent.parent / "test_data" / "properties" / "properties.csv"
+    output_path = (
+        Path(__file__).parent.parent / "test_data" / "properties" / "properties.csv"
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Write CSV

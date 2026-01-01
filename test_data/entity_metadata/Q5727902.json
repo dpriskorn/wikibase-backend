@@ -1,0 +1,15 @@
+{
+  "id": "Q5727902",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "circa"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "approximative date – should be used with qualifier P1480 to indicate the source specified a value and explicitly stated that value is approximate, but specify no precision information. For example, \"born around 1709\""
+    }
+  }
+}

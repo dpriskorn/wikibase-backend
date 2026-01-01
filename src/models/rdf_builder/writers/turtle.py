@@ -24,7 +24,7 @@ class TurtleWriter:
 
     def flush(self) -> None:
         if self._buffer:
-            self.output.write(''.join(self._buffer))
+            self.output.write("".join(self._buffer))
             self._buffer = []
             self._buffer_len = 0
             self.output.flush()

@@ -27,12 +27,16 @@ def test_q120248304_conversion(full_property_registry):
 
     logger.info(f"Generated TTL length: {len(actual_ttl)}")
 
-    p625_shape = full_property_registry.shape("P625") if "P625" in [s.property for s in entity.statements] else None
+    p625_shape = (
+        full_property_registry.shape("P625")
+        if "P625" in [s.property for s in entity.statements]
+        else None
+    )
     if p625_shape:
         logger.debug(f"P625 shape: {p625_shape}")
 
     if "ps:P625" in actual_ttl or "Point" in actual_ttl:
-        for line in actual_ttl.split('\n'):
+        for line in actual_ttl.split("\n"):
             if "P625" in line or "Point" in line:
                 logger.debug(f"P625/Point line: {line}")
 
@@ -49,11 +53,11 @@ def test_q120248304_conversion(full_property_registry):
 
     # Check some statement values
     assert "ps:P17 wd:Q142" in actual_ttl
-    assert "ps:P11840 \"I621930023\"" in actual_ttl
+    assert 'ps:P11840 "I621930023"' in actual_ttl
     # Globe coordinate now uses value node (psv:P625 -> wdv:xxx)
     assert "psv:P625 wdv:" in actual_ttl
     assert "wikibase:GlobecoordinateValue" in actual_ttl
-    assert "wikibase:geoLatitude \"50.94636\"^^xsd:double" in actual_ttl
-    assert "wikibase:geoLongitude \"1.88108\"^^xsd:double" in actual_ttl
+    assert 'wikibase:geoLatitude "50.94636"^^xsd:double' in actual_ttl
+    assert 'wikibase:geoLongitude "1.88108"^^xsd:double' in actual_ttl
 
     logger.info("Q120248304 conversion test passed!")

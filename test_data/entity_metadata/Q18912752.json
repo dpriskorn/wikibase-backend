@@ -1,0 +1,15 @@
+{
+  "id": "Q18912752",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "disputed"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "should be used with qualifier P1480 to indicate the source explicitly stated that value is disputed among experts. For example, \"the author of this work is disputed, some say it is Plato\""
+    }
+  }
+}

@@ -11,7 +11,7 @@ def test_serialize_time_value():
         value="+1964-05-15T00:00:00Z",
         precision=11,
         timezone=0,
-        calendarmodel="http://www.wikidata.org/entity/Q1985727"
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
     )
     serialized = _serialize_value(value)
     expected = "t:1964-05-15T00:00:00Z:11:0:http://www.wikidata.org/entity/Q1985727"
@@ -20,10 +20,7 @@ def test_serialize_time_value():
 
 def test_serialize_quantity_value():
     """Test serialization of quantity values"""
-    value = QuantityValue(
-        value="+3",
-        unit="http://www.wikidata.org/entity/Q199"
-    )
+    value = QuantityValue(value="+3", unit="http://www.wikidata.org/entity/Q199")
     serialized = _serialize_value(value)
     expected = "q:+3:http://www.wikidata.org/entity/Q199"
     assert serialized == expected
@@ -35,7 +32,7 @@ def test_serialize_quantity_with_bounds():
         value="+5",
         unit="http://www.wikidata.org/entity/Q11573",
         upper_bound="+5.5",
-        lower_bound="+4.5"
+        lower_bound="+4.5",
     )
     serialized = _serialize_value(value)
     expected = "q:+5:http://www.wikidata.org/entity/Q11573:+5.5:+4.5"
@@ -49,7 +46,7 @@ def test_serialize_globe_value():
         latitude=50.94636,
         longitude=1.88108,
         precision=0.00001,
-        globe="http://www.wikidata.org/entity/Q2"
+        globe="http://www.wikidata.org/entity/Q2",
     )
     serialized = _serialize_value(value)
     expected = "g:50.94636:1.88108:1.0E-5:http://www.wikidata.org/entity/Q2"
@@ -62,19 +59,16 @@ def test_generate_value_node_uri_time():
         value="+1964-05-15T00:00:00Z",
         precision=11,
         timezone=0,
-        calendarmodel="http://www.wikidata.org/entity/Q1985727"
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
     )
-    uri = generate_value_node_uri(value, "P569")
+    uri = generate_value_node_uri(value)
     assert len(uri) == 32  # MD5 hash length
     assert uri.isalnum()
 
 
 def test_generate_value_node_uri_quantity():
     """Test value node URI generation for quantity"""
-    value = QuantityValue(
-        value="+3",
-        unit="http://www.wikidata.org/entity/Q199"
-    )
+    value = QuantityValue(value="+3", unit="http://www.wikidata.org/entity/Q199")
     uri = generate_value_node_uri(value, "P1971")
     assert len(uri) == 32
     assert uri.isalnum()
@@ -86,7 +80,7 @@ def test_generate_value_node_uri_consistency():
         value="+1964-05-15T00:00:00Z",
         precision=11,
         timezone=0,
-        calendarmodel="http://www.wikidata.org/entity/Q1985727"
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
     )
     uri1 = generate_value_node_uri(value, "P569")
     uri2 = generate_value_node_uri(value, "P569")
@@ -99,8 +93,42 @@ def test_generate_value_node_uri_different_properties():
         value="+1964-05-15T00:00:00Z",
         precision=11,
         timezone=0,
-        calendarmodel="http://www.wikidata.org/entity/Q1985727"
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
     )
-    uri1 = generate_value_node_uri(value, "P569")
-    uri2 = generate_value_node_uri(value, "P580")
-    assert uri1 != uri2
+    uri = generate_value_node_uri(value)
+    assert len(uri) == 32  # MD5 hash length
+    assert uri.isalnum()
+
+
+def test_generate_value_node_uri_quantity():
+    """Test value node URI generation for quantity"""
+    value = QuantityValue(value="+3", unit="http://www.wikidata.org/entity/Q199")
+    uri = generate_value_node_uri(value)
+    assert len(uri) == 32
+    assert uri.isalnum()
+
+
+def test_generate_value_node_uri_consistency():
+    """Test that identical values produce identical URIs"""
+    value = TimeValue(
+        value="+1964-05-15T00:00:00Z",
+        precision=11,
+        timezone=0,
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
+    )
+    uri1 = generate_value_node_uri(value)
+    uri2 = generate_value_node_uri(value)
+    assert uri1 == uri2
+
+
+def test_generate_value_node_uri_property_independence():
+    """Test that same value produces same URI regardless of which property it's used with"""
+    value = TimeValue(
+        value="+1964-05-15T00:00:00Z",
+        precision=11,
+        timezone=0,
+        calendarmodel="http://www.wikidata.org/entity/Q1985727",
+    )
+    uri1 = generate_value_node_uri(value)
+    uri2 = generate_value_node_uri(value)
+    assert uri1 == uri2  # Same value = same hash, property-independent

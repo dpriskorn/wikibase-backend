@@ -1,0 +1,15 @@
+{
+  "id": "Q28378282",
+  "labels": {
+    "en": {
+      "language": "en",
+      "value": "verified account or profile"
+    }
+  },
+  "descriptions": {
+    "en": {
+      "language": "en",
+      "value": "social media account or profile which has satisfied the host service's criteria for verification"
+    }
+  }
+}

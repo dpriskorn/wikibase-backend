@@ -24,12 +24,14 @@ class ValueFormatter:
             return f'"{value.value}"^^xsd:dateTime'
 
         elif kind == ValueKind.QUANTITY:
-            return f'{value.value}^^xsd:decimal'
+            return f"{value.value}^^xsd:decimal"
 
         elif kind == ValueKind.GLOBE:
             coord = f"Point({value.longitude} {value.latitude})"
             formatted = f'"{coord}"^^geo:wktLiteral'
-            logger.debug(f"GLOBE value formatting: lat={value.latitude}, lon={value.longitude} -> {formatted}")
+            logger.debug(
+                f"GLOBE value formatting: lat={value.latitude}, lon={value.longitude} -> {formatted}"
+            )
             return formatted
 
         elif kind == ValueKind.MONOLINGUAL:
@@ -64,9 +66,9 @@ class ValueFormatter:
     @staticmethod
     def escape_turtle(value: str) -> str:
         """Escape special characters for Turtle format"""
-        value = value.replace('\\', '\\\\')
+        value = value.replace("\\", "\\\\")
         value = value.replace('"', '\\"')
-        value = value.replace('\n', '\\n')
-        value = value.replace('\r', '\\r')
-        value = value.replace('\t', '\\t')
+        value = value.replace("\n", "\\n")
+        value = value.replace("\r", "\\r")
+        value = value.replace("\t", "\\t")
         return value

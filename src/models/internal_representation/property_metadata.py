@@ -16,5 +16,5 @@ class WikibaseDatatype(str, Enum):
 
 @dataclass(frozen=True)
 class PropertyMetadata:
-    property_id: str           # "P17"
-    datatype: WikibaseDatatype # wikibase-item
+    property_id: str  # "P17"
+    datatype: WikibaseDatatype  # wikibase-item
