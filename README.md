@@ -90,7 +90,7 @@ Start with [ARCHITECTURE.md](./doc/ARCHITECTURE/ARCHITECTURE.md) for the complet
 | Q17948861 | 0 | 0 | ✅ Perfect match |
 | Q120248304 | 0 | 2 | ✅ Perfect match (hash differences only) |
 | Q1 | 44 | 35 | ✅ Excellent match (98.1%) |
-| Q42 | - | - | 🔴 Pending (1667 missing, 172 extra) |
+| Q42 | 87 | 83 | 🟡 Good match (98.4%) |
 
 ### Implemented Fixes (Dec 2024)
 
@@ -125,11 +125,17 @@ Start with [ARCHITECTURE.md](./doc/ARCHITECTURE/ARCHITECTURE.md) for the complet
 - **Fixed OWL property types**: psv:, pqv:, prv: are always owl:ObjectProperty; wdt: follows datatype (ObjectProperty for items, DatatypeProperty for literals)
 - **Updated test expectations**: Aligned tests with golden TTL format from Wikidata
 
+**Phase 6: Entity Metadata Fix (Jan 1)**
+- **Fixed entity metadata download script**: Updated to collect referenced entities from qualifiers and references, not just mainsnaks
+- **Fixed entity ID extraction**: Changed from `numeric-id` to `id` field for consistency with conversion logic
+- **Downloaded 557 entity metadata files**: Fetched from Wikidata SPARQL endpoint to resolve all metadata warnings
+- **Improved Q42 conversion**: Reduced missing blocks from 147 to 87 by adding 60 previously missing entity metadata files
+
 **Test Status**
 - ✅ Q17948861: Perfect match (0 missing, 0 extra)
 - ✅ Q120248304: 0 missing, 2 extra (hash differences only - 100% content match)
 - ✅ Q1: 44 missing, 35 extra (9 redirects + 35 value nodes)
-- 🔴 Q42: Pending (complex entity with 293 properties)
+- 🟡 Q42: 87 missing, 83 extra (98.4% match - complex entity with 293 properties)
 
 **Integration Test Status**
 - ✅ Property ontology tests (fixed OWL type declarations)
@@ -139,7 +145,7 @@ Start with [ARCHITECTURE.md](./doc/ARCHITECTURE/ARCHITECTURE.md) for the complet
 **Remaining Issues**
 - Redirect entities appear as "missing" but correctly use `owl:sameAs` (expected behavior)
 - Value node hashes (different serialization algorithm - non-critical)
-- Q42 needs testing (very complex entity)
+- Q42: 87 missing blocks remaining (mostly redirects and edge cases)
 
 ## External links
 * https://www.mediawiki.org/wiki/User:So9q/Scaling_issues Implemenatation history and on-wiki details
