@@ -91,9 +91,11 @@ class VitessClient(BaseModel):
 
         cursor.close()
 
-    def resolve_id(self, entity_id: str) -> int:
-        """Resolve external entity ID to internal ID
-        0 means none found."""
+    def _resolve_id(self, entity_id: str) -> int:
+        """Resolve external entity ID to internal ID (private)
+
+        Returns 0 if not found.
+        """
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
@@ -104,16 +106,23 @@ class VitessClient(BaseModel):
         cursor.close()
         return result[0] if result else 0
 
-    def get_head(self, entity_id: int) -> int:
+    def entity_exists(self, entity_id: str) -> bool:
+        """Check if entity ID exists in mapping"""
+        return self._resolve_id(entity_id) != 0
+
+    def get_head(self, entity_id: str) -> int:
         """Get current head revision for entity
 
         Returns 0 if entity has no revisions (entity_head row doesn't exist or head_revision_id is NULL)
         """
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return 0
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT head_revision_id FROM entity_head WHERE entity_id = %s",
-            (entity_id,),
+            (internal_id,),
         )
         result = cursor.fetchone()
         cursor.close()
@@ -121,27 +130,33 @@ class VitessClient(BaseModel):
 
     def write_entity_revision(
         self,
-        entity_id: int,
+        entity_id: str,
         revision_id: int,
         data: dict,
         is_mass_edit: bool = False,
         edit_type: str = "",
     ) -> None:
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            raise ValueError(f"Entity {entity_id} not found")
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO entity_revisions (entity_id, revision_id, is_mass_edit, edit_type, data) VALUES (%s, %s, %s, %s)",
-            (entity_id, revision_id, is_mass_edit, edit_type, json.dumps(data)),
+            (internal_id, revision_id, is_mass_edit, edit_type, json.dumps(data)),
         )
         cursor.close()
 
-    def read_full_revision(self, entity_id: int, revision_id: int) -> dict:
+    def read_full_revision(self, entity_id: str, revision_id: int) -> dict:
         """Read entity revision data from S3"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            raise ValueError(f"Entity {entity_id} not found")
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT data FROM entity_revisions WHERE entity_id = %s AND revision_id = %s",
-            (entity_id, revision_id),
+            (internal_id, revision_id),
         )
         result = cursor.fetchone()
         cursor.close()
@@ -152,18 +167,21 @@ class VitessClient(BaseModel):
 
     def insert_revision(
         self,
-        entity_id: int,
+        entity_id: str,
         revision_id: int,
         is_mass_edit: bool = False,
         edit_type: str = "",
     ) -> None:
         """Insert revision metadata (without entity data). Idempotent - skips if already exists."""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            raise ValueError(f"Entity {entity_id} not found")
         conn = self.connect()
         cursor = conn.cursor()
 
         cursor.execute(
             "SELECT 1 FROM entity_revisions WHERE entity_id = %s AND revision_id = %s",
-            (entity_id, revision_id),
+            (internal_id, revision_id),
         )
         if cursor.fetchone() is not None:
             cursor.close()
@@ -171,55 +189,74 @@ class VitessClient(BaseModel):
 
         cursor.execute(
             "INSERT INTO entity_revisions (entity_id, revision_id, is_mass_edit, edit_type) VALUES (%s, %s, %s, %s)",
-            (entity_id, revision_id, is_mass_edit, edit_type),
+            (internal_id, revision_id, is_mass_edit, edit_type),
         )
         cursor.close()
 
-    def is_entity_deleted(self, entity_id: int) -> bool:
+    def is_entity_deleted(self, entity_id: str) -> bool:
         """Check if entity is hard-deleted"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return False
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT is_deleted FROM entity_head WHERE entity_id = %s",
-            (entity_id,),
+            (internal_id,),
         )
         result = cursor.fetchone()
         cursor.close()
         return result[0] if result else False
 
-    def is_entity_locked(self, entity_id: int) -> bool:
+    def is_entity_locked(self, entity_id: str) -> bool:
         """Check if entity is locked"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return False
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT is_locked FROM entity_head WHERE entity_id = %s",
-            (entity_id,),
+            (internal_id,),
         )
         result = cursor.fetchone()
         cursor.close()
         return result[0] if result else False
 
-    def is_entity_archived(self, entity_id: int) -> bool:
+    def is_entity_archived(self, entity_id: str) -> bool:
         """Check if entity is archived"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return False
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT is_archived FROM entity_head WHERE entity_id = %s",
-            (entity_id,),
+            (internal_id,),
         )
         result = cursor.fetchone()
         cursor.close()
         return result[0] if result else False
 
     def set_redirect_target(
-        self, entity_internal_id: int, redirects_to_internal_id: int | None
+        self, entity_id: str, redirects_to_entity_id: str | None
     ) -> None:
         """Mark entity as redirect or clear redirect status"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            raise ValueError(f"Entity {entity_id} not found")
+
+        redirects_to_internal_id = None
+        if redirects_to_entity_id:
+            redirects_to_internal_id = self._resolve_id(redirects_to_entity_id)
+            if not redirects_to_internal_id:
+                raise ValueError(f"Entity {redirects_to_entity_id} not found")
+
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "UPDATE entity_head SET redirects_to = %s WHERE entity_id = %s",
-            (redirects_to_internal_id, entity_internal_id),
+            (redirects_to_internal_id, internal_id),
         )
         cursor.close()
 
@@ -230,8 +267,8 @@ class VitessClient(BaseModel):
         created_by: str = "entity-api",
     ) -> None:
         """Create a redirect relationship between entities"""
-        redirect_from_internal_id = self.resolve_id(redirect_from_entity_id)
-        redirect_to_internal_id = self.resolve_id(redirect_to_entity_id)
+        redirect_from_internal_id = self._resolve_id(redirect_from_entity_id)
+        redirect_to_internal_id = self._resolve_id(redirect_to_entity_id)
 
         if not redirect_from_internal_id:
             raise ValueError(f"Source entity {redirect_from_entity_id} not found")
@@ -263,22 +300,28 @@ class VitessClient(BaseModel):
         cursor.close()
         return result
 
-    def get_redirect_target(self, entity_internal_id: int) -> str | None:
+    def get_redirect_target(self, entity_id: str) -> str | None:
         """Get where this entity redirects to (if any)"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return None
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             """SELECT m.entity_id
                    FROM entity_head h
                    WHERE h.entity_id = %s AND h.redirects_to IS NOT NULL""",
-            (entity_internal_id,),
+            (internal_id,),
         )
         result = cursor.fetchone()
         cursor.close()
         return result[0] if result else None
 
-    def register_entity(self, entity_id: str, internal_id: int) -> None:
-        """Register new entity ID mapping"""
+    def register_entity(self, entity_id: str) -> None:
+        """Register new entity ID mapping (generates internal ID automatically)"""
+        from models.infrastructure.ulid_flake import generate_ulid_flake
+
+        internal_id = generate_ulid_flake()
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
@@ -370,7 +413,7 @@ class VitessClient(BaseModel):
             cursor.close()
             return False
 
-    def get_history(self, entity_id: int) -> list[Any]:
+    def get_history(self, entity_id: str) -> list[Any]:
         """Get revision history for an entity"""
         from dataclasses import dataclass
 
@@ -379,11 +422,15 @@ class VitessClient(BaseModel):
             revision_id: int
             created_at: Any
 
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            return []
+
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
             "SELECT revision_id, created_at FROM entity_revisions WHERE entity_id = %s ORDER BY created_at DESC",
-            (entity_id,),
+            (internal_id,),
         )
         result = [
             RevisionRecord(
@@ -396,11 +443,13 @@ class VitessClient(BaseModel):
 
     def hard_delete_entity(
         self,
-        internal_id: int,
         entity_id: str,
         head_revision_id: int,
     ) -> None:
         """Permanently delete entity and mark in database"""
+        internal_id = self._resolve_id(entity_id)
+        if not internal_id:
+            raise ValueError(f"Entity {entity_id} not found")
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(

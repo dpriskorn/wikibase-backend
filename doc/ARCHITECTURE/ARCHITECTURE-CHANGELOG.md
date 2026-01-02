@@ -1,6 +1,92 @@
 # Architecture Changelog
 
-This file tracks architectural changes, feature additions, and modifications to the wikibase-backend system.
+This file tracks architectural changes, feature additions, and modifications to wikibase-backend system.
+
+## [2025-01-02] Internal ID Encapsulation
+
+### Summary
+
+Encapsulated internal ID resolution within VitessClient, removing exposure of internal IDs to all external code. All VitessClient methods now accept `entity_id: str` instead of `internal_id: int`, handling ID resolution internally. This aligns with the goal of keeping internal implementation details private and maintaining clean API boundaries.
+
+### Motivation
+
+- **Encapsulation**: Internal IDs are implementation details that shouldn't leak outside VitessClient
+- **API cleanliness**: External code should work with entity IDs only (Q42, not internal ID 42)
+- **Maintainability**: Changes to internal ID handling only affect VitessClient, not all calling code
+- **Testing**: Simpler tests - no need to manage internal ID mappings
+
+### Changes
+
+#### VitessClient API Updates
+
+**File**: `src/models/infrastructure/vitess_client.py`
+
+**Private method**:
+- `resolve_id()` → `_resolve_id()`: Made private to prevent external access
+
+**Method signature changes** (all now accept `entity_id: str` instead of `internal_id: int`):
+- `is_entity_deleted(entity_id: str)`: Check if entity is hard-deleted
+- `is_entity_locked(entity_id: str)`: Check if entity is locked
+- `is_entity_archived(entity_id: str)`: Check if entity is archived
+- `get_head(entity_id: str)`: Get current head revision
+- `write_entity_revision(entity_id: str, ...)`: Write revision data
+- `read_full_revision(entity_id: str, revision_id: int)`: Read revision data
+- `insert_revision(entity_id: str, ...)`: Insert revision metadata
+- `get_redirect_target(entity_id: str)`: Get redirect target
+- `set_redirect_target(entity_id: str, redirects_to_entity_id: str | None)`: Set redirect target
+- `get_history(entity_id: str)`: Get revision history
+- `hard_delete_entity(entity_id: str, head_revision_id: int)`: Permanently delete entity
+
+**Internal behavior**:
+- All methods now call `_resolve_id(entity_id)` internally to convert to internal IDs
+- Methods validate entity exists and return sensible defaults (False, [], 0) if not found
+- Methods that require valid entities raise `ValueError` with descriptive message
+
+#### RedirectService Updates
+
+**File**: `src/services/entity_api/redirects.py`
+
+**Removed calls**:
+- No longer calls `vitess.resolve_id()` directly
+- No longer manages `from_internal_id` and `to_internal_id` variables
+
+**Updated flow**:
+- All VitessClient calls use `entity_id: str` parameters
+- VitessClient handles all internal ID resolution
+- Simplified validation logic - no need to check for `None` internal IDs
+
+#### Entity API Updates
+
+**File**: `src/models/entity_api/main.py`
+
+**Removed calls**:
+- No longer calls `clients.vitess.resolve_id()` directly
+- `internal_id` variables replaced with direct entity_id usage
+
+**Updated methods**:
+- All VitessClient calls now pass entity IDs directly
+- Removed manual internal ID resolution logic
+
+#### Test Mocks Updates
+
+**File**: `tests/test_entity_redirects.py`
+
+**Updated MockVitessClient**:
+- `_resolve_id()` made private (mocks match real API)
+- Methods updated to accept `entity_id: str` parameters
+- Internal ID resolution happens within mock methods
+
+**Updated Mock RedirectService**:
+- Removed `from_internal_id` and `to_internal_id` tracking
+- All operations use entity IDs only
+
+### Rationale
+
+- **Encapsulation**: Internal IDs are Vitess implementation detail, not API surface
+- **Type safety**: Strings (entity IDs) are less error-prone than mixing int/str IDs
+- **Simplification**: External code doesn't need to understand internal ID mapping
+- **Testability**: Tests focus on entity IDs, not implementation details
+- **Future-proof**: If internal ID scheme changes, only VitessClient needs updates
 
 ## [2025-01-15] Entity Redirect Support
 
@@ -81,11 +167,21 @@ CREATE TABLE IF NOT EXISTS entity_redirects (
 )
 ```
 
-**New VitessClient methods**:
-- `set_redirect_target()`: Mark entity as redirect in entity_head
-- `create_redirect()`: Create redirect relationship in entity_redirects table
-- `get_incoming_redirects()`: Query entities redirecting to target (for RDF builder)
-- `get_redirect_target()`: Query where entity redirects to (for validation)
+**Updated VitessClient methods**:
+- `resolve_id()` → `_resolve_id()`: Made private (internal ID resolution no longer exposed)
+- `set_redirect_target()`: Mark entity as redirect in entity_head (now accepts `entity_id: str`)
+- `create_redirect()`: Create redirect relationship in entity_redirects table (now accepts `entity_id: str`)
+- `get_incoming_redirects()`: Query entities redirecting to target (for RDF builder) (now accepts `entity_id: str`)
+- `get_redirect_target()`: Query where entity redirects to (for validation) (now accepts `entity_id: str`)
+- `is_entity_deleted()`: Check if entity is hard-deleted (now accepts `entity_id: str`)
+- `is_entity_locked()`: Check if entity is locked (now accepts `entity_id: str`)
+- `is_entity_archived()`: Check if entity is archived (now accepts `entity_id: str`)
+- `get_head()`: Get current head revision (now accepts `entity_id: str`)
+- `write_entity_revision()`: Write revision data (now accepts `entity_id: str`)
+- `read_full_revision()`: Read revision data (now accepts `entity_id: str`)
+- `insert_revision()`: Insert revision metadata (now accepts `entity_id: str`)
+- `get_history()`: Get revision history (now accepts `entity_id: str`)
+- `hard_delete_entity()`: Permanently delete entity (removed `internal_id` parameter)
 
 **Rationale**:
 - `redirects_to` in entity_head: Fast check if entity is a redirect
@@ -108,8 +204,6 @@ class EntityRedirectRequest(BaseModel):
 class EntityRedirectResponse(BaseModel):
     redirect_from_id: str
     redirect_to_id: str
-    redirect_from_internal_id: int
-    redirect_to_internal_id: int
     created_at: str
     revision_id: int
 ```
@@ -136,13 +230,13 @@ class RedirectRevertRequest(BaseModel):
 
 **New RedirectService**:
 - `create_redirect()`: Mark entity as redirect
-  - Validates both entities exist (using Vitess)
+  - Validates both entities exist (using Vitess, no internal ID exposure)
   - Prevents circular redirects
   - Checks for duplicate redirects (using Vitess)
   - Validates target not already a redirect
   - Validates source and target not deleted/locked/archived
   - Creates minimal S3 revision (tombstone) for redirect entity
-  - Records redirect in Vitess
+  - Records redirect in Vitess (Vitess handles internal ID resolution internally)
   - Updates entity_head.redirects_to for source entity
   - Returns revision ID of redirect entity
 
@@ -150,7 +244,7 @@ class RedirectRevertRequest(BaseModel):
   - Reads current redirect revision (tombstone)
   - Reads target entity revision to restore from
   - Writes new revision with full entity data
-  - Updates entity_head.redirects_to to null
+  - Updates entity_head.redirects_to to null (Vitess handles internal ID resolution)
   - Returns new revision ID
 
 **New FastAPI endpoints**: 

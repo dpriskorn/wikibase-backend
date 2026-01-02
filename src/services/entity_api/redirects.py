@@ -26,47 +26,37 @@ class RedirectService:
         """Mark an entity as redirect to another entity"""
         from datetime import datetime
 
-        from_internal_id = self.vitess.resolve_id(request.redirect_from_id)
-        to_internal_id = self.vitess.resolve_id(request.redirect_to_id)
-
-        if not from_internal_id:
-            raise HTTPException(status_code=404, detail="Source entity not found")
-        if not to_internal_id:
-            raise HTTPException(status_code=404, detail="Target entity not found")
-
-        if from_internal_id == to_internal_id:
+        if request.redirect_from_id == request.redirect_to_id:
             raise HTTPException(status_code=400, detail="Cannot redirect to self")
 
-        existing_target = self.vitess.get_redirect_target(to_internal_id)
+        existing_target = self.vitess.get_redirect_target(request.redirect_from_id)
         if existing_target is not None:
             raise HTTPException(status_code=409, detail="Redirect already exists")
 
-        if self.vitess.is_entity_deleted(from_internal_id):
+        if self.vitess.is_entity_deleted(request.redirect_from_id):
             raise HTTPException(
                 status_code=423, detail="Source entity has been deleted"
             )
-        if self.vitess.is_entity_deleted(to_internal_id):
+        if self.vitess.is_entity_deleted(request.redirect_to_id):
             raise HTTPException(
                 status_code=423, detail="Target entity has been deleted"
             )
 
         if self.vitess.is_entity_locked(
-            to_internal_id
-        ) or self.vitess.is_entity_archived(to_internal_id):
+            request.redirect_to_id
+        ) or self.vitess.is_entity_archived(request.redirect_to_id):
             raise HTTPException(
                 status_code=423, detail="Target entity is locked or archived"
             )
 
-        to_head_revision_id = self.vitess.get_head(to_internal_id)
+        to_head_revision_id = self.vitess.get_head(request.redirect_to_id)
         if to_head_revision_id == 0:
             raise HTTPException(
                 status_code=404, detail="Target entity has no revisions"
             )
 
-        target_revision = self.s3.read_full_revision(
-            request.redirect_to_id,
-            to_head_revision_id,
-        )
+        from_head_revision_id = self.vitess.get_head(request.redirect_from_id)
+        redirect_revision_id = from_head_revision_id + 1 if from_head_revision_id else 1
 
         redirect_revision_data = {
             "schema_version": "1.1.0",
@@ -82,12 +72,18 @@ class RedirectService:
             },
         }
 
-        redirect_revision_id = self.s3.write_entity_revision(
+        self.s3.write_revision(
             entity_id=request.redirect_from_id,
-            entity_type="item",
+            revision_id=redirect_revision_id,
             data=redirect_revision_data,
-            edit_type=EditType.REDIRECT_CREATE,
-            created_by=request.created_by,
+            publication_state="pending",
+        )
+
+        self.vitess.insert_revision(
+            request.redirect_from_id,
+            redirect_revision_id,
+            is_mass_edit=False,
+            edit_type=EditType.REDIRECT_CREATE.value,
         )
 
         self.vitess.create_redirect(
@@ -97,8 +93,14 @@ class RedirectService:
         )
 
         self.vitess.set_redirect_target(
-            entity_internal_id=from_internal_id,
-            redirects_to_internal_id=to_internal_id,
+            entity_id=request.redirect_from_id,
+            redirects_to_entity_id=request.redirect_to_id,
+        )
+
+        self.s3.mark_published(
+            entity_id=request.redirect_from_id,
+            revision_id=redirect_revision_id,
+            publication_state="published",
         )
 
         return EntityRedirectResponse(
@@ -115,19 +117,21 @@ class RedirectService:
     ) -> EntityResponse:
         """Revert a redirect entity back to normal using revision-based restore"""
 
-        internal_id = self.vitess.resolve_id(entity_id)
-        current_redirect_target = self.vitess.get_redirect_target(internal_id)
+        current_redirect_target = self.vitess.get_redirect_target(entity_id)
 
         if current_redirect_target is None:
             raise HTTPException(status_code=404, detail="Entity is not a redirect")
 
-        if self.vitess.is_entity_deleted(internal_id):
+        if self.vitess.is_entity_deleted(entity_id):
             raise HTTPException(status_code=423, detail="Entity has been deleted")
 
-        if self.vitess.is_entity_locked(internal_id) or self.vitess.is_entity_archived(
-            internal_id
+        if self.vitess.is_entity_locked(entity_id) or self.vitess.is_entity_archived(
+            entity_id
         ):
             raise HTTPException(status_code=423, detail="Entity is locked or archived")
+
+        head_revision_id = self.vitess.get_head(entity_id)
+        new_revision_id = head_revision_id + 1 if head_revision_id else 1
 
         target_revision = self.s3.read_full_revision(entity_id, revert_to_revision_id)
         target_data = target_revision["data"]
@@ -138,17 +142,29 @@ class RedirectService:
             "entity": target_data["entity"],
         }
 
-        new_revision_id = self.s3.write_entity_revision(
+        self.s3.write_revision(
             entity_id=entity_id,
-            entity_type="item",
+            revision_id=new_revision_id,
             data=new_revision_data,
-            edit_type=EditType.REDIRECT_REVERT,
-            created_by="entity-api",
+            publication_state="pending",
+        )
+
+        self.vitess.insert_revision(
+            entity_id,
+            new_revision_id,
+            is_mass_edit=False,
+            edit_type=EditType.REDIRECT_REVERT.value,
         )
 
         self.vitess.set_redirect_target(
-            entity_internal_id=internal_id,
-            redirects_to_internal_id=None,
+            entity_id=entity_id,
+            redirects_to_entity_id=None,
+        )
+
+        self.s3.mark_published(
+            entity_id=entity_id,
+            revision_id=new_revision_id,
+            publication_state="published",
         )
 
         return EntityResponse(

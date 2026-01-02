@@ -162,12 +162,8 @@ class EntityConverter:
 
         if self.vitess_client:
             try:
-                internal_id = self.vitess_client.resolve_id(entity_id)
-                if internal_id is not None:
-                    vitess_redirects = self.vitess_client.get_incoming_redirects(
-                        internal_id
-                    )
-                    redirects.extend(vitess_redirects)
+                vitess_redirects = self.vitess_client.get_incoming_redirects(entity_id)
+                redirects.extend(vitess_redirects)
             except Exception as e:
                 logger.warning(
                     f"Failed to load redirects from Vitess for {entity_id}: {e}"

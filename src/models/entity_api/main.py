@@ -82,18 +82,17 @@ def create_entity(request: EntityCreateRequest):
     if not entity_id:
         raise HTTPException(status_code=400, detail="Entity must have 'id' field")
 
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
-        internal_id = generate_ulid_flake()
-        clients.vitess.register_entity(entity_id, internal_id)
-    else:
-        # Check if entity is hard-deleted (block edits/undelete)
-        if clients.vitess.is_entity_deleted(internal_id):
-            raise HTTPException(
-                status_code=410, detail=f"Entity {entity_id} has been deleted"
-            )
+    # Register entity if doesn't exist
+    if not clients.vitess.entity_exists(entity_id):
+        clients.vitess.register_entity(entity_id)
 
-    head_revision_id = clients.vitess.get_head(internal_id)
+    # Check if entity is hard-deleted (block edits/undelete)
+    if clients.vitess.is_entity_deleted(entity_id):
+        raise HTTPException(
+            status_code=410, detail=f"Entity {entity_id} has been deleted"
+        )
+
+    head_revision_id = clients.vitess.get_head(entity_id)
 
     # Calculate content hash for deduplication
     entity_json = json.dumps(request.data, sort_keys=True)
@@ -180,15 +179,15 @@ def create_entity(request: EntityCreateRequest):
         publication_state="pending",
     )
     clients.vitess.insert_revision(
-        internal_id,
+        entity_id,
         new_revision_id,
         is_mass_edit,
         edit_type or EditType.UNSPECIFIED.value,
     )
 
-    if head_revision_id is None:
+    if head_revision_id == 0:
         success = clients.vitess.insert_head_with_status(
-            internal_id,
+            entity_id,
             new_revision_id,
             request.is_semi_protected,
             request.is_locked,
@@ -199,7 +198,7 @@ def create_entity(request: EntityCreateRequest):
         )
     else:
         success = clients.vitess.cas_update_head_with_status(
-            internal_id,
+            entity_id,
             head_revision_id,
             new_revision_id,
             request.is_semi_protected,
@@ -239,16 +238,15 @@ def get_entity(entity_id: str):
     if clients.vitess is None:
         raise HTTPException(status_code=503, detail="Vitess not initialized")
 
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
+    if not clients.vitess.entity_exists(entity_id):
         raise HTTPException(status_code=404, detail="Entity not found")
 
-    head_revision_id = clients.vitess.get_head(internal_id)
+    head_revision_id = clients.vitess.get_head(entity_id)
     if head_revision_id == 0:
         raise HTTPException(status_code=404, detail="Entity has no revisions")
 
     # Check if entity is hard-deleted
-    if clients.vitess.is_entity_deleted(internal_id):
+    if clients.vitess.is_entity_deleted(entity_id):
         raise HTTPException(
             status_code=410, detail=f"Entity {entity_id} has been deleted"
         )
@@ -281,11 +279,10 @@ def get_entity_history(entity_id: str):
     if clients.vitess is None:
         raise HTTPException(status_code=503, detail="Vitess not initialized")
 
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
+    if not clients.vitess.entity_exists(entity_id):
         raise HTTPException(status_code=404, detail="Entity not found")
 
-    history = clients.vitess.get_history(internal_id)
+    history = clients.vitess.get_history(entity_id)
 
     return [
         RevisionMetadata(revision_id=record.revision_id, created_at=record.created_at)
@@ -301,11 +298,10 @@ async def get_entity_data_turtle(entity_id: str):
     if clients.vitess is None:
         raise HTTPException(status_code=503, detail="Vitess not initialized")
 
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
+    if not clients.vitess.entity_exists(entity_id):
         raise HTTPException(status_code=404, detail=f"Entity {entity_id} not found")
 
-    head_revision_id = clients.vitess.get_head(internal_id)
+    head_revision_id = clients.vitess.get_head(entity_id)
     if head_revision_id == 0:
         raise HTTPException(status_code=404, detail="Entity has no revisions")
 
@@ -357,13 +353,12 @@ def delete_entity(entity_id: str, request: EntityDeleteRequest):
     if clients.vitess is None:
         raise HTTPException(status_code=503, detail="Vitess not initialized")
 
-    # Resolve entity ID
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
+    # Check entity exists
+    if not clients.vitess.entity_exists(entity_id):
         raise HTTPException(status_code=404, detail="Entity not found")
 
     # Get current head revision
-    head_revision_id = clients.vitess.get_head(internal_id)
+    head_revision_id = clients.vitess.get_head(entity_id)
     if head_revision_id == 0:
         raise HTTPException(status_code=404, detail="Entity has no revisions")
 
@@ -413,20 +408,19 @@ def delete_entity(entity_id: str, request: EntityDeleteRequest):
 
     # Insert revision metadata into Vitess
     clients.vitess.insert_revision(
-        internal_id, new_revision_id, is_mass_edit=False, edit_type=edit_type
+        entity_id, new_revision_id, is_mass_edit=False, edit_type=edit_type
     )
 
     # Handle hard delete
     if request.delete_type == DeleteType.HARD:
         clients.vitess.hard_delete_entity(
-            internal_id=internal_id,
             entity_id=entity_id,
             head_revision_id=new_revision_id,
         )
     else:
         # For soft delete, update head pointer with CAS
         success = clients.vitess.cas_update_head_with_status(
-            internal_id,
+            entity_id,
             head_revision_id,
             new_revision_id,
             current_revision.data.get("is_semi_protected", False),
@@ -476,14 +470,13 @@ def get_raw_revision(entity_id: str, revision_id: int):
         raise HTTPException(status_code=503, detail="Vitess not initialized")
 
     # Check if entity exists
-    internal_id = clients.vitess.resolve_id(entity_id)
-    if internal_id is None:
+    if not clients.vitess.entity_exists(entity_id):
         raise HTTPException(
             status_code=404, detail=f"Entity {entity_id} not found in ID mapping"
         )
 
     # Check if revisions exist for entity
-    history = clients.vitess.get_history(internal_id)
+    history = clients.vitess.get_history(entity_id)
     if not history:
         raise HTTPException(
             status_code=404, detail=f"Entity {entity_id} has no revisions"

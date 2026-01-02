@@ -416,7 +416,7 @@ def test_create_redirect_target_already_redirect(redirect_service):
         assert False, "Should have raised HTTPException"
     except HTTPException as e:
         assert e.status_code == 409
-        assert "Redirect already exists" in e.detail.lower()
+        assert "redirect already exists" in e.detail.lower()
 
 
 def test_create_redirect_source_deleted(redirect_service):
