@@ -96,8 +96,6 @@ class RedirectService:
         return EntityRedirectResponse(
             redirect_from_id=request.redirect_from_id,
             redirect_to_id=request.redirect_to_id,
-            redirect_from_internal_id=from_internal_id,
-            redirect_to_internal_id=to_internal_id,
             created_at=datetime.utcnow().isoformat(),
             revision_id=redirect_revision_id,
         )

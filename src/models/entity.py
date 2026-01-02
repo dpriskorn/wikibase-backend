@@ -135,8 +135,6 @@ class EntityRedirectRequest(BaseModel):
 class EntityRedirectResponse(BaseModel):
     redirect_from_id: str
     redirect_to_id: str
-    redirect_from_internal_id: int
-    redirect_to_internal_id: int
     created_at: str
     revision_id: int
 

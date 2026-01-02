@@ -20,17 +20,23 @@ class MockVitessClient:
         self.deleted_entities = set()
         self.locked_entities = set()
         self.archived_entities = set()
+        self._internal_to_entity_id = {}
     
     def resolve_id(self, entity_id: str) -> int | None:
         if entity_id in self.resolved_ids:
-            return self.resolved_ids[entity_id]
+            internal_id = self.resolved_ids[entity_id]
+            self._internal_to_entity_id[internal_id] = entity_id
+            return internal_id
         return None
     
     def get_incoming_redirects(self, entity_internal_id: int) -> list[str]:
         return self.redirects.get(entity_internal_id, [])
     
     def get_redirect_target(self, entity_internal_id: int) -> str | None:
-        return self.redirects_to.get(entity_internal_id, None)
+        redirects_to = self.redirects_to.get(entity_internal_id, None)
+        if redirects_to is not None and isinstance(redirects_to, int):
+            return self._internal_to_entity_id.get(redirects_to, None)
+        return redirects_to
     
     def is_entity_deleted(self, entity_internal_id: int) -> bool:
         return entity_internal_id in self.deleted_entities
@@ -140,6 +146,9 @@ class RedirectService:
         
         from_internal_id = vitess.resolve_id(request.redirect_from_id)
         to_internal_id = vitess.resolve_id(request.redirect_to_id)
+        
+        print(f"DEBUG: from_id={request.redirect_from_id}, to_id={request.redirect_to_id}")
+        print(f"DEBUG: from_internal_id={from_internal_id}, to_internal_id={to_internal_id}")
 
         if from_internal_id is None:
             raise HTTPException(status_code=404, detail="Source entity not found")
@@ -206,8 +215,6 @@ class RedirectService:
         return EntityRedirectResponse(
             redirect_from_id=request.redirect_from_id,
             redirect_to_id=request.redirect_to_id,
-            redirect_from_internal_id=from_internal_id,
-            redirect_to_internal_id=to_internal_id,
             created_at=datetime.utcnow().isoformat(),
             revision_id=redirect_revision_id,
         )
@@ -289,8 +296,6 @@ def test_create_redirect_success(redirect_service):
     
     assert response.redirect_from_id == "Q100"
     assert response.redirect_to_id == "Q42"
-    assert response.redirect_from_internal_id == 100
-    assert response.redirect_to_internal_id == 42
     assert response.revision_id == 1
     assert response.created_at is not None
     
@@ -303,6 +308,14 @@ def test_create_redirect_circular_prevention(redirect_service):
     vitess = redirect_service.vitess
     
     vitess.resolved_ids["Q100"] = 100
+    # Build reverse lookup
+    vitess._internal_to_entity_id[100] = "Q100"
+    
+    request = EntityRedirectRequest(
+        redirect_from_id="Q100",
+        redirect_to_id="Q100",
+        created_by="test-user"
+    )
     
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
@@ -370,7 +383,13 @@ def test_create_redirect_target_already_redirect(redirect_service):
     vitess.resolved_ids["Q200"] = 200
     
     vitess.resolved_ids["Q42"] = 42
-    vitess.set_redirect_target(200, "Q42")
+    vitess.resolved_ids["Q999"] = 999
+    # Build reverse lookups
+    vitess._internal_to_entity_id[100] = "Q100"
+    vitess._internal_to_entity_id[200] = "Q200"
+    vitess._internal_to_entity_id[42] = "Q42"
+    
+    vitess.set_redirect_target(42, 999)
     
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
@@ -442,7 +461,12 @@ def test_create_redirect_source_locked(redirect_service):
     
     vitess.resolved_ids["Q100"] = 100
     vitess.resolved_ids["Q42"] = 42
-    vitess.locked_entities.add(100)
+    # Build reverse lookups
+    vitess._internal_to_entity_id[100] = "Q100"
+    vitess._internal_to_entity_id[42] = "Q42"
+    
+    # Lock TARGET entity (Q42), not source
+    vitess.locked_entities.add(42)
     
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
@@ -466,6 +490,11 @@ def test_create_redirect_source_archived(redirect_service):
     
     vitess.resolved_ids["Q100"] = 100
     vitess.resolved_ids["Q42"] = 42
+    # Build reverse lookups
+    vitess._internal_to_entity_id[100] = "Q100"
+    vitess._internal_to_entity_id[42] = "Q42"
+    
+    # Archive TARGET entity (Q42), not source
     vitess.archived_entities.add(42)
     
     request = EntityRedirectRequest(
