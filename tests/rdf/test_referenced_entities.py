@@ -111,25 +111,6 @@ def test_load_referenced_entity_missing_file():
     """Test that missing referenced entity JSON raises FileNotFoundError"""
     entity_metadata_dir = TEST_DATA_DIR / "json" / "entities"
 
-    entity = Entity(
-        id="Q999",
-        type=EntityKind.ITEM,
-        labels={},
-        descriptions={},
-        aliases={},
-        statements=[
-            Statement(
-                property="P31",
-                value=EntityValue(value="Q999999"),
-                rank=Rank.NORMAL,
-                statement_id="Q999$1",
-                qualifiers=[],
-                references=[],
-            )
-        ],
-        sitelinks=None,
-    )
-
     properties = {
         "P31": property_shape("P31", "wikibase-item"),
     }

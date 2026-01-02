@@ -1,3 +1,4 @@
+from datetime import timezone
 from typing import Any, Dict
 import boto3
 from botocore.client import Config
@@ -109,7 +110,6 @@ class S3Client(BaseModel):
 
     def write_entity_revision(
         self,
-        internal_id: int,
         entity_id: str,
         revision_id: int,
         entity_type: str,
@@ -124,7 +124,7 @@ class S3Client(BaseModel):
         revision_data = {
             "schema_version": "1.0.0",
             "revision_id": revision_id,
-            "created_at": datetime.utcnow().isoformat() + "Z",
+            "created_at": datetime.now(timezone.utc).isoformat() + "Z",
             "created_by": created_by,
             "is_mass_edit": False,
             "edit_type": edit_type,

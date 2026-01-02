@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from datetime import timezone
 
 from fastapi import HTTPException
 
@@ -65,7 +65,6 @@ class RedirectService:
             request.redirect_to_id,
             self.vitess.get_head(to_internal_id),
         )
-        target_data = target_revision
 
         redirect_revision_data = {
             "schema_version": "1.1.0",
@@ -82,7 +81,6 @@ class RedirectService:
         }
 
         redirect_revision_id = self.s3.write_entity_revision(
-            internal_id=from_internal_id,
             entity_id=request.redirect_from_id,
             entity_type="item",
             data=redirect_revision_data,
@@ -106,7 +104,7 @@ class RedirectService:
         return EntityRedirectResponse(
             redirect_from_id=request.redirect_from_id,
             redirect_to_id=request.redirect_to_id,
-            created_at=datetime.utcnow().isoformat(),
+            created_at=datetime.now(timezone.utc).isoformat(),
             revision_id=redirect_revision_id,
         )
 
@@ -141,7 +139,6 @@ class RedirectService:
         }
 
         new_revision_id = self.s3.write_entity_revision(
-            internal_id=internal_id,
             entity_id=entity_id,
             entity_type="item",
             data=new_revision_data,

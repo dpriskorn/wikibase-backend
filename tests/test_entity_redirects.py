@@ -168,7 +168,7 @@ class RedirectService:
         if from_internal_id == to_internal_id:
             raise HTTPException(status_code=400, detail="Cannot redirect to self")
 
-        existing_target = vitess.get_redirect_target(from_internal_id)
+        existing_target = vitess.get_redirect_target(to_internal_id)
         if existing_target is not None:
             raise HTTPException(status_code=409, detail="Redirect already exists")
 
@@ -230,12 +230,12 @@ class RedirectService:
             redirects_to_internal_id=to_internal_id,
         )
 
-        from datetime import datetime
+        from datetime import datetime, timezone
 
         return EntityRedirectResponse(
             redirect_from_id=request.redirect_from_id,
             redirect_to_id=request.redirect_to_id,
-            created_at=datetime.utcnow().isoformat(),
+            created_at=datetime.now(timezone.utc).isoformat(),
             revision_id=redirect_revision_id,
         )
 
@@ -333,10 +333,6 @@ def test_create_redirect_circular_prevention(redirect_service):
         redirect_from_id="Q100", redirect_to_id="Q100", created_by="test-user"
     )
 
-    request = EntityRedirectRequest(
-        redirect_from_id="Q100", redirect_to_id="Q42", created_by="test-user"
-    )
-
     from fastapi import HTTPException
 
     try:
@@ -344,7 +340,7 @@ def test_create_redirect_circular_prevention(redirect_service):
         assert False, "Should have raised HTTPException"
     except HTTPException as e:
         assert e.status_code == 400
-        assert "Cannot redirect to self" in e.detail.lower()
+        assert "cannot redirect to self" in e.detail.lower()
 
 
 def test_create_redirect_source_not_found(redirect_service):
@@ -401,6 +397,7 @@ def test_create_redirect_target_already_redirect(redirect_service):
     vitess._internal_to_entity_id[100] = "Q100"
     vitess._internal_to_entity_id[200] = "Q200"
     vitess._internal_to_entity_id[42] = "Q42"
+    vitess._internal_to_entity_id[999] = "Q999"
 
     vitess.set_redirect_target(42, 999)
 
