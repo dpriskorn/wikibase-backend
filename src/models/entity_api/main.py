@@ -458,22 +458,6 @@ def delete_entity(entity_id: str, request: EntityDeleteRequest):
     )
 
 
-@app.post("/redirects")
-async def create_entity_redirect(request: EntityRedirectRequest):
-    """Create a redirect from one entity to another"""
-    clients = app.state.clients
-    redirect_service = RedirectService(clients.s3, clients.vitess)
-    return redirect_service.create_redirect(request)
-
-
-@app.post("/entities/{entity_id}/revert-redirect")
-async def revert_entity_redirect(entity_id: str, request: RedirectRevertRequest):
-    """Revert a redirect entity back to normal using revision-based restore"""
-    clients = app.state.clients
-    redirect_service = RedirectService(clients.s3, clients.vitess)
-    return redirect_service.revert_redirect(entity_id, request.revert_to_revision_id)
-
-
 # noinspection PyUnresolvedReferences
 @app.get("/raw/{entity_id}/{revision_id}")
 def get_raw_revision(entity_id: str, revision_id: int):
