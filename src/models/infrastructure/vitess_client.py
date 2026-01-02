@@ -38,7 +38,7 @@ class VitessClient(BaseModel):
         cursor.execute(
             """
             CREATE TABLE IF NOT EXISTS entity_id_mapping (
-                external_id VARCHAR(255) PRIMARY KEY,
+                entity_id VARCHAR(50) PRIMARY KEY,
                 internal_id BIGINT NOT NULL UNIQUE
             )
         """
@@ -91,13 +91,13 @@ class VitessClient(BaseModel):
 
         cursor.close()
 
-    def resolve_id(self, external_id: str) -> int | None:
+    def resolve_id(self, entity_id: str) -> int | None:
         """Resolve external entity ID to internal ID"""
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            "SELECT internal_id FROM entity_id_mapping WHERE external_id = %s",
-            (external_id,),
+            "SELECT internal_id FROM entity_id_mapping WHERE entity_id = %s",
+            (entity_id,),
         )
         result = cursor.fetchone()
         cursor.close()
@@ -213,9 +213,9 @@ class VitessClient(BaseModel):
     def create_redirect(
         self,
         redirect_from_internal_id: int,
-        redirect_from_external_id: str,
+        redirect_from_entity_id: str,
         redirect_to_internal_id: int,
-        redirect_to_external_id: str,
+        redirect_to_entity_id: str,
         created_by: str = "entity-api",
     ) -> None:
         """Create a redirect relationship between entities"""
@@ -234,7 +234,7 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id
+            """SELECT m.entity_id
                    FROM entity_redirects r
                    JOIN entity_id_mapping m ON r.redirect_from_id = m.internal_id
                    WHERE r.redirect_to_id = %s""",
@@ -249,7 +249,7 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id
+            """SELECT m.entity_id
                    FROM entity_head h
                    WHERE h.entity_id = %s AND h.redirects_to IS NOT NULL""",
             (entity_internal_id,),
@@ -258,13 +258,13 @@ class VitessClient(BaseModel):
         cursor.close()
         return result[0] if result else None
 
-    def register_entity(self, external_id: str, internal_id: int) -> None:
+    def register_entity(self, entity_id: str, internal_id: int) -> None:
         """Register new entity ID mapping"""
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO entity_id_mapping (external_id, internal_id) VALUES (%s, %s)",
-            (external_id, internal_id),
+            "INSERT INTO entity_id_mapping (entity_id, internal_id) VALUES (%s, %s)",
+            (entity_id, internal_id),
         )
         cursor.close()
 
@@ -379,7 +379,7 @@ class VitessClient(BaseModel):
     def hard_delete_entity(
         self,
         internal_id: int,
-        external_id: str,
+        entity_id: str,
         head_revision_id: int,
     ) -> None:
         """Permanently delete entity and mark in database"""
@@ -399,14 +399,14 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id, h.head_revision_id
+            """SELECT m.entity_id, h.head_revision_id
                    FROM entity_head h
                    JOIN entity_id_mapping m ON h.entity_id = m.internal_id
                    WHERE h.is_locked = TRUE
                    LIMIT %s""",
             (limit,),
         )
-        result = [{"external_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
+        result = [{"entity_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
         cursor.close()
         return result
 
@@ -415,14 +415,14 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id, h.head_revision_id
+            """SELECT m.entity_id, h.head_revision_id
                    FROM entity_head h
                    JOIN entity_id_mapping m ON h.entity_id = m.internal_id
                    WHERE h.is_semi_protected = TRUE
                    LIMIT %s""",
             (limit,),
         )
-        result = [{"external_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
+        result = [{"entity_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
         cursor.close()
         return result
 
@@ -431,14 +431,14 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id, h.head_revision_id
+            """SELECT m.entity_id, h.head_revision_id
                    FROM entity_head h
                    JOIN entity_id_mapping m ON h.entity_id = m.internal_id
                    WHERE h.is_archived = TRUE
                    LIMIT %s""",
             (limit,),
         )
-        result = [{"external_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
+        result = [{"entity_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
         cursor.close()
         return result
 
@@ -447,14 +447,14 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT m.external_id, h.head_revision_id
+            """SELECT m.entity_id, h.head_revision_id
                    FROM entity_head h
                    JOIN entity_id_mapping m ON h.entity_id = m.internal_id
                    WHERE h.is_dangling = TRUE
                    LIMIT %s""",
             (limit,),
         )
-        result = [{"external_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
+        result = [{"entity_id": row[0], "head_revision_id": row[1]} for row in cursor.fetchall()]
         cursor.close()
         return result
 
@@ -463,7 +463,7 @@ class VitessClient(BaseModel):
         conn = self.connect()
         cursor = conn.cursor()
         cursor.execute(
-            """SELECT DISTINCT m.external_id, r.edit_type, r.revision_id
+            """SELECT DISTINCT m.entity_id, r.edit_type, r.revision_id
                    FROM entity_revisions r
                    JOIN entity_head h ON r.entity_id = h.entity_id
                    JOIN entity_id_mapping m ON h.entity_id = m.internal_id
@@ -472,7 +472,7 @@ class VitessClient(BaseModel):
             (edit_type, limit),
         )
         result = [
-            {"external_id": row[0], "edit_type": row[1], "revision_id": row[2]}
+            {"entity_id": row[0], "edit_type": row[1], "revision_id": row[2]}
             for row in cursor.fetchall()
         ]
         cursor.close()

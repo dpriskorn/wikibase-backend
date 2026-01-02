@@ -580,7 +580,7 @@ def test_query_locked_entities(api_client: requests.Session, base_url: str) -> N
     response = api_client.get(f"{base_url}/entities?status=locked")
     assert response.status_code == 200
     entities = response.json()
-    assert any(e["external_id"] == "Q90010" for e in entities)
+    assert any(e["entity_id"] == "Q90010" for e in entities)
 
     logger.info("✓ Query locked entities works")
 
@@ -603,7 +603,7 @@ def test_query_semi_protected_entities(
     response = api_client.get(f"{base_url}/entities?status=semi_protected")
     assert response.status_code == 200
     entities = response.json()
-    assert "Q90011" in entities
+    assert any(e["entity_id"] == "Q90011" for e in entities)
 
     logger.info("✓ Query semi-protected entities works")
 
@@ -622,7 +622,7 @@ def test_query_archived_entities(api_client: requests.Session, base_url: str) ->
     response = api_client.get(f"{base_url}/entities?status=archived")
     assert response.status_code == 200
     entities = response.json()
-    assert "Q90012" in entities
+    assert any(e["entity_id"] == "Q90012" for e in entities)
 
     logger.info("✓ Query archived entities works")
 
@@ -641,7 +641,7 @@ def test_query_dangling_entities(api_client: requests.Session, base_url: str) ->
     response = api_client.get(f"{base_url}/entities?status=dangling")
     assert response.status_code == 200
     entities = response.json()
-    assert "Q90013" in entities
+    assert any(e["entity_id"] == "Q90013" for e in entities)
 
     logger.info("✓ Query dangling entities works")
 
@@ -664,7 +664,7 @@ def test_query_by_edit_type(api_client: requests.Session, base_url: str) -> None
     response = api_client.get(f"{base_url}/entities?edit_type=lock-added")
     assert response.status_code == 200
     entities = response.json()
-    assert "Q90014" in entities
+    assert any(e["entity_id"] == "Q90014" for e in entities)
 
     logger.info("✓ Query by edit_type works")
 
@@ -868,7 +868,7 @@ def test_undelete_entity(api_client: requests.Session, base_url: str) -> None:
 
     # Verify latest revision not deleted
     raw_response = api_client.get(f"{base_url}/raw/Q99003/3")
-    assert raw_response.json()["deleted"] is False
+    assert raw_response.json()["is_deleted"] is False
 
     logger.info("✓ Undelete via new revision works")
 

@@ -21,9 +21,9 @@ class MockVitessClient:
         self.locked_entities = set()
         self.archived_entities = set()
     
-    def resolve_id(self, external_id: str) -> int | None:
-        if external_id in self.resolved_ids:
-            return self.resolved_ids[external_id]
+    def resolve_id(self, entity_id: str) -> int | None:
+        if entity_id in self.resolved_ids:
+            return self.resolved_ids[entity_id]
         return None
     
     def get_incoming_redirects(self, entity_internal_id: int) -> list[str]:
@@ -48,13 +48,13 @@ class MockVitessClient:
     def create_redirect(
         self,
         redirect_from_internal_id: int,
-        redirect_from_external_id: str,
+        redirect_from_entity_id: str,
         redirect_to_internal_id: int,
-        redirect_to_external_id: str,
+        redirect_to_entity_id: str,
         created_by: str = "entity-api",
     ) -> None:
         self.redirects[redirect_from_internal_id] = redirect_to_internal_id
-        self.redirects_to[redirect_from_internal_id] = redirect_to_external_id
+        self.redirects_to[redirect_from_internal_id] = redirect_to_entity_id
     
     def set_redirect_target(
         self,
@@ -86,13 +86,15 @@ class MockS3Client:
     
     def write_entity_revision(
         self,
+        internal_id: int,
         entity_id: str,
         revision_id: int,
         entity_type: str,
         data: dict,
-        is_mass_edit: bool = False,
         edit_type: str = "",
+        created_by: str = "entity-api",
     ) -> int:
+        data["revision_id"] = revision_id
         self.written_revisions[revision_id] = data
         return revision_id
 
@@ -113,7 +115,7 @@ class MockS3Client:
             "is_mass_edit_protected": False,
             "is_deleted": False,
             "is_redirect": False,
-            "entity": {
+            "data": {
                 "id": entity_id,
                 "type": "item",
                 "labels": {},
@@ -159,8 +161,8 @@ class RedirectService:
         if vitess.is_entity_locked(to_internal_id) or vitess.is_entity_archived(to_internal_id):
             raise HTTPException(status_code=423, detail="Target entity is locked or archived")
 
-        target_revision = s3.read_revision(request.redirect_to_id, vitess.get_head(request.redirect_to_id))
-        target_data = target_revision["data"]
+        target_revision = s3.read_full_revision(request.redirect_to_id, vitess.get_head(request.redirect_to_id))
+        target_data = target_revision
 
         redirect_revision_data = {
             "schema_version": "1.1.0",
@@ -178,7 +180,8 @@ class RedirectService:
 
         redirect_revision_id = s3.write_entity_revision(
             internal_id=from_internal_id,
-            external_id=request.redirect_from_id,
+            entity_id=request.redirect_from_id,
+            revision_id=1,
             entity_type="item",
             data=redirect_revision_data,
             edit_type=EditType.REDIRECT_CREATE,
@@ -187,9 +190,9 @@ class RedirectService:
 
         vitess.create_redirect(
             redirect_from_internal_id=from_internal_id,
-            redirect_from_external_id=request.redirect_from_id,
+            redirect_from_entity_id=request.redirect_from_id,
             redirect_to_internal_id=to_internal_id,
-            redirect_to_external_id=request.redirect_to_id,
+            redirect_to_entity_id=request.redirect_to_id,
             created_by=request.created_by,
         )
 
@@ -198,12 +201,14 @@ class RedirectService:
             redirects_to_internal_id=to_internal_id,
         )
 
+        from datetime import datetime
+        
         return EntityRedirectResponse(
             redirect_from_id=request.redirect_from_id,
             redirect_to_id=request.redirect_to_id,
             redirect_from_internal_id=from_internal_id,
             redirect_to_internal_id=to_internal_id,
-            created_at=s3.written_revisions[redirect_revision_id]["revision_id"],
+            created_at=datetime.utcnow().isoformat(),
             revision_id=redirect_revision_id,
         )
 
@@ -223,18 +228,19 @@ class RedirectService:
         if vitess.is_entity_locked(internal_id) or vitess.is_entity_archived(internal_id):
             raise HTTPException(status_code=423, detail="Entity is locked or archived")
 
-        target_revision = s3.read_revision(entity_id, revert_to_revision_id)
-        target_data = target_revision["data"]
-
+        target_revision = s3.read_full_revision(entity_id, revert_to_revision_id)
+        target_data = target_revision
+        
         new_revision_data = {
             "schema_version": "1.1.0",
             "redirects_to": None,
-            "entity": target_data["entity"]
+            "entity": target_data.get("data", target_data)
         }
 
         new_revision_id = s3.write_entity_revision(
             internal_id=internal_id,
-            external_id=entity_id,
+            entity_id=entity_id,
+            revision_id=2,
             entity_type="item",
             data=new_revision_data,
             edit_type=EditType.REDIRECT_REVERT,
@@ -259,11 +265,20 @@ def redirect_service():
     vitess = MockVitessClient()
     s3 = MockS3Client()
     
+    # Set up default Q42 entity for tests
+    vitess.resolved_ids["Q42"] = 42
+    
     return RedirectService(s3, vitess)
 
 
 def test_create_redirect_success(redirect_service):
     """Test successful redirect creation"""
+    vitess = redirect_service.vitess
+    
+    # Set up both source and target entities
+    vitess.resolved_ids["Q100"] = 100
+    vitess.resolved_ids["Q42"] = 42
+    
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
         redirect_to_id="Q42",
@@ -288,7 +303,6 @@ def test_create_redirect_circular_prevention(redirect_service):
     vitess = redirect_service.vitess
     
     vitess.resolved_ids["Q100"] = 100
-    vitess.resolved_ids["Q42"] = 42
     
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
@@ -309,7 +323,7 @@ def test_create_redirect_source_not_found(redirect_service):
     """Test that source entity not found raises 404"""
     vitess = redirect_service.vitess
     
-    vitess.resolved_ids["Q999"] = 999
+    # Don't set Q999 in resolved_ids - source doesn't exist
     
     request = EntityRedirectRequest(
         redirect_from_id="Q999",
@@ -323,7 +337,7 @@ def test_create_redirect_source_not_found(redirect_service):
         assert False, "Should have raised HTTPException"
     except HTTPException as e:
         assert e.status_code == 404
-        assert "Source entity not found" in e.detail.lower()
+        assert "source entity not found" in e.detail.lower()
 
 
 def test_create_redirect_target_not_found(redirect_service):
@@ -344,7 +358,7 @@ def test_create_redirect_target_not_found(redirect_service):
         assert False, "Should have raised HTTPException"
     except HTTPException as e:
         assert e.status_code == 404
-        assert "Target entity not found" in e.detail.lower()
+        assert "target entity not found" in e.detail.lower()
 
 
 def test_create_redirect_target_already_redirect(redirect_service):
@@ -355,6 +369,7 @@ def test_create_redirect_target_already_redirect(redirect_service):
     vitess.resolved_ids["Q100"] = 100
     vitess.resolved_ids["Q200"] = 200
     
+    vitess.resolved_ids["Q42"] = 42
     vitess.set_redirect_target(200, "Q42")
     
     request = EntityRedirectRequest(
@@ -378,6 +393,7 @@ def test_create_redirect_source_deleted(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
+    vitess.resolved_ids["Q42"] = 42
     vitess.deleted_entities.add(100)
     
     request = EntityRedirectRequest(
@@ -400,6 +416,7 @@ def test_create_redirect_target_deleted(redirect_service):
     vitess = redirect_service.vitess
     s3 = redirect_service.s3
     
+    vitess.resolved_ids["Q100"] = 100
     vitess.resolved_ids["Q42"] = 42
     vitess.deleted_entities.add(42)
     
@@ -424,6 +441,7 @@ def test_create_redirect_source_locked(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
+    vitess.resolved_ids["Q42"] = 42
     vitess.locked_entities.add(100)
     
     request = EntityRedirectRequest(
@@ -447,7 +465,8 @@ def test_create_redirect_source_archived(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
-    vitess.archived_entities.add(100)
+    vitess.resolved_ids["Q42"] = 42
+    vitess.archived_entities.add(42)
     
     request = EntityRedirectRequest(
         redirect_from_id="Q100",
@@ -527,6 +546,7 @@ def test_revert_redirect_entity_deleted(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
+    vitess.set_redirect_target(100, "Q42")  # Set up as redirect first
     vitess.deleted_entities.add(100)
     
     request = RedirectRevertRequest(
@@ -550,6 +570,7 @@ def test_revert_redirect_entity_locked(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
+    vitess.set_redirect_target(100, "Q42")  # Set up as redirect first
     vitess.locked_entities.add(100)
     
     request = RedirectRevertRequest(
@@ -573,6 +594,7 @@ def test_revert_redirect_entity_archived(redirect_service):
     s3 = redirect_service.s3
     
     vitess.resolved_ids["Q100"] = 100
+    vitess.set_redirect_target(100, "Q42")  # Set up as redirect first
     vitess.archived_entities.add(100)
     
     request = RedirectRevertRequest(

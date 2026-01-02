@@ -109,6 +109,7 @@ class S3Client(BaseModel):
 
     def write_entity_revision(
         self,
+        internal_id: int,
         entity_id: str,
         revision_id: int,
         entity_type: str,

@@ -73,7 +73,7 @@ class RedirectService:
 
         redirect_revision_id = self.s3.write_entity_revision(
             internal_id=from_internal_id,
-            external_id=request.redirect_from_id,
+            entity_id=request.redirect_from_id,
             entity_type="item",
             data=redirect_revision_data,
             edit_type=EditType.REDIRECT_CREATE,
@@ -82,9 +82,9 @@ class RedirectService:
 
         self.vitess.create_redirect(
             redirect_from_internal_id=from_internal_id,
-            redirect_from_external_id=request.redirect_from_id,
+            redirect_from_entity_id=request.redirect_from_id,
             redirect_to_internal_id=to_internal_id,
-            redirect_to_external_id=request.redirect_to_id,
+            redirect_to_entity_id=request.redirect_to_id,
             created_by=request.created_by,
         )
 
@@ -132,7 +132,7 @@ class RedirectService:
 
         new_revision_id = self.s3.write_entity_revision(
             internal_id=internal_id,
-            external_id=entity_id,
+            entity_id=entity_id,
             entity_type="item",
             data=new_revision_data,
             edit_type=EditType.REDIRECT_REVERT,

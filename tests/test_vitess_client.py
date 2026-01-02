@@ -12,8 +12,8 @@ from models.vitess_models import VitessConfig
 def vitess_client():
     """Create a real VitessClient connected to test database"""
     config = VitessConfig(
-        host="localhost",
-        port=15309,
+        host="vitess",
+        port=15307,
         database="page",
         user="root",
         password="",
